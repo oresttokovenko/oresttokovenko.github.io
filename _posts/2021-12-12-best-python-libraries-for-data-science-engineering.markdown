@@ -2,9 +2,9 @@
 layout: post
 title:  Best Python libraries for Data Science/Data Engineering
 description:
-date:   2021-12-12B
+date:   2021-12-12
 image:  '/images/04.jpg'
-tags:   [lifestyle, rest, notes]
+tags:   [placeholder]
 ---
 Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace [Joel Filipe](https://unsplash.com/photos/4NZlogMPIp0) diversity and empowerment.
 
