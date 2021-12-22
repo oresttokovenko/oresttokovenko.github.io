@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Best Python libraries for Data Science/Data Engineering
+title:  Placeholder
 description:
 date:   2021-12-12B
 image:  '/images/04.jpg'
