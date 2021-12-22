@@ -4,48 +4,95 @@ title:  No Space left in your DB? Try Clearing MySQL binlog. Files
 description:
 date:   2021-12-12
 image:  '/images/07.jpg'
-tags:   [lifestyle, travel, story]
+tags:   [SQL, Database]
 ---
-Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace [Lance Anderson](https://unsplash.com/photos/QdAAasrZhdk) diversity and empowerment.
 
-Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.
+Tried to import a local copy of the production database, no space left. Checked binlog files, huge bloat. Show how to purge the log files. Bloat was approximately 40GB.
 
-> The longer I live, the more I realize that I am never wrong about anything, and that all the pains I have so humbly taken to verify my notions have only wasted my time!
+{% highlight mysql %}
+> mysql -u developer -h localhost -p db_prod < /home/../Users/oresttokovenko/Desktop/db_live-full-db-export-no-views_2021-07-21_17_10_10.sql
 
-Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.
+> ERROR 1114 (HY000) at line 17248: The table 'statements' is full
 
-Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.
+{% endhighlight %}
 
-![House]({{site.baseurl}}/images/07-1.jpg)
-*Photo by [Lance Anderson](https://unsplash.com/photos/QdAAasrZhdk) on [Unsplash](https://unsplash.com/)*
+I decided to check the logs
 
-Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
+{% highlight mysql %}
 
-Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.
+> mysql -u root -p
 
-### Podcasting
+> SHOW BINARY LOGS;
 
-Phosfluorescently engage worldwide methodologies with web-enabled technology. Interactively coordinate proactive e-commerce via process-centric "outside the box" thinking. Completely pursue scalable customer service through sustainable [Todd Quackenbush](https://unsplash.com/photos/JJB_K8aCPU4) potentialities.
++---------------+------------+-----------+
+| Log_name      | File_size  | Encrypted |
++---------------+------------+-----------+
+| binlog.000030 | 1074597650 | No        |
+| binlog.000031 | 1073742397 | No        |
+| binlog.000032 | 1074200584 | No        |
+| binlog.000033 | 1074637673 | No        |
+| binlog.000034 | 1074399487 | No        |
+| binlog.000035 | 1073988797 | No        |
+| binlog.000036 | 1074002396 | No        |
+| binlog.000037 | 1073807807 | No        |
+| binlog.000038 | 1073804101 | No        |
+| binlog.000039 | 1073796629 | No        |
+| binlog.000040 | 1074034112 | No        |
+| binlog.000041 | 1074002365 | No        |
+| binlog.000042 | 1074116849 | No        |
+| binlog.000043 | 1074488730 | No        |
+| binlog.000044 | 1073883958 | No        |
+| binlog.000045 |  645382732 | No        |
+| binlog.000046 | 1073881229 | No        |
+| binlog.000047 | 1073947948 | No        |
+| binlog.000048 | 1074280343 | No        |
+| binlog.000049 | 1073795249 | No        |
+| binlog.000050 | 1074125078 | No        |
+| binlog.000051 | 1074388023 | No        |
+| binlog.000052 | 1074168519 | No        |
+| binlog.000053 | 1074135798 | No        |
+| binlog.000054 | 1073822552 | No        |
+| binlog.000055 | 1074243792 | No        |
+| binlog.000056 | 1074531494 | No        |
+| binlog.000057 | 1074545309 | No        |
+| binlog.000058 | 1074651871 | No        |
+| binlog.000059 | 1073959972 | No        |
+| binlog.000060 | 1074152602 | No        |
+| binlog.000061 | 1074242549 | No        |
+| binlog.000062 | 1074506036 | No        |
+| binlog.000063 | 1074287807 | No        |
+| binlog.000064 | 1073819533 | No        |
+| binlog.000065 | 1073888394 | No        |
+| binlog.000066 | 1073769144 | No        |
+| binlog.000067 | 1074638410 | No        |
+| binlog.000068 | 1074153406 | No        |
+| binlog.000069 | 1073970098 | No        |
+| binlog.000070 | 1074539497 | No        |
+| binlog.000071 | 1074519241 | No        |
+| binlog.000072 | 1074259032 | No        |
+| binlog.000073 | 1074408928 | No        |
+| binlog.000074 | 1073920578 | No        |
+| binlog.000075 | 1073929136 | No        |
+| binlog.000076 |  901460870 | No        |
+| binlog.000077 | 1073877986 | No        |
+| binlog.000078 | 1073947919 | No        |
+| binlog.000079 | 1074278107 | No        |
+| binlog.000080 | 1073794310 | No        |
+| binlog.000081 | 1074124862 | No        |
+| binlog.000082 | 1074388023 | No        |
+| binlog.000083 | 1074168519 | No        |
+| binlog.000084 | 1074135798 | No        |
+| binlog.000085 |  741190991 | No        |
++---------------+------------+-----------+
 
-Collaboratively administrate turnkey channels whereas virtual e-tailers. Objectively seize scalable metrics whereas proactive e-services. Seamlessly empower fully researched growth strategies and interoperable internal or "organic" sources.
+> PURGE BINARY LOGS BEFORE NOW();
 
-<div class="gallery-box">
-  <div class="gallery">
-    <img src="/images/08.jpg">
-    <img src="/images/05.jpg">
-    <img src="/images/11.jpg">
-  </div>
-  <em>Gallery / <a href="https://unsplash.com/" target="_blank">Unsplash</a></em>
-</div>
+> SHOW BINARY LOGS;
++---------------+-----------+-----------+
+| Log_name      | File_size | Encrypted |
++---------------+-----------+-----------+
+| binlog.000085 | 741190991 | No        |
++---------------+-----------+-----------+
+{% endhighlight %}
 
-Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art customer service.
-
-Objectively innovate empowered manufactured products whereas parallel platforms. Holisticly predominate extensible testing procedures for reliable supply chains. Dramatically engage top-line web services vis-a-vis cutting-edge deliverables.
-
-### Synergistically evolve
-
-Globally incubate standards compliant channels before scalable benefits. Quickly disseminate superior deliverables whereas web-enabled applications. Quickly drive clicks-and-mortar catalysts for change before vertical architectures.
-
-Credibly reintermediate backend ideas for cross-platform models. Continually reintermediate integrated processes through technically sound intellectual capital. Holistically foster superior methodologies without market-driven best practices.
-
-Distinctively exploit optimal alignments for intuitive bandwidth. Quickly coordinate e-business applications through revolutionary catalysts for change. Seamlessly underwhelm optimal testing procedures whereas bricks-and-clicks processes.
+The end

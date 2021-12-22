@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  How to Use Remote Functions to Speed Up your Data Cleaning
+title:  Placeholder
 date:   2021-12-12
 image:  '/images/01.jpg'
 tags:   [github, git, python]

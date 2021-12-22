@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  No Space left in your DB? Try Clearing MySQL binlog. Files
+title:  Placeholder
 description:
 date:   2021-12-12
 image:  '/images/07.jpg'
