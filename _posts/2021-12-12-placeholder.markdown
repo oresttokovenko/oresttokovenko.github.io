@@ -2,7 +2,7 @@
 layout: post
 title:  Placeholder
 date:   2021-12-12
-image:  '/images/01.jpg'
+image:  '/images/placeholder.jpg'
 tags:   [github, git, python]
 ---
 

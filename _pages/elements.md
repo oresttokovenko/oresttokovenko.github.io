@@ -22,7 +22,8 @@ A paragraph looks like this — Globally incubate standards compliant channels b
 
 ## Lists
 
-### Ordered list example:
+### Ordered list example
+
 
 1. Poutine drinking vinegar bitters.
 2. Coloring book distillery fanny pack.
