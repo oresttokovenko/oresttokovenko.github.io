@@ -3,21 +3,53 @@ layout: post
 title:  Placeholder
 description:
 date:   2021-12-12
-image:  '/images/07.jpg'
+image:  '/images/placeholder.jpg'
 tags:   [placeholder]
 ---
-Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace [Lance Anderson](https://unsplash.com/photos/QdAAasrZhdk) diversity and empowerment.
+{% highlight python %}
+from airflow import DAG
+# from airflow.operators.dummy import DummyOperator
+from airflow.operators.python import PythonOperator
+from airflow.sensors.filesystem import FileSensor
+from airflow.operators.bash import BashOperator
+from airflow.utils.dates import days_ago
 
-Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.
+from datetime import datetime, timedelta
 
-> The longer I live, the more I realize that I am never wrong about anything, and that all the pains I have so humbly taken to verify my notions have only wasted my time!
+default_args = {
+'retry': 5,
+'retry_delay': timedelta(minutes=5)
+}
 
-Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.
+def _downloading_data(**kwargs):
+with open('/tmp/my_file.txt', 'w') as f:
+f.write('my_data')
 
-Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.
+with DAG(
+dag_id ='simple_dag', default_args=default_args,
+schedule_interval=timedelta(days=3),
+start_date=days_ago(3), catchup=False
+) as dag:
 
-![House]({{site.baseurl}}/images/07-1.jpg)
-*Photo by [Lance Anderson](https://unsplash.com/photos/QdAAasrZhdk) on [Unsplash](https://unsplash.com/)*
+    downloading_data = PythonOperator(
+        task_id='downloading_data',
+        python_callable=_downloading_data
+    )
+
+    waiting_for_data = FileSensor(
+        task_id='waiting_for_data',
+        fs_conn_id='fs_default',
+        filepath='my_file.txt'
+    )
+
+    processing_data = BashOperator(
+        task_id='processing_data',
+        bash_command='exit 0'
+    )
+
+    downloading_data.set_downstream(waiting_for_data)
+    waiting_for_data.set_downstream(processing_data)
+{% endhighlight %}
 
 Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
 
@@ -29,14 +61,7 @@ Phosfluorescently engage worldwide methodologies with web-enabled technology. In
 
 Collaboratively administrate turnkey channels whereas virtual e-tailers. Objectively seize scalable metrics whereas proactive e-services. Seamlessly empower fully researched growth strategies and interoperable internal or "organic" sources.
 
-<div class="gallery-box">
-  <div class="gallery">
-    <img src="/images/08.jpg">
-    <img src="/images/05.jpg">
-    <img src="/images/11.jpg">
-  </div>
-  <em>Gallery / <a href="https://unsplash.com/" target="_blank">Unsplash</a></em>
-</div>
+![Steps]({{site.baseurl}}/images/02-2.jpg)
 
 Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art customer service.
 
