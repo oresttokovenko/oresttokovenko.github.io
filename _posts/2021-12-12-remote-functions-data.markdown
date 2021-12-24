@@ -2,75 +2,82 @@
 layout: post
 title:  How to Use Remote Functions to Speed Up your Data Cleaning
 date:   2021-12-12
-image:  '/images/01.jpg'
+image:  '/images/remote_py_function.jpg'
 tags:   [github, git, python]
 ---
 
+I had some downtime at work and I realized that I often use the same functions during data cleaning/modelling, such as removing non-numeric digits from a DataFrame column for Phone Numbers
+
+I looked into it and discovered a Python library called `httpimport`, which lets you run code that is stored outside of the `.py` file. I created a github repository with a few functions that represented often used code. You can also call the function to see the docstring before you use it, so you don't have to check the repo if you forget. Below are a few examples of these functions.
+
 {% highlight python %}
-from airflow import DAG
-# from airflow.operators.dummy import DummyOperator
-from airflow.operators.python import PythonOperator
-from airflow.sensors.filesystem import FileSensor
-from airflow.operators.bash import BashOperator
-from airflow.utils.dates import days_ago
+def phone_split(df, phone='phone', main='phone_main', ext='phone_ext'):
+"""this function sanitizes phone numbers and appends any digits beyond 10 to a separate column"""
+df[phone].replace(to_replace='[^0-9]+', value='', inplace=True, regex=True)
+df[main] = df[phone].str[:10]
+df[ext] = df[phone].str[11:]
+df.drop(phone, axis=1, inplace=True)
 
-from datetime import datetime, timedelta
+def clean_col(name):
+"""this function cleans clean column name and replaces empty spaces with underscores"""
+return (
+name.strip().lower().replace(" ", "_")
+)
 
-default_args = {
-'retry': 5,
-'retry_delay': timedelta(minutes=5)
-}
+def unique_dataframe(df):
+"""this function creates a dataframe with only unique values in each column"""
+dict(zip([i for i in df.columns], [pd.DataFrame(df[i].unique(), columns=[i]) for i in df.columns]))
 
-def _downloading_data(**kwargs):
-with open('/tmp/my_file.txt', 'w') as f:
-f.write('my_data')
+def trim_all_columns(df):
+"""this function trims whitespaces from ends of each value across all series in dataframe"""
+trim_strings = lambda x: x.strip() if isinstance(x, str) else x
+return df.applymap(trim_strings)
 
-with DAG(
-dag_id ='simple_dag', default_args=default_args,
-schedule_interval=timedelta(days=3),
-start_date=days_ago(3), catchup=False
-) as dag:
-
-    downloading_data = PythonOperator(
-        task_id='downloading_data',
-        python_callable=_downloading_data
-    )
-
-    waiting_for_data = FileSensor(
-        task_id='waiting_for_data',
-        fs_conn_id='fs_default',
-        filepath='my_file.txt'
-    )
-
-    processing_data = BashOperator(
-        task_id='processing_data',
-        bash_command='exit 0'
-    )
-
-    downloading_data.set_downstream(waiting_for_data)
-    waiting_for_data.set_downstream(processing_data)
+def generate_temp_id(row, secondary_keys, drop_empty_values=True):
+"""this function generates a temp_id by passing desired columns into secondary_keys value"""
+sec_key_column_values = []
+for key in secondary_keys:
+val = str(row[key])
+        if drop_empty_values:
+            if val.strip() != '':
+                sec_key_column_values.append(val.strip())
+        else:
+            sec_key_column_values.append(val.strip())
+    temp_id = '-'.join(sec_key_column_values)
+    return temp_id
 {% endhighlight %}
 
-Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
+Below is an example of how you can use these functions
 
-Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.
+{% highlight python %}
+> import pandas as pd
+> import numpy as np
+> import httpimport
 
-### Podcasting
+> with httpimport.github_repo(username=`yourgithubusername`, repo=`repothatcontainsyourpyfile`, branch =`master`):
+    from yourpyfile import *
 
-Phosfluorescently engage worldwide methodologies with web-enabled technology. Interactively coordinate proactive e-commerce via process-centric "outside the box" thinking. Completely pursue scalable customer service through sustainable [Todd Quackenbush](https://unsplash.com/photos/JJB_K8aCPU4) potentialities.
+> print(phone_split.__doc__)
 
-Collaboratively administrate turnkey channels whereas virtual e-tailers. Objectively seize scalable metrics whereas proactive e-services. Seamlessly empower fully researched growth strategies and interoperable internal or "organic" sources.
+output: `this function sanitizes phone numbers and appends any digits beyond 10 to a separate column`
 
-![Steps]({{site.baseurl}}/images/02-2.jpg)
+> phone_split(df_advisors)
 
-Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas. Dynamically innovate resource-leveling customer service for state of the art customer service.
+> df_advisors.head(30)
 
-Objectively innovate empowered manufactured products whereas parallel platforms. Holisticly predominate extensible testing procedures for reliable supply chains. Dramatically engage top-line web services vis-a-vis cutting-edge deliverables.
+output:
+{% endhighlight %}
 
-### Synergistically evolve
+<div class="table-container">
+  <table>
+    <tr><th>phone_main</th><th>phone_ext</th>
+    <tr><td>2029182132</td><td></td>
+    <tr><td>7014264205</td><td></td>
+    <tr><td>5822228140</td><td>313</td>
+    <tr><td>2025327032</td><td></td>
+    <tr><td>2058721257</td><td>51</td>
+    <tr><td>4015391828</td><td></td>
 
-Globally incubate standards compliant channels before scalable benefits. Quickly disseminate superior deliverables whereas web-enabled applications. Quickly drive clicks-and-mortar catalysts for change before vertical architectures.
 
-Credibly reintermediate backend ideas for cross-platform models. Continually reintermediate integrated processes through technically sound intellectual capital. Holistically foster superior methodologies without market-driven best practices.
 
-Distinctively exploit optimal alignments for intuitive bandwidth. Quickly coordinate e-business applications through revolutionary catalysts for change. Seamlessly underwhelm optimal testing procedures whereas bricks-and-clicks processes.
+

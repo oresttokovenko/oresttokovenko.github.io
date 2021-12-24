@@ -7,7 +7,7 @@ image:  '/images/07.jpg'
 tags:   [SQL, Database]
 ---
 
-Tried to import a local copy of the production database, no space left. Checked binlog files, huge bloat. Show how to purge the log files. Bloat was approximately 40GB.
+One day, I tried to import a local copy of the production database, but my machine had no space left. I checked DaisyDisk and discovered that the /.msql/ folder contained huge amount of `.binlog` files.
 
 {% highlight mysql %}
 > mysql -u developer -h localhost -p db_prod < /home/../Users/oresttokovenko/Desktop/db_live-full-db-export-no-views_2021-07-21_17_10_10.sql
@@ -16,7 +16,7 @@ Tried to import a local copy of the production database, no space left. Checked 
 
 {% endhighlight %}
 
-I decided to check the logs
+I decided to check the `binlog.` files via Terminal, and found them all, totalling about 40GB
 
 {% highlight mysql %}
 
@@ -84,7 +84,11 @@ I decided to check the logs
 | binlog.000084 | 1074135798 | No        |
 | binlog.000085 |  741190991 | No        |
 +---------------+------------+-----------+
+{% endhighlight %}
 
+I decided to remove them, to free up the space. To do so I did the following:
+
+{% highlight mysql %}
 > PURGE BINARY LOGS BEFORE NOW();
 
 > SHOW BINARY LOGS;
@@ -95,4 +99,4 @@ I decided to check the logs
 +---------------+-----------+-----------+
 {% endhighlight %}
 
-The end
+Afterwards I successfully imported the copy of the database. Problem solved!

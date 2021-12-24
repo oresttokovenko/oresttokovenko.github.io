@@ -11,6 +11,12 @@ tags:   [Data Pipelines, Apache Airflow, Study Guide]
 
 Apache Airflow is the leading orchestrator for authoring, scheduling, and monitoring data pipelines. The exam consists of 75 questions, and you have 60 minutes to write it. The study guide below covers everything you need to know for it. The exam includes scenarios (both text and images of Python code) where you need to determine the best course of action. 
 
+According to Astronomer, this exam will test the following:
+
+"To pass the Apache Airflow Fundamentals certification, you will need to demonstrate an understanding of Airflow's architecture, the task life cycle, and the scheduling process. You should be comfortable recommending use cases, architectural needs, settings and design choices for data pipelines. You should be able to trigger, debug and retry tasks and look at the right views from the UI to monitor them."
+
+---
+
 ### Study Guide
 
 ### User Interface
