@@ -25,7 +25,7 @@ menu__settings:
 #-------------------------------
 # Hero Settings
 hero:
-  hero__title: Hello, my name is Orest. I’m a Data Analyst based in Calgary
+  hero__title: Hello, my name is Orest. <br /> I’m a Data Analyst based in Calgary 👋
   hero__description: I'm passionate about all things Data Science and Data Engineering. I invite you to navigate my portfolio to know a bit more about me and my work
 
 
@@ -85,10 +85,10 @@ mailchimp:
 social:
 - {icon: "ion-logo-twitter", color: "#55acee", label: Twitter, link: "https://twitter.com/oresttokovenko1"}
 - {icon: "ion-logo-github", color: "#24292e", label: Github, link: "https://github.com/oresttokovenko"}
+- {icon: "ion-logo-instagram", color: "#e4405f", label: Instagram, link: "https://instagram.com/le_simonaque"}
 #- {icon: "ion-logo-facebook", color: "#3b5999", label: Facebook, link: "https://facebook.com"}
 #- {icon: "ion-logo-pinterest", color: "#bd081c", label: Pinterest, link: "https://pinterest.com"}
 #- {icon: "ion-logo-dribbble", color: "#ea4c89", label: Dribbble, link: "https://dribbble.com"}
-#- {icon: "ion-logo-instagram", color: "#e4405f", label: Instagram, link: "https://instagram.com"}
 #- {icon: "ion ion-logo-vimeo", color: "#1393cd", label: Vimeo, link: "https://vimeo.com"}
 
 # Example of adding a new link to the footer section - {icon: "ion-logo-github", color: "#24292e, label: Github, link: "https://github.com"}
