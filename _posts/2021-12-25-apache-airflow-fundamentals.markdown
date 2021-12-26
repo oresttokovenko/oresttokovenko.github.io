@@ -7,9 +7,7 @@ image:  '/images/04.jpg'
 tags:   [Data Pipelines, Apache Airflow, Study Guide]
 ---
 
-### Astronomer Certification for Apache Airflow Fundamentals
-
-Apache Airflow is the leading orchestrator for authoring, scheduling, and monitoring data pipelines. The exam consists of 75 questions, and you have 60 minutes to write it. The study guide below covers everything you need to know for it. The exam includes scenarios (both text and images of Python code) where you need to determine the best course of action. 
+This study guide covers Astronomer Certification for Apache Airflow Fundamentals. Apache Airflow is the leading orchestrator for authoring, scheduling, and monitoring data pipelines. The exam consists of 75 questions, and you have 60 minutes to write it. The study guide below covers everything you need to know for it. The exam includes scenarios (both text and images of Python code) where you need to determine the best course of action. 
 
 According to Astronomer, this exam will test the following:
 
@@ -17,7 +15,7 @@ According to Astronomer, this exam will test the following:
 
 ---
 
-### Study Guide
+### _Study Guide_
 
 ### User Interface
 

@@ -5,26 +5,23 @@ permalink: /about/
 image: '/images/04-1.jpg'
 ---
 
-Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
+Hi! My name is Orest Tokovenko. I was raised in Burlington, Ontario and currently reside in Calgary, Alberta. I'm 25 years old and currently work as a Data Analyst for the Exempt Edge FinTech division of Olympia Financial Group Inc.
 
-Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.
+My hobbies include languages, making good quality coffee, trivia, photography, mixology, and notaphily, but the list will likely increase as I love learning new things!
+
+I strongly believe that the best way to learn and understand a new skill is by taking a hands-on approach with just enough theory to explain the concepts and a big dose of practice to be ready for a production environment.
 
 ### Data Science, Analytics and Engineering
 
-Phosfluorescently engage worldwide methodologies with web-enabled technology. Interactively coordinate proactive e-commerce via process-centric "outside the box" thinking. Completely pursue scalable [Hugo Sousa](https://unsplash.com/photos/BghGseQbAkA) customer service through sustainable potentialities.
-
-Collaboratively administrate turnkey channels whereas virtual e-tailers. Objectively seize scalable metrics whereas proactive e-services. Seamlessly empower fully researched growth strategies and interoperable internal or "organic" sources.
-
-Objectively innovate empowered manufactured products whereas parallel platforms. Holisticly predominate extensible testing procedures for reliable supply chains. Dramatically engage top-line web services vis-a-vis cutting-edge deliverables.
+I discovered Data Science in mid-2019 when I realized the work I had been doing at UPS for two years as a Business Analyst, was part of an exciting new field called Data Science. Eventually, I left my job to pursue a Data Science diploma at BrainStation and soon after I graduated found work in Calgary. From there I went back to my alta mater to complete a university certificate in Big Data Programming and Architecture(see 'Data Engineering')
 
 ### Languages
 
-Globally incubate standards compliant channels before scalable benefits. Quickly disseminate superior deliverables whereas web-enabled applications. Quickly drive clicks-and-mortar catalysts for change before vertical architectures.
+Growing up in a bilingual household I always appreciated languages. When I was 16 I met of my now cloests friends, and we went to do a Mandarin Chinese class on the weekends, which counted towards my high school credits. I failed to learn Chinese, but at the moment I speak 8 languages in varying degrees of fluency, which include English, Ukrainian, French, German, Spanish, Portguese, Turkish and Russian. I intedned to stop at 10 once I learn Mandarin Chinese (finally), and Arabic(either the Levantine or the Egyptian dialect) You can access my method [here](https://github.com/oresttokovenko/Guide-How-I-Learn-Languages). I decided to join HYPIA because I wanted to be a formal member of the hyperpolyglot community. I applied and was accepted in February 2021. Below is a video of me interviewing the Founder of HYPIA
 
 <p><iframe width="560" height="315" src="https://www.youtube.com/embed/C1Tp6dTMfkY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 
-Credibly reintermediate backend ideas for cross-platform models. Continually reintermediate integrated processes through technically sound intellectual capital. Holistically foster superior methodologies without market-driven best practices.
+(_the above video is a placeholder_) 
 
-Distinctively exploit optimal alignments for intuitive bandwidth. Quickly coordinate e-business applications through revolutionary catalysts for change. Seamlessly underwhelm optimal testing procedures whereas bricks-and-clicks processes.
 
 ***
