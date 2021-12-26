@@ -86,7 +86,7 @@ social:
 - {icon: "ion-logo-twitter", color: "#55acee", label: Twitter, link: "https://twitter.com/oresttokovenko1"}
 - {icon: "ion-logo-github", color: "#24292e", label: Github, link: "https://github.com/oresttokovenko"}
 - {icon: "ion-logo-instagram", color: "#e4405f", label: Instagram, link: "https://instagram.com/le_simonaque"}
-#- {icon: "ion-logo-facebook", color: "#3b5999", label: Facebook, link: "https://facebook.com"}
+- {icon: "ion-logo-linkedin", color: "#0e76a8", label: Linkedin, link: "https://www.linkedin.com/in/oresttokovenko/"}
 #- {icon: "ion-logo-pinterest", color: "#bd081c", label: Pinterest, link: "https://pinterest.com"}
 #- {icon: "ion-logo-dribbble", color: "#ea4c89", label: Dribbble, link: "https://dribbble.com"}
 #- {icon: "ion ion-logo-vimeo", color: "#1393cd", label: Vimeo, link: "https://vimeo.com"}

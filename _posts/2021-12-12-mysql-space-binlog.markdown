@@ -2,7 +2,7 @@
 layout: post
 title:  Running out of Space on your Machine? Try Clearing MySQL `binlog` Files!
 description:
-date:   2021-12-12
+date:   2021-12-16
 image:  '/images/07.jpg'
 tags:   [SQL, Database]
 ---
