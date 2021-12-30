@@ -54,9 +54,21 @@ hr {
  */
 
 pre {
-  font-family: monospace, monospace; /* 1 */
+  font-family: JetBrainsMono-Regular; /* 1 */
+  src: url("/fonts/JetBrainsMono-Regular.ttf");
   font-size: 1em; /* 2 */
 }
+
+// original code
+//pre {
+//  font-family: monospace, monospace; /* 1 */
+//  font-size: 1em; /* 2 */
+//}
+
+//@font-face {
+//  font-family: JetBrainsMono-Regular;
+//  src: url("/fonts/JetBrainsMono-Regular.ttf");
+//}
 
 /* Text-level semantics
    ========================================================================== */
@@ -97,9 +109,22 @@ strong {
 code,
 kbd,
 samp {
-  font-family: monospace, monospace; /* 1 */
+  font-family: JetBrainsMono-Regular;
+  src: url("/fonts/JetBrainsMono-Regular.ttf"); /* 1 */
   font-size: 1em; /* 2 */
 }
+
+// original code
+//samp {
+//  font-family: monospace, monospace; /* 1 */
+//  font-size: 1em; /* 2 */
+//}
+
+//pre {
+//  font-family: "JetBrainsMono-Regular"; /* 1 */
+//  src: url("/fonts/JetBrainsMono-Regular.ttf");
+//  //font-size: 1em; /* 2 */
+//}
 
 /**
  * Add the correct font size in all browsers.
