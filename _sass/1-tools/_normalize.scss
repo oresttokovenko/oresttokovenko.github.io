@@ -65,10 +65,13 @@ pre {
 //  font-size: 1em; /* 2 */
 //}
 
-//@font-face {
-//  font-family: JetBrainsMono-Regular;
-//  src: url("/fonts/JetBrainsMono-Regular.ttf");
-//}
+code,
+pre
+@font-face {
+  font-family: "JetBrainsMono-Regular";
+  src: url("/fonts/JetBrainsMono-Regular.ttf");
+  font-size: 1em;
+}
 
 /* Text-level semantics
    ========================================================================== */
