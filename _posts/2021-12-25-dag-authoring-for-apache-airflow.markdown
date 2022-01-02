@@ -486,5 +486,7 @@ According to Astronomer, this exam will test the following:
 
 Once you pass, you'll earn the beautiful badge below!
 
+{:refdef: style="text-align: center;"}
 ![Badge]({{site.baseurl}}/images/dag_authoring_cert_badge.jpg)
 *DAG Authoring for Airflow Badge*
+{: refdef}
