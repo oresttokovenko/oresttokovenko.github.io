@@ -54,7 +54,7 @@ hr {
  */
 
 pre {
-  font-family: JetBrainsMono-Regular, JetBrainsMono-Regular; /* 1 */
+  font-family: "JetBrainsMono-Regular"; /* 1 */
   src: url("/fonts/JetBrainsMono-Regular.ttf");
   font-size: 1em; /* 2 */
 }
@@ -109,7 +109,7 @@ strong {
 code,
 kbd,
 samp {
-  font-family: JetBrainsMono-Regular, JetBrainsMono-Regular;
+  font-family: "JetBrainsMono-Regular";
   src: url("/fonts/JetBrainsMono-Regular.ttf"); /* 1 */
   font-size: 1em; /* 2 */
 }
