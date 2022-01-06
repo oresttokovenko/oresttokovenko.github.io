@@ -7,6 +7,8 @@ image:  '/images/aws-das.jpg'
 tags:   [Cloud Computing, AWS, Study Guide]
 ---
 
+# ⛔️ ️This Blog post is a WIP ⛔️
+
 This study guide covers AWS Certification for Data Analytics Specialty. This exam replaces the former AWS Big Data Certification, but otherwise covers the same topics. The exam consists of 65 questions, and you have 180 minutes to write it. The study guide below covers everything you need to know for it. To study for this exam I did the following:
  * Watched the official AWS Digital Training course
  * Read the *AWS Data Analytics Specialty Exam Guide* accessible [here](https://d1.awsstatic.com/training-and-certification/docs-data-analytics-specialty/AWS-Certified-Data-Analytics-Specialty_Exam-Guide.pdf)
@@ -102,14 +104,96 @@ According to Amazon Web Services, this exam will test the following services and
 
 ### Collection
 * #### Determine the operational characteristics of the collection system
-  * **Fault Tolerance and Data Persistence**
-    * The Kinesis Producer library can send a group of multiple records in each request
-      * If a record fails, it's put back into the KPL buffer for a retry
+  * ##### Fault Tolerance and Data Persistence
+    * The Kinesis Producer library can send a group of multiple records in each request to your shards
+      * If a record fails, it's put back into the KPL buffer for a retry (Fault Tolerance)
       * One record's failure doesn't fail a whole set of records
+      * The KPL also has rate limiting
+        * Limits per-shard throughput sent from a single producer, can help prevent excessive retries 
         {:refdef: style="text-align: center;"}
         ![Badge]({{site.baseurl}}/images/kpl.jpg)
         {: refdef}
+  * ##### Availability and Durablity of your Ingestion Components
+    * Kinesis Data Streams replicates your data synchronously across three AZs in one region
+    * Don't use Kinesis Data Streams for protracted data persistence
+      * Your data is retained for 24 hours, which can be extended to 7 days
+    * Kinesis Data Firehose streams your data directly to a data destination, no retention
+       {:refdef: style="text-align: center;"}
+       ![Badge]({{site.baseurl}}/images/aws_das_1.1.jpg)
+       {: refdef}
+      * Destinations: S3, Redshift, Elasticsearch, Splunk and Kinesis Data Analytics
+      * Can transform your data, using a Lambda function, prior to delivering the data
+  * ##### Fault Tolerance of your Ingestion Components
+    * The Kinesis Consumer Library processes your data from your Kinesis Data Stream
+      * Uses checkpointing using DynamoDB to track which records have been read from a shard
+        * If a KCL read fails, the KCL uses the checkpoint cursos to resume at the failed record
+    * Important facts
+      * Use unique names for your application in the KCL, since DynamoDB tables use names
+      * Watch out for provisioning throughput exception in DynamoDB: Too many shards or frequent checkpoint
+    * Alternatives to the KPL
+      {:refdef: style="text-align: center;"}
+      ![Badge]({{site.baseurl}}/images/aws_das_1.2.jpg)
+      {: refdef}
+      * Use the Kinesis API instead of KPL when you need the fastest procesing time
+        * KPL uses RecordMaxBufferedTime to delay processing to accommodate aggregation
+      * Kinesis Agent
+        * Kinesis Agent installs on your EC2 instance
+        * Monitors files, such as log files, and streams new data to your Kinesis stream
+        * Emits CloudWatch metrics to help with monitoring and error handling
+  * ##### Summary - Determine the operational characteristics of the collection system
+    * Two key concepts to remember for the exam
+      * Fault tolerance
+      * Data persistence
+    * Kinesis Data Streams vs. Kinesis Data Firehose
+      * Data persistence is the key difference
+    * Kinesis Producer Library vs. Kinesis API vs. Kinesis Agent
+      * Fault tolerance and appropriate tools for your data collection problem
+  * #### Data Collection through Real-Time Streaming Data
+    * Kinesis Data Firehose is fully managed
+    * Destinations: S3, Redshift, Elasticsearch, Splunk, Kinesis Data Analytics
+    * Can optionally transform data, using Lambda, before deliveirng it to its destination
+      {:refdef: style="text-align: center;"}
+      ![Badge]({{site.baseurl}}/images/aws_das_1.3.jpg)
+      {: refdef}
+    * Firehose to Redshift
+      * Delivers directly to S3 first
+      * Firehose then runs a Redshift COPY command
+      * Can optionally transform your data, using Lambda, before delivering it to its destination
+    * Firehose to Elasticsearch Cluster
+      * Firehose delivers directly to Elasticsearch cluster
+      * Can optionally backup to S3 concurrently
+    * Firehose to Splunk
+      * Firehose delivers directly to Splunk instance
+      * Can optionally backup to S3 concurrently
+    * Firehose Producers
+      * Firehose producers send records to Firehose
+        * Web server logs data
+        * Kinesis Data Stream
+        * Kinesis Agent
+        * Kinesis Firehose API using the AWS SDK
+        * CloudWatch logs and/or events
+        * AWS IoT
+        * Firehose buffers incoming streaming data for a set buffer size (MBs) and a buffer interval (seconds). You can manipulate the buffer size in the buffer interval to speed up or slow down your firehose delivery speed
+          * use case: you're delivering streaming data from Firehose to an S3 bucket, how might you speed up the delivery of your Kinesis Data? Lower the buffer size and lower the buffer interval
 * #### Select a collection system that handles the frequency, volume, and the source of data
+  * ##### The Four Ingestion Services
+    * Kinesis Data Streams
+      * Use cases needing custom processing and different stream processing frameworks where sub-second processing latency is needed
+    * Kinesis Data Firehose
+      * Use cases needing managed service streaming to S3, Redshift, Elasticsearch, or Splunk where data latency of 60 seconds or higher is acceptable
+    * AWS Database Migration Service
+      * Use cases needing one-time migration and/or contionous replication of database records and structures to AWS services
+    * AWS Glue
+      * Use cases needing ETL batch-oriented jobs where scheduling of ETL jobs is required
+  * #### Kinesis Data Streams
+    * Each shard supports
+      * 1,000 RPS for writes with max of 1 MB/sec
+      * 5 TPS for reads at a max of 2MB/sec using GetRecords API Call
+      * Stream total capacity equals the sum of the capacity of the shards
+      * No limit to the number of shards you can provision
+        {:refdef: style="text-align: center;"}
+        ![Badge]({{site.baseurl}}/images/aws_das_1.3.jpg)
+        {: refdef}
 * #### Select a collection system that addresses the key properties of data, such as order, format, and compression
 ### Storage and Data Management
 * #### Determine the operational characteristics of the storage solution for analytics

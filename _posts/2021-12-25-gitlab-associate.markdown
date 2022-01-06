@@ -9,7 +9,7 @@ tags:   [Git, Gitlab, Study Guide]
 
 This study guide covers the GitLab Certified Associate Certification. It is a technical certification offered by GitLab Professional Services to help validate individuals' ability to apply GitLab and Git in Version Control. To earn this certification, candidates must first pass a 1-hour written assessment, followed by a 2-hour hands-on lab assessment graded by GitLab Professional Services engineers.
 
-There are two parts, a multiple-choice selection on set of 14 questions, with 80% accuracy required to move on to the next stage that can be retaken indefinitely, and a hands-on set of 14 tasks which must be completed on a project you create.
+There are two parts, a multiple-choice selection on a set of 14 questions, with 80% accuracy required to move on to the next stage that can be retaken indefinitely, and a hands-on set of 14 tasks which must be completed on a project you create.
 
 The exam is generally things about GitLab which you’ve covered in the course, but included two questions about using Git that were not covered in any of the modules. For this reason, I’d suggest when you get to those questions, open a git environment, and try each of the commands offered given the specific scenario.
 
