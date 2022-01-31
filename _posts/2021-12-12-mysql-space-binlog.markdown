@@ -7,7 +7,7 @@ image:  '/images/07.jpg'
 tags:   [SQL, Database]
 ---
 
-One day, I tried to import a local copy of the production database, but my machine had no space left. I checked DaisyDisk and discovered that the /.msql/ folder contained huge amount of `.binlog` files.
+One day, I tried to import a more current local copy of the production database(I did not have read access at the time), but my machine had no space left. I checked DaisyDisk and discovered that the /.msql/ folder contained huge amount of `.binlog` files. I definitely would not recommend doing this for a production database, since logs are critically important for restoring lost data, but this is what you can do if you have a copy readily available.
 
 {% highlight mysql %}
 > mysql -u developer -h localhost -p db_prod < /home/../Users/oresttokovenko/Desktop/db_live-full-db-export-no-views_2021-07-21_17_10_10.sql
