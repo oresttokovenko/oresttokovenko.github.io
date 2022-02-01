@@ -9,6 +9,8 @@ tags:   [python, SQL, pandas]
 
 #### _Disclaimer_: All proprietary company data has been completely anonymized and replaced with randomly generated counterparts, to respect the stipulations outlined in my non-disclosure agreement
 
+# This Blog post is a WIP ⛔️
+
 I had a situation where we needed to add transactions to a client's account on our software, and they provided us with transactions in an excel sheet. However, we already have their existing data in our database, with investor names matched to a certain id. Therefore, we need to avoid duplicates when uploading this new data. The solution is to pull a list of investors, their ids, 
 
 I begin by importing the necessary libraries, establishing a connection to my local copy of the production database, and read in the excel sheet containing the new transactions to be uploaded

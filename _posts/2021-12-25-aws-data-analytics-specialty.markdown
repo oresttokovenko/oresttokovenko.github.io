@@ -7,7 +7,7 @@ image:  '/images/aws-das.jpg'
 tags:   [Cloud Computing, AWS, Study Guide]
 ---
 
-# ⛔️ ️This Blog post is a WIP ⛔️
+# ️This Blog post is a WIP ⛔️
 
 This study guide covers AWS Certification for Data Analytics Specialty. This exam replaces the former AWS Big Data Certification, but otherwise covers the same topics. The exam consists of 65 questions, and you have 180 minutes to write it. The study guide below covers everything you need to know for it. To study for this exam I did the following:
  * Watched the official AWS Digital Training course
@@ -527,6 +527,90 @@ According to Amazon Web Services, this exam will test the following services and
           * DMS
             * Move data back and forth between Redshift and other relational databases
 * #### Determine data access and retrieval patterns
+  * Data Access and Retrieval Patterns
+    * Characteristics of your data
+      * What type of data are you storing?
+    * Data storage life cycle
+      * How long do you need to retain your data?
+    * Data access retrieval and latency requirements
+      * How fast does your retrieval need to be?
+  * Characteristics of your data
+    * Structured data is consists of clearly defined data types with patterns that make them easily searchable and is stored in a predefined format, where unstructured data is a conglomeration of many varied types of data that are stored in their native formats. This means that structured data takes advantage of schema-on-write and unstructured data employs schema-on-read.
+    * Structured data
+      * Examples: accounting data, demographic info, logs, mobile device geolocation data
+      * Storage options: RDS, Redshift
+    * Unstructured data
+      * Examples: email text, photos, video audio, pdfs
+      * Storage options: S3 Data Lake, DynamoDB
+    * Semi Structured data
+      * Examples: email metadata, digital photo metadata, video metadata, JSON data
+      * Storage options: S3 Data Lake, DynamoDB
+  * Data Lake or Data Warehouse
+    * Data Warehouse
+      * Optimized for relational data produced by transactional systems
+      * Data structure, schema predefined which optimizes fast SQL queries
+      * Used for operational reporting and analysis
+      * Data is transformed before loading
+    * Data Lake
+      * Relational data and non-relational data: mobile apps, IoT devices, and social media
+      * Data structure/schema not defined when stored in the data lake
+      * Big data analytics, text analysis, ML
+      * Schema on read
+  * Object vs. Block Store
+    * Object storage
+      * S3 is used for object storage: highly scalable and available
+      * Store structured, unstructured and semi structured data
+      * Websites, mobile apps, archive, analytics applications
+      * Storage via a web service
+    * File storage
+      * EFS is used for file storage: shared file systems
+      * Content repositories, development environments, media stores, user home directories
+    * Block storage
+      * EBS attached to EC2 instances, EFS: volume type choices
+      * Redshift, Operating Systems, DBMS installs, file systems
+      * HDD: throughput intensive, large I/O, sequential I/O, big data
+      * SSD: high I/O per second, transaction, random access, boot volumes
+  * Data Storage Lifecycle
+    * Persistent data
+      * OLTP and OLAP
+      * DynamoDB, RDS, Redshift
+    * Transient data
+      * Elasticache, DAX
+      * Website session info, streaming gaming data
+    * Archive data
+      * Retained for years, typically regulatory
+      * S3 Glacier
+  * Data Access Retrieval and Latency
+    * Retrieval speed
+      * Near-real time
+        * Streaming data with near-real time dashboard display
+      * Cached data
+        * Elasticache
+        * DAX
+          * Uses write-through cache
+  * Different Approaches to Data Management
+    * Data Lake
+      * Store any data
+      * Store raw data
+      * Use for analytics - dashboards, visualizations, big data, real-time analytics, machine learning
+    * Data Warehouse
+      * Centralized data repository for BI and analysis
+      * Access the centralized data using BI tools, SQL clients, and other analytics apps
+    * Data Optimization
+    <div class="table-container">
+      <table>
+        <tr><th>Data Lake</th><th></th><th>Data Warehouse</th></tr>
+        <tr><td>Any kind of data from IoT devices, social media, sensors, mobile app, relational, text</td><td>Data</td><td>Relational data with corresponding tables defined in the warehouse</td></tr>
+        <tr><td>Schema-on-read: Schema is constructred by analyst or system when retrieved</td><td>Schema</td><td>Schema-on-write: defined based on knowledge of the data to load</td></tr>
+        <tr><td>Raw data from many disparate sources</td><td>Data Format</td><td>Data is carefully managed and controlled, predefined schema</td></tr>
+        <tr><td>Uses low-cost object storage</td><td>Storage</td><td>Costly with large data volumes</td>=</tr>
+        <tr><td>Change configuration as needed at any time</td><td>Agility</td><td>Configuration (schema/table structure) is fixed</td></tr>
+        <tr><td>Machine learning specialists, data scientists, business analysts</td><td>Users</td><td>Management, business analysts</td></tr>
+        <tr><td>Machine learning, data discovery, analytics applications, real-time streaming visualizations</td><td>Applications</td><td>Visualizations, business intelligence reporting</td></tr>
+      </table>
+    </div>
+      * Data warehouse is optimized to store relational data from transactional systems with schema-on-write
+      * Data lake stores all types of data: relational data and non-relational data from IoT devices, mobile apps, social media, etc. with schema-on-read
 * #### Select appropriate data layout, schema, structure, and format
 * #### Define data lifecycle based on usage patterns and business requirements
 * #### Determine the appropriate system for cataloging data and managing metadata
