@@ -2,7 +2,7 @@
 layout: post
 title:  Study Guide for AWS Data Analytics Specialty Certification
 description:
-date:   30 December 2021
+date:   10 January 2022
 image:  '/images/aws-das.jpg'
 tags:   [Cloud Computing, AWS, Study Guide]
 ---
@@ -111,7 +111,7 @@ According to Amazon Web Services, this exam will test the following services and
       * The KPL also has rate limiting
         * Limits per-shard throughput sent from a single producer, can help prevent excessive retries 
         {:refdef: style="text-align: center;"}
-        ![Badge]({{site.baseurl}}/images/kpl.jpg)
+        ![Image]({{site.baseurl}}/images/kpl.jpg)
         {: refdef}
   * ##### Availability and Durablity of your Ingestion Components
     * Kinesis Data Streams replicates your data synchronously across three AZs in one region
@@ -119,7 +119,7 @@ According to Amazon Web Services, this exam will test the following services and
       * Your data is retained for 24 hours, which can be extended to 7 days
     * Kinesis Data Firehose streams your data directly to a data destination, no retention
        {:refdef: style="text-align: center;"}
-       ![Badge]({{site.baseurl}}/images/aws_das_1.1.jpg)
+       ![Image]({{site.baseurl}}/images/aws_das_1.1.jpg)
        {: refdef}
       * Destinations: S3, Redshift, Elasticsearch, Splunk and Kinesis Data Analytics
       * Can transform your data, using a Lambda function, prior to delivering the data
@@ -132,7 +132,7 @@ According to Amazon Web Services, this exam will test the following services and
       * Watch out for provisioning throughput exception in DynamoDB: Too many shards or frequent checkpoint
     * Alternatives to the KPL
       {:refdef: style="text-align: center;"}
-      ![Badge]({{site.baseurl}}/images/aws_das_1.2.jpg)
+      ![Image]({{site.baseurl}}/images/aws_das_1.2.jpg)
       {: refdef}
       * Use the Kinesis API instead of KPL when you need the fastest procesing time
         * KPL uses RecordMaxBufferedTime to delay processing to accommodate aggregation
@@ -153,7 +153,7 @@ According to Amazon Web Services, this exam will test the following services and
     * Destinations: S3, Redshift, Elasticsearch, Splunk, Kinesis Data Analytics
     * Can optionally transform data, using Lambda, before deliveirng it to its destination
       {:refdef: style="text-align: center;"}
-      ![Badge]({{site.baseurl}}/images/aws_das_1.3.jpg)
+      ![Image]({{site.baseurl}}/images/aws_das_1.3.jpg)
       {: refdef}
     * Firehose to Redshift
       * Delivers directly to S3 first
@@ -192,7 +192,7 @@ According to Amazon Web Services, this exam will test the following services and
         * Stream total capacity equals the sum of the capacity of the shards
         * No limit to the number of shards you can provision
           {:refdef: style="text-align: center;"}
-          ![Badge]({{site.baseurl}}/images/aws_das_1.4.jpg)
+          ![Image]({{site.baseurl}}/images/aws_das_1.4.jpg)
           {:refdef}
     * #### Kinesis Data Firehose
       * Firehose automatically delivers to specified destination
@@ -201,7 +201,7 @@ According to Amazon Web Services, this exam will test the following services and
       * Automatically scales to match data throughput
         * No manual intervention or developer overhead required
         {:refdef: style="text-align: center;"}
-        ![Badge]({{site.baseurl}}/images/aws_das_1.5.jpg)
+        ![Image]({{site.baseurl}}/images/aws_das_1.5.jpg)
         {:refdef}
     * #### Data Migration Service
       * DMS is used to take data from a source database to a destination target (database, data lake, data warehouse)
@@ -212,7 +212,7 @@ According to Amazon Web Services, this exam will test the following services and
       * Uses databse engine's APIs to read changes from transaction log then replicate to target database
       * EC2 replication instance, scale to meet utilization requirements
         {:refdef: style="text-align: center;"}
-        ![Badge]({{site.baseurl}}/images/aws_das_1.6.jpg)
+        ![Image]({{site.baseurl}}/images/aws_das_1.6.jpg)
         {:refdef}
     * #### AWS Glue
       * Key Point: Batch oriented
@@ -225,7 +225,7 @@ According to Amazon Web Services, this exam will test the following services and
       * Uses a scale-out Apache Spark environment when loading data to destination
         * Allocate data processing units (DPUs) to ETL jobs
       {:refdef: style="text-align: center;"}
-      ![Badge]({{site.baseurl}}/images/aws_das_1.7.jpg)
+      ![Image]({{site.baseurl}}/images/aws_das_1.7.jpg)
       {:refdef}
   * ##### The Three Types of Data to Ingest
     * Batch Data
@@ -330,7 +330,7 @@ According to Amazon Web Services, this exam will test the following services and
             * Use S3 compression (GZIP, Snappy, or Zip)
             * Use GZIP COPY command option for Redshift compression
           {:refdef: style="text-align: center;"}
-          ![Badge]({{site.baseurl}}/images/aws_das_1.8.jpg)
+          ![Image]({{site.baseurl}}/images/aws_das_1.8.jpg)
           {:refdef}
     * Transforming Data when Ingesting
       * Kinesis Data Firehose
@@ -350,7 +350,7 @@ According to Amazon Web Services, this exam will test the following services and
       * Choose the correct storage system
         * Operational
           {:refdef: style="text-align: center;"}
-          ![Badge]({{site.baseurl}}/images/aws_das_1.9.jpg)
+          ![Image]({{site.baseurl}}/images/aws_das_1.9.jpg)
           {:refdef}
           * Data stored as rows
           * Low latency
@@ -361,7 +361,7 @@ According to Amazon Web Services, this exam will test the following services and
           * Often used in enterprise critical applications
         * Analytic
           {:refdef: style="text-align: center;"}
-          ![Badge]({{site.baseurl}}/images/aws_das_1.10.jpg)
+          ![Image]({{site.baseurl}}/images/aws_das_1.10.jpg)
           {:refdef}
           * Two types:
             * OLAP: ad-hoc queries
@@ -455,7 +455,7 @@ According to Amazon Web Services, this exam will test the following services and
           * Always accurate data returned (no stale data)
           * Increased latency with this option
         {:refdef: style="text-align: center;"}
-        ![Badge]({{site.baseurl}}/images/aws_das_1.11.jpg)
+        ![Image]({{site.baseurl}}/images/aws_das_1.11.jpg)
         {:refdef}
     * DynamoDB Capacity
       * Cost versus performance - two capacity modes
@@ -609,13 +609,180 @@ According to Amazon Web Services, this exam will test the following services and
         <tr><td>Machine learning, data discovery, analytics applications, real-time streaming visualizations</td><td>Applications</td><td>Visualizations, business intelligence reporting</td></tr>
       </table>
     </div>
+    * Data Warehouse
       * Data warehouse is optimized to store relational data from transactional systems with schema-on-write
       * Data lake stores all types of data: relational data and non-relational data from IoT devices, mobile apps, social media, etc. with schema-on-read
+    * Redshift Node types
+      * Node type defines CPU, memory, storage capacity and drive type
+    * Other compute node considerations
+      * Redshift distributes and executes your queries in parallel across all of your compute nodes
+      * Increase performance by adding compute nodes
+      * Clusters with more than one compute node, Redshift mirrors data on each node to another node, making data durable
+      * When nodes are added, Redshift deploys and load balances for you
+      * Can purchase reserved nodes
+    * Compute node data distribution optimization
+      * Efficient parallel processing accross your compute nodes
+      * Three distribution modes
+        * Key, All, Even
+        {:refdef: style="text-align: center;"}
+        ![Image]({{site.baseurl}}/images/aws_das_1.12.jpg)
+        {:refdef}
+        * Use cases:
+          * **Key**: Large joins across a particular column
+          * **Even**: Small table that doesn't participate in joins and doesn't change often
+          * **All**: Small table that is updated infrequently and is not updated extensively
 * #### Select appropriate data layout, schema, structure, and format
+  * DynamoDB Partition Keys and Burst/Adaptive Capacity
+    * Optimal data distribution using DynamoDB partition keys
+      * Ensure uniform activity across all logical partition keys in the table and its secondary indexes
+      * Burst/Adaptive capacity: automatically enabled
+        {:refdef: style="text-align: center;"}
+        ![Image]({{site.baseurl}}/images/aws_das_1.13.jpg)
+        {:refdef}
+        * Allows DynamoDB to run your imbalanced workloads
+          * "hot" partitions receive more reads/writes than other partitions and can lead to throttling
+        * Adaptive capacity automatically and instantly increases the throughput capacity for hot partitions
+  * Redshift Sort Keys
+    * Sort key definition
+      * When you load your data the rows are sorted in sorted order
+      * Sort key column info is passed to the query planner, which uses the info to build plans that benefit from that sort information
+      * Compound or Interleaved Sort Key
+        * When query predicates use a prefix, which is a subset of the sort key column in order, a **compound sort key** is more efficient
+        * **Interleaved sort keys** weight each column in the sort key equally; query predicates can use any subset of the columns that make up the sort key, in any order
+  * Redshift `COPY` Command
+    * `COPY` command is the most efficient way to load a Redshift table
+      * Read from multiple data files or multiple data streams simultaneously
+      * Redshift assigns the workload to the cluster nodes and loads the data in parallel, inclduing sorting the rows and distributing data across node slices
+      * **Note**: Can't `COPY` into Redshift Spectrum tables
+    * After ingestion or deletion, use `VACUUM` command to reorganize your data in your tables
+  * Redshift Compression Types
+    * Compression encoding defines the type of compression that is applied to a column, as rows are added to a table
+    * If you don't specify a compression type at table creation or alter time Redshift applies this logic
+      * Columns that are sort keys get `RAW` compression
+      * Columns that are `BOOLEAN`, `REAL` or `DOUBLE PRECISION` get `RAW` compression
+      * Columns that are `SMALLINT`, `INTEGER`, `BIGINT`, `DECIMAL`, `DATE`, `TIMESTAMP`, or `TIMESTAMPTZ` get `AZ64` compression
+      * Columns that are `CHAR` or `VARCHAR` get `LZO` compression
+  * Primary Key and Foreign Key Constraints
+    * Informational only, not enforced by Redshift but used to give more efficient query plans
+    * Query planner uses primary and foreign keys in some statistical computations to order large numbers of joins, and to eliminate redundant joins
 * #### Define data lifecycle based on usage patterns and business requirements
+  * Data Lifecycle
+    * S3 Data Lifecycle
+      * Lifecycle policies
+      * S3 replication - business that require data to be distributed accross accounts or regions
+    * Database backups
+      * Redshift, RDS, DynamoDB
+  * S3 Data Lifecycle
+  
+    <div class="table-container">
+      <table>
+        <tr><th>Storage Class</th><th>Intended Use</th></tr>
+        <tr><td>S3 Standard</td><td>Frequently accessed data</td></tr>
+        <tr><td>S3 Standard-IA</td><td>Long-lived, infrequently accessed data</td></tr>
+        <tr><td>S3 Intelligent Tiering</td><td>Long-lived data with changing or unknown access patterns</td></tr>
+        <tr><td>S3 One-Zone-IA</td><td>Long-lived, infrequently accessed non-critical data</td></tr>
+        <tr><td>S3 Glacier</td><td>Long-term data archiving with retrieval times of minutes to hours tolerated</td></tr>
+        <tr><td>S3 Glacier Deep Archive</td><td>Archive of rarely accessed data with retrieval time of 12 hours as default</td></tr>
+      </table>
+    </div>
+    * Storage classes
+      * Help reduce cost of data storage
+      * Allow you to choose the right storage tier based on the characteristics of your data
+  * S3 Lifecycle Policies
+    * Lifecycle rules configuration configures S3 when to transition objects to another Amazon S3 storage class
+    * Define rules to move objects from one storage class to another
+    * Transition between storage classes uses a waterfall model
+      {:refdef: style="text-align: center;"}
+      ![Image]({{site.baseurl}}/images/aws_das_1.15.jpg)
+      {:refdef}
+    * Encrypted objects stay encryped throughout their lifecycle
+    * Transition to S3 Glacier Deep Archive is a one way trip (use the restore operation to move object from Deep Archive)
+  * S3 Replication
+    * Replication copies your S3 objects automatically and asychronously across S3 buckets
+      * Use Cross-Region Replication (CRR) to copy objects across S3 buckets in different regions
+      * Use Same-Region Replication (SRR) to copy objects across S3 buckets in the same region
+    * Use cases:
+      * Compliance requirements - physically seperated backups
+      * Latency - house replicated object copies local to your users
+      * Operational efficiency - applications in different regions analyzing the same object data
+  * Database Backups
+    * Database management requires backups on a given frequency according to your requirements
+    * Restores from backups
+    * Redshift stores snapshots internally on S3
+      * Snapshots are point-in-time backups of your cluster
+    * DynamoDB allows for backup on demand
+      * Backup and restore have no impact on the performance of your tables
+    * RDS performs automated backups of your database instance
+      * Can recover to any point-in-time
+      * Can perform manual backups using database snapshots
 * #### Determine the appropriate system for cataloging data and managing metadata
+  * Hive records your data metastore information in a MySQL database housed on the master node file system
+    * Hive metastore describes the table and the underlying data on which it is built
+      * Partition names
+      * Data types
+    * At cluster termination, the master node shuts down
+      * Local data is deleted since master node file system is on ephemeral storage
+    * To maintain a persistent metastore, create an external metastore
+      * two options
+        * Glue data catalogue as Hive metastore
+        * External MySQL or Aurora Hive metastore
+  * Glue Data Catalogue as Hive Metastore
+    * When you need a persistent metastore or a shared metastore used by different clusters, services, applications or AWS accounts
+    * Metadata repository across many data sources and date formats
+      * EMR, RDS, Redshift, Redshift Spectrum, Athena, application code compatible with Hive metastore
+      * Glue crawlers infer the schema from your data objects in S3 and store the associated metadata in the Data Catalogue
+    * Limitations
+      * Hive transactions are not supported
+      * Column level statistics are not supported
+      * Hive authorizations are not suported, use Glue resource-based policies
+      * Cost-based optimization in Hive is not supported
+      * Temporary tables are not support
+  * External RDS Hive Metastore
+    {:refdef: style="text-align: center;"}
+    ![Image]({{site.baseurl}}/images/aws_das_1.16.jpg)
+    {:refdef}
+    * Override the default for the metastore in Hive, use external database location
+    * RDS MySQL or Aurora instance
+    * Hive cluster runs using the metastore located in Amazon RDS
+    * Start all additional Hive clusters that share this metastore by specifying the RDS metastore location
+    * RDS replication is not enabled by default, configure replication to avoid any data loss in the vent of failure
+    * Hive does not support and also does not prevent concurrent writes to metastore tables
+      * When sharing metastore information between two clusters, do not write to the same metastore table concurrently, unless writing to different metastore table partitions
+  * Populating the Glue Catalogue
+    * Holds references to data used as sources and targets in your Glue (ETL) jobs
+    * Catalog your data in the Glue Data Catalogue to use when creating your data lake or data warehouse
+    * Holds information on the location, schema, and runtime metrics of your data
+      * Use this information to create ETL jobs
+      * Information stored as metadata tables, with each table describing a single data store
+    * Ways to add metadata tables to your Data Catalogue
+      * Glue crawler
+      * AWS console
+      * CreateTable Glue API call
+      * CloudFormation templates
+      * Migrate an Apache Hive metastore
+    * Steps to Populate the Glue Data Catalogue
+      * Four steps
+        1. Classify your data by running a crawler
+           * Custom classifiers
+           * Built-in classifiers
+        2. Crawler connects to the data store
+        3. Crawler infers the schema
+        4. Crawler writes metadata to the Data Catalogue
+    * Glue Ecosystem
+      * Categorizes, cleans, enriches, and moves your data reliably between various data stores
+      * Several AWS services natively support querying data sources via the unified metadata repository of the Glue Data Catalogue
+        * Athena
+        * Redshift
+        * Redshift Spectrum
+        * EMR
+        * RDS
+        * Any application compatible with the Apache Hive metastore
+
 ### Processing
 * #### Determine appropriate data processing solution requirements
+  * Glue ETL on Apache Spark
+    * Use Glue when you don't need or want to pay for an EMR cluster
+      * Glue generates an Apache Spark (PySpark or Scala) script
 * #### Design a solution for transforming and preparing data for analysis
 * #### Automate and operationalize data processing solutions
 ### Analysis and Visualization

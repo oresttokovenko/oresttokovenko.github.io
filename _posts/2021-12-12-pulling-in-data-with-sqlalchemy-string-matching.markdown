@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  Using SQLAlchemy and the `difflib` Library to String Match Data
+title:  Using SQLAlchemy and difflib to String Match Data
 description:
-date:   2021-12-12
+date:   22 January 2022
 image:  '/images/sqlalchemy-string-matching.jpg'
 tags:   [python, SQL, pandas]
 ---
@@ -21,8 +21,6 @@ import pandas as pd
 import difflib
 from datetime import datetime
 from sqlalchemy import (MetaData, Table, Column, Integer, Float, Numeric, String, Text, DateTime, ForeignKey, create_engine)
-from sqlalchemy import select, asc, desc, update, delete
-from sqlalchemy import and_, or_, not_
 from sqlalchemy.sql import func
 
 metadata = MetaData()
@@ -32,7 +30,7 @@ engine=create_engine('mysql+pymysql://root:rootroot@localhost/' + db_name + '?ho
 metadata.create_all(engine)
 connection = engine.connect()
 
-df_v1 = pd.read_excel('/Users/oresttokovenko/Desktop/Client Data/Client_1/Data/Aug_08_2021/Data_4Aug2021.xlsx',
+df_v1 = pd.read_excel('/Users/oresttokovenko/Desktop/client_data/Client_1/Data/Aug_08_2021/Data_4Aug2021.xlsx',
 sheet_name= 'Uploading Data')
 
 {% endhighlight %}
@@ -42,7 +40,7 @@ Next, I select the data I need to pull in regarding to this specific client usin
 {% highlight python %}
 results = connection.execute("SELECT id AS investor_id, account_type, LOWER(IF(account_type='investor', CONCAT(first_name, ' ', last_name), company_name)) AS account_holder_name FROM investors WHERE company_id = 1 AND active=1 AND deleted_at IS NULL").fetchall()
 
-live_investors_list = [dict(zip(['investor_id', 'account_type', 'account_holder_name'], d)) for d in results]
+live_investors_list = pd.read_sql_query(results, engine)
 
 len(live_investors_list)
 > 10208
@@ -88,7 +86,7 @@ all_account_holder_names_in_live_db
 
 {% endhighlight %}
 
-placeholder
+Apply the function to receive the list 
 
 {% highlight python %}
 
