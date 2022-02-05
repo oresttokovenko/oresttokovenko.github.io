@@ -51,3 +51,25 @@ tags:   [python, pandas]
           - id: black
             language_version: python3.9
   {% endhighlight %}
+
+  You can also add black as an external tool in DataSpell/PyCharm that you can run against any `.py/.ipynb` file you have open
+
+  Open `External tools` in DataSpell/PyCharm
+
+  On macOS:
+
+  DataSpell/PyCharm -> Preferences -> Tools -> External Tools
+
+  On Windows / Linux / BSD:
+
+  File -> Settings -> Tools -> External Tools
+  
+  Click the `+` icon to add a new external tool with the following values:
+
+  `Name`: Black
+
+  `Description`: Black is the uncompromising Python code formatter.
+
+  `Program`: [path to your `Black` installation, mine was /Users/oresttokovenko/miniforge3/envs/data_science/bin/black]
+
+  `Arguments`: "$FilePath$"
