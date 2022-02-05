@@ -7,11 +7,21 @@ image:  '/images/08.jpg'
 tags:   [SQL, Database, Python]
 ---
 
-# ️This Blog post is a WIP ⛔️
-
 Deliverable:  If a client in the old database was labelled as ‘inactive’ please ensure that they are listed as an inactive client in the new database.
 
 You might look at this deliverable and think, I can write this in SQL, why use Python? Maybe append both tables from each database to a variable like `@old_database` and loop through them? The issue is, these databases are not in the same subnet, and a SQL query cannot connect to both of them simultaneously. First, pull in the relevant tables from both databases using SQLAlchemy, `pd.merge()` them into a single dataframe on the common column, then create a function that generates a column that flags rows based on the deliverable request.
+
+{% highlight python %}
+
+master_df = pd.merge(
+new_db,
+old_db,
+how="inner",
+left_on="external_identifier",
+right_on="CUST_ID"
+)
+
+{% endhighlight %}
 
 {% highlight python %}
 
@@ -37,7 +47,7 @@ master_df["to_update_active"] = master_df.apply(create_to_update_active, axis=1)
 
 {% endhighlight %}
 
-Now we can apply the function to create the column, allowing us to loop through the dataframe using an if clause, print a SQL statement for each row and is flagged by the `1`
+Now we can apply the function to create the column, allowing us to loop through the dataframe using an if clause, print a SQL statement for each row that is flagged by the `1`
 
 {% highlight python %}
 
@@ -66,3 +76,5 @@ UPDATE investors SET active = 0, WHERE id = 1193013 LIMIT 1;
 UPDATE investors SET active = 0, WHERE id = 1193026 LIMIT 1;
 UPDATE investors SET active = 0, WHERE id = 1193027 LIMIT 1;
 {% endhighlight %}
+
+Now simply open this SQL file in an IDE and run it against the database
