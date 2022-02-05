@@ -11,6 +11,8 @@ tags:   [SQL, Database, Python]
 
 Deliverable:  If a client in the old database was labelled as ‘inactive’ please ensure that they are listed as an inactive client in the new database.
 
+You might look at this deliverable and think, I can write this in SQL, why use Python? Maybe append both tables from each database to a variable like `@old_database` and loop through them? The issue is, these databases are not in the same subnet, and a SQL query cannot connect to both of them simultaneously. First, pull in the relevant tables from both databases using SQLAlchemy, `pd.merge()` them into a single dataframe on the common column, then create a function that generates a column that flags rows based on the deliverable request.
+
 {% highlight python %}
 
 # 1 = did not import correctly
@@ -31,4 +33,36 @@ else:
 val = -1
 return val
 
+master_df["to_update_active"] = master_df.apply(create_to_update_active, axis=1)
+
+{% endhighlight %}
+
+Now we can apply the function to create the column, allowing us to loop through the dataframe using an if clause, print a SQL statement for each row and is flagged by the `1`
+
+{% highlight python %}
+
+f = open("update_active_inactive.sql", "a")
+
+for row in master_df.index:
+if master_df["to_update_active"][row] == 1:
+print(
+f"UPDATE investors SET active = 0, WHERE id = {master_df['id'][row]} LIMIT 1;",
+file=f,
+)
+{% endhighlight %}
+
+The output is a SQL file
+
+{% highlight SQL %}
+UPDATE investors SET active = 0, WHERE id = 1192756 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1192822 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1192854 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1192877 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1192940 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1193003 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1193004 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1193012 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1193013 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1193026 LIMIT 1;
+UPDATE investors SET active = 0, WHERE id = 1193027 LIMIT 1;
 {% endhighlight %}
