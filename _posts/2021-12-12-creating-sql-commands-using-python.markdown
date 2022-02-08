@@ -9,7 +9,9 @@ tags:   [SQL, Database, Python]
 
 Deliverable:  If a client in the old database was labelled as ‘inactive’ please ensure that they are listed as an inactive client in the new database.
 
-You might look at this deliverable and think, I can write this in SQL, why use Python? Maybe append both tables from each database to a variable like `@old_database` and loop through them? The issue is, these databases are not in the same subnet, and a SQL query cannot connect to both of them simultaneously. First, pull in the relevant tables from both databases using SQLAlchemy, `pd.merge()` them into a single dataframe on the common column, then create a function that generates a column that flags rows based on the deliverable request.
+You might look at this deliverable and think, I can write this in SQL, why use Python? Maybe append both tables from each database to a variable like `@old_database` and loop through them? The issue is, these databases are not in the same subnet in Azure, and a SQL query cannot connect to both of them simultaneously (at least not without extra work). I find this method simple and fast.
+
+First, pull in the relevant tables from both databases using SQLAlchemy, `pd.merge()` them into a single dataframe on the common column, then create a function that generates a column that flags rows based on the deliverable request.
 
 {% highlight python %}
 
