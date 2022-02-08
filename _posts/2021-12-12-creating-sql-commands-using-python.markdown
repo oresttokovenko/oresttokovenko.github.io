@@ -51,7 +51,7 @@ Now we can apply the function to create the column, allowing us to loop through 
 
 {% highlight python %}
 
-f = open("update_active_inactive.sql", "a")
+f = open(f"{directory}/raintree_update_active_inactive.sql", "a")
 
 for row in master_df.index:
 if master_df["to_update_active"][row] == 1:
