@@ -2,7 +2,7 @@
 layout: page
 title: About
 permalink: /about/
-image: '/images/DSF4336.jpg'
+image: '/images/about_me_banner.jpg'
 ---
 
 Hi! My name is Orest Tokovenko. I'm 25 years old and currently work as a Data Analyst for the Exempt Edge FinTech division at Olympia Financial Group Inc. I was raised in Burlington, Ontario and am currently based in Calgary, Alberta.
@@ -17,7 +17,7 @@ I discovered Data Science in mid-2019 when I realized the business intelligence 
 
 ### Languages
 
-Growing up in a bilingual household I always appreciated languages. When I was 16, one of my friends and I signed up for Mandarin Chinese language class on the weekends. Although I failed to learn Chinese, I now speak 8 languages in varying degrees of fluency, which includes English, Ukrainian, French, German, Spanish, Portguese, Turkish and Russian. I intend to stop at 10 once I learn Mandarin Chinese, and Arabic. If you're curious about how I managed to learn these languages, I documented my method which you can access [here](https://github.com/oresttokovenko/Guide-How-I-Learn-Languages). If you don't want to read the entire guide, it's basically a combination of immersion, self-motivation, and input hypothesis(developed by linguist Stephen Krashen). Eventually I decided to join HYPIA because I wanted to be a formal member of the hyperpolyglot community, after being a frequent visitor of Toronto Babel, Mundo Lingo Toronto, and Toronto Couch Surfing. I applied and was accepted in February 2021, and a video interview with me and the founder of HYPIA will soon be available on Youtube.
+Growing up in a bilingual household I always appreciated languages. When I was 16, one of my friends and I signed up for Mandarin Chinese language class on the weekends. Although I failed to learn Chinese, I now speak 8 languages in varying degrees of fluency, which includes English, Ukrainian, French, German, Spanish, Portguese, Turkish and Russian. I intend to stop at 10 once I learn Mandarin Chinese, and Arabic. If you're curious about how I managed to learn these languages, I documented my method which you can access [here](https://github.com/oresttokovenko/Guide-How-I-Learn-Languages). If you don't want to read the entire guide, it's basically a combination of immersion, self-motivation, and input hypothesis(developed by linguist Stephen Krashen). Eventually I decided to join HYPIA because I wanted to be a formal member of the hyperpolyglot community, after being a frequent visitor of Toronto Babel, Mundo Lingo Toronto, and Toronto Couch Surfing. I applied and was accepted in February 2022, and a video interview with me and the founder of HYPIA will soon be available on Youtube.
 
 [//]: # (Below is a video of me interviewing the Founder of [HYPIA]&#40;https://www.polyglotassociation.org&#41;.)
 
