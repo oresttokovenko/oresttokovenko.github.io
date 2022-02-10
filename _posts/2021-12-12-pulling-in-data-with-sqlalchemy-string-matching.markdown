@@ -9,7 +9,7 @@ tags:   [python, SQL, pandas]
 
 #### _Disclaimer_: All proprietary company data has been completely anonymized and replaced with randomly generated counterparts, to respect the stipulations outlined in my non-disclosure agreement
 
-I had many situation where I needed to add transactions to a client's account on our software backend(MySQL), using transactions they provided us in an `.xlsx` sheet. However, we already have their existing data in our database, with investor names matched to a certain id. Therefore, we need to avoid creating duplicate accounts/transactions when uploading this new data. The solution is to pull a list of investors, their ids, and match it to the names in the new data.
+I had many situations where I needed to add transactions to a client's account in our database, using transactions they provided us in an `.xlsx` sheet. However, we already have their existing data in our database, with investor names matched to a certain id. Therefore, we need to avoid creating duplicate accounts/transactions when uploading this new data. The solution is to pull a list of investor names, their ids, and match it to the names in the new data to add the transactions to their respective accounts. Now obviously this method isn't ideal, but most of the time the remaining unmatched investors are so few that it's possible to manually sort through them.
 
 I begin by importing the necessary libraries, establishing a connection to my local copy of the production database(although our MySQL database is on Azure, it's much more complicated to connect with SSH tunnelling, and is potentially dangerous with Python), and read in the `.xlsx` sheet containing the new transactions to be uploaded.
 
