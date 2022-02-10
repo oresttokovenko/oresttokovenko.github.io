@@ -20,15 +20,11 @@ import numpy as np
 import pandas as pd
 import difflib
 from datetime import datetime
-from sqlalchemy import (MetaData, create_engine)
-from sqlalchemy.sql import func
+from sqlalchemy import MetaData, create_engine
 
 metadata = MetaData()
-
-db_name = "exemptedge_prod"
-engine = create_engine(
-"mysql+pymysql://root:rootroot@localhost/" + db_name + "?host=localhost?port=3306"
-)
+db_name='exemptedge_production'
+engine=create_engine(f'mysql+pymysql://root@localhost:3306/{db_name}')
 metadata.create_all(engine)
 connection = engine.connect()
 
@@ -40,14 +36,9 @@ sheet_name= 'Uploading Data')
 Next, I select the data I need to pull in regarding to this specific client using a SQL query, then convert the results into an array of dictionaries, which then becomes a Pandas DataFrame
 
 {% highlight python %}
-results = connection.execute(
-"SELECT id AS investor_id, account_type, LOWER(IF(account_type='investor', CONCAT(first_name, ' ', last_name), company_name)) AS account_holder_name FROM investors WHERE company_id = 1 AND active=1 AND deleted_at IS NULL"
-).fetchall()
+query = "SELECT id AS investor_id, account_type, LOWER(IF(account_type='investor', CONCAT(first_name, ' ', last_name), company_name)) AS account_holder_name FROM investors WHERE company_id = 153 AND active=1 AND deleted_at IS NULL"
 
-live_investors_list = [
-dict(zip(["investor_id", "account_type", "account_holder_name"], d))
-for d in results
-]
+live_investors_list = pd.read_sql_query(query, engine)
 
 len(live_investors_list)
 > 10208
@@ -60,25 +51,25 @@ I write my matching functions using difflib, and since we're dealing with financ
 
 {% highlight python %}
 def internal_find_closest_match(text, potential_candidates):
-number_of_closest_matches_to_return = 3
-# Cutoff is 0.6 by default. It needs to be between 0 and 1.
-cutoff = 0.8
-closest_matches = difflib.get_close_matches(
-text, potential_candidates, number_of_closest_matches_to_return, cutoff
-)
-
-    if len(closest_matches) > 0:
-        return closest_matches[0]
-    else:
-        return None
-
-
-def df_find_closest_match(row, colname, potential_candidates):
-text = row[colname]
-text = text.strip()
-
-    closest_match = internal_find_closest_match(text, potential_candidates)
-    return closest_match
+    number_of_closest_matches_to_return = 3
+    # Cutoff is 0.6 by default. It needs to be between 0 and 1.
+    cutoff = 0.8
+    closest_matches = difflib.get_close_matches(
+    text, potential_candidates, number_of_closest_matches_to_return, cutoff
+    )
+    
+        if len(closest_matches) > 0:
+            return closest_matches[0]
+        else:
+            return None
+    
+    
+    def df_find_closest_match(row, colname, potential_candidates):
+    text = row[colname]
+    text = text.strip()
+    
+        closest_match = internal_find_closest_match(text, potential_candidates)
+        return closest_match
 
 {% endhighlight %}
 
