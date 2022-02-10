@@ -33,7 +33,7 @@ sheet_name= 'Uploading Data')
 
 {% endhighlight %}
 
-Next, I select the data I need to pull in regarding to this specific client using a SQL query, then convert the results into an array of dictionaries, which then becomes a Pandas DataFrame
+Next, I select the data I need to pull in regarding the specific client using a SQL query, the results of which then become a Pandas DataFrame
 
 {% highlight python %}
 query = "SELECT id AS investor_id, account_type, LOWER(IF(account_type='investor', CONCAT(first_name, ' ', last_name), company_name)) AS account_holder_name FROM investors WHERE company_id = 153 AND active=1 AND deleted_at IS NULL"
