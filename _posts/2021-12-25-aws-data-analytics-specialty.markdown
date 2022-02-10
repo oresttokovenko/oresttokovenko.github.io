@@ -782,7 +782,108 @@ According to Amazon Web Services, this exam will test the following services and
 * #### Determine appropriate data processing solution requirements
   * Glue ETL on Apache Spark
     * Use Glue when you don't need or want to pay for an EMR cluster
-      * Glue generates an Apache Spark (PySpark or Scala) script
+      * Glue generates an Apache Spark (PySpark or Scala) script which you can edit
+    * Glue runs in a fully managed Apache Spark environment
+      * Spark has 4 primary libraries
+        * Spark SQL
+        * Spark Streaming
+        * MLlib
+        * GraphX
+      * Cluster Managers
+        * Yarn
+        * Mesos
+        * Standalone Scheduler
+  * EMR Cluster ETL Processing
+    * More flexible and powerful than Spark
+      * Can use Spark on EMR, but there are other options
+  * EMR Integration
+    * Integrates with the following data stores
+      * Use S3 as an object store for Hadoop
+      * HDFS on the Core nodes instance storage
+      * Directly access and process data in DynamoDB
+      * Process data in RDS
+      * Use `COPY` command to load data in parallel into Redshift from EMR
+      * Integrates with S3 Glacier
+  * Kinesis ETL Processing
+    * Use Kinesis Analytics to gain real-time insights into your streaming data
+      * Query data in your stream or build streaming applications using SQL or Flink
+      * Use for filtering, aggregation, and anomaly detection
+      * Preprocess your data with Lambda
+  * Glue ETL Jobs - Structure
+    * A Glue job defines the business logic that performs the ETL work in AWS Glue
+      * Glue runs your script to extract data from your sources, transform the data, and load it into your targets
+      * Glue triggers can start jobs based on a schedule or event, or on demand
+      * Monitor your job runs to get runtime metrics, completion status, duration, etc.
+      * Based on your source schema and target location or schema, the Glue code generator automatically creates an Apache Spark API (PySpark) script
+        * Edit the script to customize to your requirements
+  * Glue ETL Jobs - Types
+    * Glue outputs file formats such as JSON, CSV, ORC, Parquet, and Avro
+    * Three types of Glue jobs
+      * Spark ETL job
+        * Executed in managed Spark environment, processes data in batches
+        * Streaming ETL job: (like a Spark ETL job, but works with data streams) uses the Apache Spark Structured Streaming framework
+        * Python shell job: Schedule and run tasks that don't require an Apache Spark environment
+  * Glue ETL Jobs - Transforms
+    * Glue has built-in transforms for processing data
+    * Call from within your ETL script
+    * In a DynamicFrame (an extension of an Apache Spark SQL DataFrame), your data passes from transform to transform
+    * Built-in transform types (subset)
+      * ApplyMapping: maps source DynamicFrame columns and data types to target DynamicFrame columns and data types
+      * Filter: selects records from a DynamicFrame and returns a filtered DynamicFrame
+      * Map: applies a function to the records of a DynamicFrame and returns a transformed DynamicFrame
+      * Relationalize: converts a DynamicFrame to a relational (rows and columns) form
+  * Glue ETL Jobs - Triggers
+    * A trigger can start specified jobs and crawlers
+      * On demand, based on a schedule, or based on a combination of events
+      * Add a trigger via the Glue console, the AWS CLI or the Glue API
+      * Activate or deactivate a trigger via the Glue console, the CLI or the Glue API
+  * Glue ETL Jobs - Monitoring
+    * Glue produces metrics for crawlers and jobs for monitoring
+      * Statistics about the health of your environment
+      * Statistics are written to the Glue Data Catalogue
+    * Use automated monitoring tools to watch Glue and report problems
+      * CloudWatch events
+      * CloudWatch logs
+      * CloudTrail logs
+    * Profile your Glue jobs using metrics and visualize on the Glue and CloudWatch conoles to identify and fix issues
+  * EMR Components
+    * EMR is built on clusters of EC2 instances
+      * The EC2 instances are called nodes, all of which have roles (or node type) in the cluster
+      * EMR installs different software components on each node type, defining the node's role in the distributed architecture of EMR
+      * Three types of nodes
+        * Master node: manages the cluster, running software components to coordinate the distribution of data and tasks across other nodes for processing
+        * Core node: has software components that run tasks and store data in the HDFS on your cluster
+        * Task node: node with software components that only runs tasks and does not store data in HDFS
+  * EMR Cluster - Work
+    * Options for submitting work to your EMR cluster
+      * Script the work to be done as functions that you specify in the steps you define when you create a cluster
+        * This approach is used for clusters that process data then terminate
+      * Build a long-running cluster and submit steps (containing one or more jobs) to it via the console, the EMR API, or the AWS CLI
+        * This approach is used for clusters that process data continously or need to remain available
+      * Create a cluster and connect to the master node and/or other nodes as required using SSH
+        * This approach is used to perform tasks and submit queries, either scripted or interactively, via the interfaces of the installed applications
+  * EMR Cluster - Processing Data
+    * At launch time, you choose the frameworks and applications to install to achieve your data processing needs
+    * You submit jobs or queries to installed applications or run steps to process data in your EMR cluster
+      * Submitting jobs/steps to installed applications
+        * Each step is a unit fo work that has instructions to process data by software installed on the cluster
+  * EMR Cluster - Lifecycle
+    * Provisions EC2 instances of the cluster
+    * Runs bootstrap actions
+    * Installs applications such as Hive, Hadoop, Sqoop, Spark
+    * Connect to the cluster instances; cluster sequentially runs any steps that specified at creation; submit additional steps
+    * After steps complete the cluster waits or shuts down, depending on config
+    * When all instances are terminated, the cluster moves to `COMPLETED` state
+  * EMR Architecture - Storage
+    * Architected in layers
+      * Storage: file systems used by the clulster
+        * HDFS: distributes the data it stores across instances in the cluster(ephemeral)
+        * EMRFS: directly access data stored in S3 as if it were a file system like HDFS
+        * Local file system: EC2 locally connected disk
+  * EMR Architecture - Cluster Management
+    * YARN
+      * Centrally manages cluster resources
+      * Agent on each node that ke
 * #### Design a solution for transforming and preparing data for analysis
 * #### Automate and operationalize data processing solutions
 ### Analysis and Visualization
@@ -793,6 +894,7 @@ According to Amazon Web Services, this exam will test the following services and
 * #### Select appropriate authentication and authorization mechanisms
 * #### Apply data protection and encryption techniques
 * #### Apply data governance and compliance controls
+* #### How AWS Resources interact with each other
 
 Once you pass, you'll earn the beautiful badge below! 
 
