@@ -82,7 +82,7 @@ list_of_people_to_look_up_in_db_df[
 "name_lowercase"
 ] = list_of_people_to_look_up_in_db_df["investor_name"].str.lower()
 
-all_account_holder_names_in_live_db = live_pinnacle_investors_list_df[
+all_account_holder_names_in_live_db = live_investors_list_df[
 "account_holder_name"
 ].unique()
 
