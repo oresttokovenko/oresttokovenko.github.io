@@ -9,7 +9,7 @@ tags:   [SQL, Database]
 
 One day, I tried to import a more current local copy of the production database(I did not have read access at the time), but my machine had no space left. I checked DaisyDisk and discovered that the /.msql/ folder contained huge amount of `.binlog` files. I definitely would not recommend doing this for a production database, since logs are critically important for restoring lost data, but this is what you can do if you have a copy readily available.
 
-{% highlight mysql %}
+{% highlight bash %}
 > mysql -u developer -h localhost -p db_prod < /home/../Users/oresttokovenko/Desktop/db_live-full-db-export-no-views_2021-07-21_17_10_10.sql
 
 > ERROR 1114 (HY000) at line 17248: The table 'statements' is full
@@ -18,9 +18,12 @@ One day, I tried to import a more current local copy of the production database(
 
 I decided to check the `binlog.` files via Terminal, and found them all, totalling about 40GB
 
-{% highlight mysql %}
+{% highlight bash %}
 
 > mysql -u root -p
+
+{% endhighlight %}
+{% highlight sql %}
 
 > SHOW BINARY LOGS;
 
@@ -88,7 +91,7 @@ I decided to check the `binlog.` files via Terminal, and found them all, totalli
 
 I decided to remove them, to free up the space. To do so I did the following:
 
-{% highlight mysql %}
+{% highlight sql %}
 > PURGE BINARY LOGS BEFORE NOW();
 
 > SHOW BINARY LOGS;

@@ -28,7 +28,8 @@ engine=create_engine(f'mysql+pymysql://root@localhost:3306/{db_name}')
 metadata.create_all(engine)
 connection = engine.connect()
 
-df_v1 = pd.read_excel('/Users/oresttokovenko/Desktop/client_data/Client_1/Data/Aug_08_2021/Data_4Aug2021.xlsx',
+project_path = '/Users/oresttokovenko/Desktop/client_data/Client_1/Data/Aug_08_2021/'
+df_v1 = pd.read_excel(f'{project_path}/Data_4Aug2021.xlsx',
 sheet_name= 'Uploading Data')
 
 {% endhighlight %}
@@ -76,11 +77,9 @@ def internal_find_closest_match(text, potential_candidates):
 getting a unique list of investors
 
 {% highlight python %}
-list_of_people_to_look_up_in_db_df = df_v1
-
 list_of_people_to_look_up_in_db_df[
 "name_lowercase"
-] = list_of_people_to_look_up_in_db_df["investor_name"].str.lower()
+] = df_v1["investor_name"].str.lower()
 
 all_account_holder_names_in_live_db = live_investors_list_df[
 "account_holder_name"
@@ -121,10 +120,12 @@ The last step is to remove duplicates and checking to see if any matches failed
 
 df_v2[df_v2.duplicated(subset='investor_name', keep=False)]
 
+> (duplicates are present)
+
 df_v2.drop_duplicates(subset=['investor_name'], inplace=True)
 
 df_v2[
-df_v2['closest_account_holder_name_match'] is None
+df_v2['closest_account_holder_name_match'].isnull()
 ]
 > (empty table)
 {% endhighlight %}
