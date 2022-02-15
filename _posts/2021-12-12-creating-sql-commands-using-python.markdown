@@ -37,13 +37,14 @@ right_on="CUST_ID"
 
 
 def create_to_update_active(row):
-if row["active"] == 1 and row["ACTIVE"] == "N":
-val = 1
-elif row["active"] == 1 and row["ACTIVE"] == "Y":
-val = 0
-else:
-val = -1
-return val
+    if row["active"] == 1 and row["ACTIVE"] == "N":
+        val = 1
+    elif row["active"] == 1 and row["ACTIVE"] == "Y":
+        val = 0
+    else:
+        val = -1
+    return val
+
 
 master_df["to_update_active"] = master_df.apply(create_to_update_active, axis=1)
 
@@ -53,14 +54,14 @@ Now we can apply the function to create the column, allowing us to loop through 
 
 {% highlight python %}
 
-f = open(f"{directory}/raintree_update_active_inactive.sql", "a")
+f = open(f"{directory}/company_update_active_inactive.sql", "a")
 
 for row in master_df.index:
-if master_df["to_update_active"][row] == 1:
-print(
-f"UPDATE investors SET active = 0, WHERE id = {master_df['id'][row]} LIMIT 1;",
-file=f,
-)
+    if master_df["to_update_active"][row] == 1:
+    print(
+        f"UPDATE investors SET active = 0, WHERE id = {master_df['id'][row]} LIMIT 1;",
+        file=f,
+    )
 {% endhighlight %}
 
 The output is a SQL file

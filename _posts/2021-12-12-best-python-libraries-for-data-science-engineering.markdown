@@ -18,8 +18,8 @@ tags:   [python, pandas]
 ### sqlalchemy
   SQLAlchemy is a supremely useful package, allowing you to pull data directly from a local database(not a live one unfortunately) into python. It's useful for situations when you need to reference data, for example modeling data to be loaded into a database, one can pull a table that refers to country codes.
   {% highlight python %}
-  results = connection.execute("SELECT id, name, abbreviation, created_at, updated_at FROM countries").fetchall()
-  countries = [dict(zip(['id', 'name', 'abbreviation', 'created_at', 'updated_at'], d)) for d in results]
+  query = "SELECT id, name, abbreviation, created_at, updated_at FROM countries"
+  countries = pd.read_sql_query(query, engine)
   {% endhighlight %}
   {% highlight python %}
   for country in countries:
