@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Creating SQL commands using Python
+title:  Creating SQL Queries using Python
 description:
 date:   2022-02-05
 image:  '/images/08.jpg'

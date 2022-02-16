@@ -1023,6 +1023,62 @@ According to Amazon Web Services, this exam will test the following services and
         - Cluster State Change
         - Instance Group and Instance Fleet State Change
         - Step State Change
+        - Auto Scaling State Change
+        - Create filters and rules to match events and route them to SNS topics, Lambda functions, SQS queues, Kinesis Streams
+  - #### _Use CloudWatch Metrics to Manage EMR Cluster_
+    - EMR metrics updated every 5 minutes, collected and pushed to CloudWatch
+      - Non-configurable metric timing
+      - Metrics archived for two weeks then discarded
+    - EMR metrics uses
+      <div class="table-container">
+          <table>
+            <tr><th>Use Case</th><th>Metrics</th></tr>
+            <tr><td>Track progress of cluster</td><td>`RunningMapTasks`, `RemainingMapTasks`, `RunningReduceTasks`, and `RemainingReduceTasks` metrics</td></tr>
+            <tr><td>Detect idle clusters</td><td>`IsIdle` metric tracks if a cluster is live, but not currently running tasks. Set an alarm to fire when the cluster has been idle for a given period of time</td></tr>
+            <tr><td>Detect when a node runs out of storage</td><td>`HDFSUtilization` metric gives the percentage of disk space currently used. If it rises above an acceptable level for your application, such as 80% of capacity used, you take action to resize your cluster and add more core nodes</td></tr>
+          </table>
+      </div>
+  - #### _View and Monitor EMR Cluster_
+    - EMR has several tools for retrieving information about your cluster
+      - Console, CLI, API
+      - Hadoop web interfaces and logs on Master node
+      - Use monitoring services like CloudWatch and Ganglia to track the performance of your cluster
+      - Application history available through persistent application UIs for Spark history Server, persistent YARN timeline server, and Tez user interfaces
+ 
+  - #### _Leverage EMR API Calls in CloudTrail_
+    - CloudTrail holds a record of actions taken by users, roles or an AWS service in EMR
+      - Caputres all API calls for EMR as events
+      - Enable continous delivery of CloudTrail events to an S3 bucket
+      - Determine the EMR request, the IP address from which the request, when it was made, and additional details
+  - #### _Orchestrate Spark and EMR workloads using Step Functions_
+    - Directly connect Step Functions to EMR
+      - Create data processing and analysis workflows with minimal code and optimize cluster utilization
+  - #### _Workflows in Glue_
+    - Use workflows to create and visualize complex ETL tasks involving multiple crawlers, jobs and triggers
+    - Manages the execution and monitoring of all components
+    - Glue console provides a visual representation of a workflow as a graph
+    - Chain interdependent jobs and crawlers
+      - Event triggers fired by both jobs or crawlers, and can start both jobs and crawlers
+    - Views
+      - Static: shows the design of the workflow
+      - Dynamic: run time view, shows the latest run information for each of the jobs and crawlers
+  - #### _Orchestration of Glue and EMR Workflows_
+    - Several ways to operationalize Glue and EMR workflows
+      - Glue workflows
+        - A workflow is a grouping of set of jobs, crawlers, and triggers in GLue
+          - Can design a complex multi-job (ETL) sequence that Glue can execute and track as single entity
+          - Create workflows using the AWS Console or the Glue API
+          - Console lets you to see the components and flow of a workflow with a graph
+      - Automate workflow using Lambda
+        - Use Lambda functions and CloudWatch Events to orchestrate your workflow
+          - Start your workflow with Lambda trigger
+          - Use CloudWatch Events to trigger other steps in your workflow
+      - Step Functions with Glue
+        - Serverless orchestration of your Glue steps
+        - Easily integrates with EMR steps
+      - Step Functions directly with EMR
+        - Use Step Functions to control all steps in your EMR cluster operation
+        - Also integrate other AWS services into your workflow
 ### Analysis and Visualization
 - #### Determine the operational characteristics of the analysis and visualization solution
 - #### Select the appropriate data analysis solution for a given scenario
