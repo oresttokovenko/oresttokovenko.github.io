@@ -4,7 +4,7 @@ title:  Setting up Cloud Infrastructure on GCP and AWS with Terraform
 description:
 date:   2022-02-15
 image:  '/images/09.jpg'
-tags:   [Terraform, IaC, GPC, AWS]
+tags:   [Terraform, IaC, GPC, AWS, Cloud Computing]
 ---
 
 # ️This Blog post is a WIP ⛔️
@@ -26,7 +26,7 @@ IaC is 'Infrastructure-as-Code', which allows you to build, change, and manage y
 
 **GCP Terraform Code**
 
-The following code is for GCP and it provisions a BigQuery table and a Data Lake in a Google Storage bucket
+The following code provisions a BigQuery table and a Data Lake in a Google Storage bucket, with bucket versioning enabled and a lifecycle rule where the bucket resource is deleted after 30 days. 
 
 {% highlight Terraform %}
 terraform {
