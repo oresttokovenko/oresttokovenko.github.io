@@ -7,8 +7,6 @@ image:  '/images/aws-das.jpg'
 tags:   [Cloud Computing, AWS, Study Guide]
 ---
 
-# ️This Blog post is a WIP ⛔️
-
 This study guide covers AWS Certification for Data Analytics Specialty. This exam replaces the former AWS Big Data Certification, but otherwise covers the same topics. The exam consists of 65 questions, and you have 180 minutes to write it. The study guide below covers everything you need to know for it. To study for this exam I did the following:
  - Watched the official AWS Digital Training course
  - Read the -AWS Data Analytics Specialty Exam Guide- accessible [here](https://d1.awsstatic.com/training-and-certification/docs-data-analytics-specialty/AWS-Certified-Data-Analytics-Specialty_Exam-Guide.pdf)
@@ -100,11 +98,11 @@ According to Amazon Web Services, this exam will test the following services and
 
 ---
 
-### _Study Guide_
+# _Study Guide_
 
-### Collection
-- #### Determine the operational characteristics of the collection system
-  - #### _Fault Tolerance and Data Persistence_
+## Collection
+- ### Determine the operational characteristics of the collection system
+  - ### _Fault Tolerance and Data Persistence_
     - The Kinesis Producer library can send a group of multiple records in each request to your shards
       - If a record fails, it's put back into the KPL buffer for a retry (Fault Tolerance)
       - One record's failure doesn't fail a whole set of records
@@ -114,7 +112,7 @@ According to Amazon Web Services, this exam will test the following services and
         ![Image]({{site.baseurl}}/images/kpl.jpg)
         {: refdef}
         
-  - #### _Availability and Durablity of your Ingestion Components_
+  - ### _Availability and Durablity of your Ingestion Components_
     - Kinesis Data Streams replicates your data synchronously across three AZs in one region
     - Don't use Kinesis Data Streams for protracted data persistence
       - Your data is retained for 24 hours, which can be extended to 7 days
@@ -125,51 +123,51 @@ According to Amazon Web Services, this exam will test the following services and
       - Destinations: S3, Redshift, Elasticsearch, Splunk and Kinesis Data Analytics
       - Can transform your data, using a Lambda function, prior to delivering the data
       
-  - #### _Fault Tolerance of your Ingestion Components_
+  - ### _Fault Tolerance of your Ingestion Components_
     - The Kinesis Consumer Library processes your data from your Kinesis Data Stream
       - Uses checkpointing using DynamoDB to track which records have been read from a shard
         - If a KCL read fails, the KCL uses the checkpoint cursos to resume at the failed record
-    - Important facts
+    - **Important facts**
       - Use unique names for your application in the KCL, since DynamoDB tables use names
       - Watch out for provisioning throughput exception in DynamoDB: Too many shards or frequent checkpoint
-    - Alternatives to the KPL
+    - **Alternatives to the KPL**
       {:refdef: style="text-align: center;"}
       ![Image]({{site.baseurl}}/images/aws_das_1.2.jpg)
       {: refdef}
       - Use the Kinesis API instead of KPL when you need the fastest procesing time
         - KPL uses RecordMaxBufferedTime to delay processing to accommodate aggregation
-      - Kinesis Agent
+      - **Kinesis Agent**
         - Kinesis Agent installs on your EC2 instance
         - Monitors files, such as log files, and streams new data to your Kinesis stream
         - Emits CloudWatch metrics to help with monitoring and error handling
         
-  - #### _Summary - Determine the operational characteristics of the collection system_
-    - Two key concepts to remember for the exam
+  - ### _Summary - Determine the operational characteristics of the collection system_
+    - **Two key concepts to remember for the exam**
       - Fault tolerance
       - Data persistence
-    - Kinesis Data Streams vs. Kinesis Data Firehose
+    - **Kinesis Data Streams vs. Kinesis Data Firehose**
       - Data persistence is the key difference
-    - Kinesis Producer Library vs. Kinesis API vs. Kinesis Agent
+    - **Kinesis Producer Library vs. Kinesis API vs. Kinesis Agent**
       - Fault tolerance and appropriate tools for your data collection problem
       
-  - #### _Data Collection through Real-Time Streaming Data_
+  - ### _Data Collection through Real-Time Streaming Data_
     - Kinesis Data Firehose is fully managed
     - Destinations: S3, Redshift, Elasticsearch, Splunk, Kinesis Data Analytics
     - Can optionally transform data, using Lambda, before deliveirng it to its destination
       {:refdef: style="text-align: center;"}
       ![Image]({{site.baseurl}}/images/aws_das_1.3.jpg)
       {: refdef}
-    - Firehose to Redshift
+    - **Firehose to Redshift**
       - Delivers directly to S3 first
       - Firehose then runs a Redshift COPY command
       - Can optionally transform your data, using Lambda, before delivering it to its destination
-    - Firehose to Elasticsearch Cluster
+    - **Firehose to Elasticsearch Cluster**
       - Firehose delivers directly to Elasticsearch cluster
       - Can optionally backup to S3 concurrently
-    - Firehose to Splunk
+    - **Firehose to Splunk**
       - Firehose delivers directly to Splunk instance
       - Can optionally backup to S3 concurrently
-    - Firehose Producers
+    - **Firehose Producers**
       - Firehose producers send records to Firehose
         - Web server logs data
         - Kinesis Data Stream
@@ -180,18 +178,18 @@ According to Amazon Web Services, this exam will test the following services and
         - Firehose buffers incoming streaming data for a set buffer size (MBs) and a buffer interval (seconds). You can manipulate the buffer size in the buffer interval to speed up or slow down your firehose delivery speed
           - use case: you're delivering streaming data from Firehose to an S3 bucket, how might you speed up the delivery of your Kinesis Data? Lower the buffer size and lower the buffer interval
           
-- #### Select a collection system that handles the frequency, volume, and the source of data
-  - #### _The Four Ingestion Services_
-    - Kinesis Data Streams
+- ### Select a collection system that handles the frequency, volume, and the source of data
+  - ### _The Four Ingestion Services_
+    - **Kinesis Data Streams**
       - Use cases needing custom processing and different stream processing frameworks where sub-second processing latency is needed
-    - Kinesis Data Firehose
+    - **Kinesis Data Firehose**
       - Use cases needing managed service streaming to S3, Redshift, Elasticsearch, or Splunk where data latency of 60 seconds or higher is acceptable
-    - AWS Database Migration Service
+    - **AWS Database Migration Service**
       - Use cases needing one-time migration and/or continuous replication of database records and structures to AWS services
-    - AWS Glue
+    - **AWS Glue**
       - Use cases needing ETL batch-oriented jobs where scheduling of ETL jobs is required
       
-  - #### _Kinesis Data Streams_
+  - ### _Kinesis Data Streams_
     - Each shard supports
       - 1,000 RPS for writes with max of 1 MB/sec
       - 5 TPS for reads at a max of 2MB/sec using GetRecords API Call
@@ -201,7 +199,7 @@ According to Amazon Web Services, this exam will test the following services and
         ![Image]({{site.baseurl}}/images/aws_das_1.4.jpg)
         {:refdef}
     
-  - #### _Kinesis Data Firehose_
+  - ### _Kinesis Data Firehose_
     - Firehose automatically delivers to specified destination
     - Buffers incoming streaming data to specified size or for a specified period of time before delivering to destinations
       - Buffer size is in MBS AND buffer interval is in seconds
@@ -210,7 +208,7 @@ According to Amazon Web Services, this exam will test the following services and
       {:refdef: style="text-align: center;"}
       ![Image]({{site.baseurl}}/images/aws_das_1.5.jpg)
       {:refdef}
-  - #### _Data Migration Service_
+  - ### _Data Migration Service_
     - DMS is used to take data from a source database to a destination target (database, data lake, data warehouse)
     - Source database remains fully operational during the migration
     - Supports several data engines as a source and target for data replication
@@ -222,7 +220,7 @@ According to Amazon Web Services, this exam will test the following services and
       ![Image]({{site.baseurl}}/images/aws_das_1.6.jpg)
       {:refdef}
 
-  - #### _AWS Glue_
+  - ### _AWS Glue_
     - Key Point: Batch oriented
       - Micro-batches but no streaming data
     - Does not support NoSQL databases as data source
@@ -236,27 +234,27 @@ According to Amazon Web Services, this exam will test the following services and
     ![Image]({{site.baseurl}}/images/aws_das_1.7.jpg)
     {:refdef}
 
-  - #### _The Three Types of Data to Ingest_
-    - Batch Data
+  - ### _The Three Types of Data to Ingest_
+    - **Batch Data**
       - Applications logs, video files, audio files, etc.
       - Larger event payloads ingested in an hourly, daily, or weekly daily
       - Ingested in intervals from aggregated data
-    - Streaming Data
+    - **Streaming Data**
       - Click-stream data, IoT sensor data, stock ticker data, etc.
       - Ingesting large amounts of small records continuously and in real-time
-    - Transactional Data
+    - **Transactional Data**
       - Initially load and receive continuous updates from data stores used as operational business databases
       - Similar to batch data but with a continous update flow
       - Ingested from databases storing transactional data
 
-  - #### _Batch Data_
+  - ### _Batch Data_
     - Data is usually 'colder' and can be processed on less frequent intervals
       - Use AWS batch-oriented services like Glue
       - EMR support batch processing on a large scale
     - Latency is minutes to hours
     - Complex analytics across big data sets
 
-  - #### _Streaming Data_
+  - ### _Streaming Data_
     - Often bound by time or event sets in order to produce real-time outcomes
     - Data is usually 'hot' arriving at a high frequency that you need to analyze in real-time
       - Use Kinesis Data Streams, Kinesis Data Firehose, Kinesis Data Analytics
@@ -265,14 +263,14 @@ According to Amazon Web Services, this exam will test the following services and
     - low-latency, i.e. milliseconds
     - Simpler analytics, rolling metrics, aggregations
 
-  - #### _Transactional Data_
+  - ### _Transactional Data_
     - Data stored at low latency and quikcly accessible
     - Load data from a database on-prem or in AWS
     - Use Database Migration Service
     - Can load data from relational databases, data warehouses and NoSQL databases
     - Can convert to different database systems using the AWS Schema Conversion Tool (AWS SCT) then use DMS to migrate your data
 
-  - #### _Comparing the Data Collection Systems_
+  - ### _Comparing the Data Collection Systems_
     - Understand how each ingestion approach is best used
       - Throughput, bandwidth, scalability
       - Availability and fault tolerance
@@ -317,8 +315,8 @@ According to Amazon Web Services, this exam will test the following services and
       </table>
     </div>
   
-  - #### Select a collection system that addresses the key properties of data, such as order, format, and compression
-      - Managing Data Order, Format and Compression
+  - ### Select a collection system that addresses the key properties of data, such as order, format, and compression
+      - **Managing Data Order, Format and Compression**
         - Problems with your streaming data
           - Data that is out of order
           - Data that is duplicated
@@ -346,7 +344,7 @@ According to Amazon Web Services, this exam will test the following services and
             {:refdef: style="text-align: center;"}
             ![Image]({{site.baseurl}}/images/aws_das_1.8.jpg)
             {:refdef}
-      - Transforming Data when Ingesting
+      - **Transforming Data when Ingesting**
         - Kinesis Data Firehose
           - Using Lambda, Firehose sends buffered batches to Lambda for transformation
           - Batch, encrypt, and/or compress data
@@ -358,9 +356,9 @@ According to Amazon Web Services, this exam will test the following services and
         - Database Migration Service
           - Table and schema transformations, e.g. change table, schema and/or column names
 
-### Storage and Data Management
-- #### Determine the operational characteristics of the storage solution for analytics
-  - #### _Selecting your storage components_
+## Storage and Data Management
+- ### Determine the operational characteristics of the storage solution for analytics
+  - ### _Selecting your storage components_
     - Take into account the cost, performance, latency, durability, consistency, and shelf-life or your data
       - Choose the correct storage system
         - Operational
@@ -386,7 +384,7 @@ According to Amazon Web Services, this exam will test the following services and
           - Frequent complex aggregations
           - Loaded in bulk or via streaming
           - Less frequent changes
-  - #### _RDS - distributed relational database service_
+  - ### _RDS - distributed relational database service_
     - Use cases
       - E-Commerce, web, mobile
       - Fast OLTP database options
@@ -398,7 +396,7 @@ According to Amazon Web Services, this exam will test the following services and
         - Multi-AZ
         - Automated backups and snapshots
         - Automated failover
-  - #### _DynamoDB- fully managed NoSQL database_
+  - ### _DynamoDB- fully managed NoSQL database_
       - Use cases
         - Ad Tech, Gaming, Retail, Banking, and Finance
       - Fast NoSQL database options
@@ -410,7 +408,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Reliability and durability
         - Data replicated across three AZs
         - Global-tables for multi region replication
-  - #### _Elasticache - fully managed Redis and Memecache_
+  - ### _Elasticache - fully managed Redis and Memecache_
       - Use cases
         - Caching, session stores, gaming, real-time analytics
       - Sub-millisecond response time from in-memory data store
@@ -428,7 +426,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Reliability and durability
         - Managed service takes care of provisioning, patching, etc.
         - Retention policies to manage reliability and durability
-  - #### _Redshift - Cloud Data Warehouse_
+  - ### _Redshift - Cloud Data Warehouse_
       - Use cases
         - Data science queries, marketing analysis
       - Fast: columnar storage technology that parallelize queries
@@ -436,7 +434,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Reliability and durability
         - Data replicated within the Redshift cluster
         - Continuous backup to S3
-  - #### _S3_
+  - ### _S3_
       - Use cases:
         - Data lake, analytics, data archiving, static websites
       - Fast: query structured and structured data
@@ -444,13 +442,13 @@ According to Amazon Web Services, this exam will test the following services and
       - Reliability and Durability
         - Data replicated across three AZs in a region
         - Same-region or cross-region replication
-  - #### _Data Freshness_
+  - ### _Data Freshness_
     - Considering your data freshness when selecting your storage system components
       - Place hot data in cache (Elasticache or DAX) or NoSQL (DynamoDB)
       - Place warm data in SQL data stores (RDS)
       - Can use S3 for all types (hot, warm, cold)
       - Use S3 Glacier for cold data
-  - #### _Operational Characteristics of DynamoDB_
+  - ### _Operational Characteristics of DynamoDB_
     - DynamoDB Tables
       - Attributes - Columns
       - Items - Rows
@@ -488,7 +486,7 @@ According to Amazon Web Services, this exam will test the following services and
       - New items propagated within seconds
       - User last-writer-wins reconciliation
       - When a table in a region has issues, application directs to a different region
-  - #### _Redshift_
+  - ### _Redshift_
     - Redshift Overview
       - Enterprise-class data warehouse and relational database query and management system
       - Connect using many types of client applications
@@ -541,15 +539,15 @@ According to Amazon Web Services, this exam will test the following services and
             - You can automate data movement and transformation into and out of Redshift using the scheduling capabilities
           - DMS
             - Move data back and forth between Redshift and other relational databases
-- #### Determine data access and retrieval patterns
-  - #### _Data Access and Retrieval Patterns_
+- ### Determine data access and retrieval patterns
+  - ### _Data Access and Retrieval Patterns_
     - Characteristics of your data
       - What type of data are you storing?
     - Data storage life cycle
       - How long do you need to retain your data?
     - Data access retrieval and latency requirements
       - How fast does your retrieval need to be?
-  - #### _Characteristics of your data_
+  - ### _Characteristics of your data_
     - Structured data is consists of clearly defined data types with patterns that make them easily searchable and is stored in a predefined format, where unstructured data is a conglomeration of many varied types of data that are stored in their native formats. This means that structured data takes advantage of schema-on-write and unstructured data employs schema-on-read.
     - Structured data
       - Examples: accounting data, demographic info, logs, mobile device geolocation data
@@ -560,7 +558,7 @@ According to Amazon Web Services, this exam will test the following services and
     - Semi Structured data
       - Examples: email metadata, digital photo metadata, video metadata, JSON data
       - Storage options: S3 Data Lake, DynamoDB
-  - #### _Data Lake or Data Warehouse_
+  - ### _Data Lake or Data Warehouse_
     - Data Warehouse
       - Optimized for relational data produced by transactional systems
       - Data structure, schema predefined which optimizes fast SQL queries
@@ -571,7 +569,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Data structure/schema not defined when stored in the data lake
       - Big data analytics, text analysis, ML
       - Schema on read
-  - #### _Object vs. Block Store_
+  - ### _Object vs. Block Store_
     - Object storage
       - S3 is used for object storage: highly scalable and available
       - Store structured, unstructured and semi structured data
@@ -585,7 +583,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Redshift, Operating Systems, DBMS installs, file systems
       - HDD: throughput intensive, large I/O, sequential I/O, big data
       - SSD: high I/O per second, transaction, random access, boot volumes
-  - #### _Data Storage Lifecycle_
+  - ### _Data Storage Lifecycle_
     - Persistent data
       - OLTP and OLAP
       - DynamoDB, RDS, Redshift
@@ -595,7 +593,7 @@ According to Amazon Web Services, this exam will test the following services and
     - Archive data
       - Retained for years, typically regulatory
       - S3 Glacier
-  - #### _Data Access Retrieval and Latency_
+  - ### _Data Access Retrieval and Latency_
     - Retrieval speed
       - Near-real time
         - Streaming data with near-real time dashboard display
@@ -603,7 +601,7 @@ According to Amazon Web Services, this exam will test the following services and
         - Elasticache
         - DAX
           - Uses write-through cache
-  - #### _Different Approaches to Data Management_
+  - ### _Different Approaches to Data Management_
     - Data Lake
       - Store any data
       - Store raw data
@@ -646,8 +644,8 @@ According to Amazon Web Services, this exam will test the following services and
           - **Key**: Large joins across a particular column
           - **Even**: Small table that doesn't participate in joins and doesn't change often
           - **All**: Small table that is updated infrequently and is not updated extensively
-- #### Select appropriate data layout, schema, structure, and format
-  - #### _DynamoDB Partition Keys and Burst/Adaptive Capacity_
+- ### Select appropriate data layout, schema, structure, and format
+  - ### _DynamoDB Partition Keys and Burst/Adaptive Capacity_
     - Optimal data distribution using DynamoDB partition keys
       - Ensure uniform activity across all logical partition keys in the table and its secondary indexes
       - Burst/Adaptive capacity: automatically enabled
@@ -657,37 +655,37 @@ According to Amazon Web Services, this exam will test the following services and
         - Allows DynamoDB to run your imbalanced workloads
           - "hot" partitions receive more reads/writes than other partitions and can lead to throttling
         - Adaptive capacity automatically and instantly increases the throughput capacity for hot partitions
-  - #### _Redshift Sort Keys_
+  - ### _Redshift Sort Keys_
     - Sort key definition
       - When you load your data the rows are sorted in sorted order
       - Sort key column info is passed to the query planner, which uses the info to build plans that benefit from that sort information
       - Compound or Interleaved Sort Key
         - When query predicates use a prefix, which is a subset of the sort key column in order, a **compound sort key** is more efficient
         - **Interleaved sort keys** weight each column in the sort key equally; query predicates can use any subset of the columns that make up the sort key, in any order
-  - #### _Redshift `COPY` Command_
+  - ### _Redshift `COPY` Command_
     - `COPY` command is the most efficient way to load a Redshift table
       - Read from multiple data files or multiple data streams simultaneously
       - Redshift assigns the workload to the cluster nodes and loads the data in parallel, inclduing sorting the rows and distributing data across node slices
       - **Note**: Can't `COPY` into Redshift Spectrum tables
     - After ingestion or deletion, use `VACUUM` command to reorganize your data in your tables
-  - #### _Redshift Compression Types_
+  - ### _Redshift Compression Types_
     - Compression encoding defines the type of compression that is applied to a column, as rows are added to a table
     - If you don't specify a compression type at table creation or alter time Redshift applies this logic
       - Columns that are sort keys get `RAW` compression
       - Columns that are `BOOLEAN`, `REAL` or `DOUBLE PRECISION` get `RAW` compression
       - Columns that are `SMALLINT`, `INTEGER`, `BIGINT`, `DECIMAL`, `DATE`, `TIMESTAMP`, or `TIMESTAMPTZ` get `AZ64` compression
       - Columns that are `CHAR` or `VARCHAR` get `LZO` compression
-  - #### _Primary Key and Foreign Key Constraints_
+  - ### _Primary Key and Foreign Key Constraints_
     - Informational only, not enforced by Redshift but used to give more efficient query plans
     - Query planner uses primary and foreign keys in some statistical computations to order large numbers of joins, and to eliminate redundant joins
-- #### Define data lifecycle based on usage patterns and business requirements
-  - #### _Data Lifecycle_
+- ### Define data lifecycle based on usage patterns and business requirements
+  - ### _Data Lifecycle_
     - S3 Data Lifecycle
       - Lifecycle policies
       - S3 replication - business that require data to be distributed accross accounts or regions
     - Database backups
       - Redshift, RDS, DynamoDB
-  - #### _S3 Data Lifecycle_
+  - ### _S3 Data Lifecycle_
   
     <div class="table-container">
       <table>
@@ -703,7 +701,7 @@ According to Amazon Web Services, this exam will test the following services and
     - Storage classes
       - Help reduce cost of data storage
       - Allow you to choose the right storage tier based on the characteristics of your data
-  - #### _S3 Lifecycle Policies_
+  - ### _S3 Lifecycle Policies_
     - Lifecycle rules configuration configures S3 when to transition objects to another Amazon S3 storage class
     - Define rules to move objects from one storage class to another
     - Transition between storage classes uses a waterfall model
@@ -712,7 +710,7 @@ According to Amazon Web Services, this exam will test the following services and
       {:refdef}
     - Encrypted objects stay encryped throughout their lifecycle
     - Transition to S3 Glacier Deep Archive is a one way trip (use the restore operation to move object from Deep Archive)
-  - #### _S3 Replication_
+  - ### _S3 Replication_
     - Replication copies your S3 objects automatically and asychronously across S3 buckets
       - Use Cross-Region Replication (CRR) to copy objects across S3 buckets in different regions
       - Use Same-Region Replication (SRR) to copy objects across S3 buckets in the same region
@@ -720,7 +718,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Compliance requirements - physically seperated backups
       - Latency - house replicated object copies local to your users
       - Operational efficiency - applications in different regions analyzing the same object data
-  - #### _Database Backups_
+  - ### _Database Backups_
     - Database management requires backups on a given frequency according to your requirements
     - Restores from backups
     - Redshift stores snapshots internally on S3
@@ -731,7 +729,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Can recover to any point-in-time
       - Can perform manual backups using database snapshots
 
-- #### Determine the appropriate system for cataloging data and managing metadata
+- ### Determine the appropriate system for cataloging data and managing metadata
   - Hive records your data metastore information in a MySQL database housed on the master node file system
     - Hive metastore describes the table and the underlying data on which it is built
       - Partition names
@@ -742,7 +740,7 @@ According to Amazon Web Services, this exam will test the following services and
       - two options
         - Glue data catalogue as Hive metastore
         - External MySQL or Aurora Hive metastore
-  - #### _Glue Data Catalogue as Hive Metastore_
+  - ### _Glue Data Catalogue as Hive Metastore_
     - When you need a persistent metastore or a shared metastore used by different clusters, services, applications or AWS accounts
     - Metadata repository across many data sources and date formats
       - EMR, RDS, Redshift, Redshift Spectrum, Athena, application code compatible with Hive metastore
@@ -753,7 +751,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Hive authorizations are not suported, use Glue resource-based policies
       - Cost-based optimization in Hive is not supported
       - Temporary tables are not support
-  - #### _External RDS Hive Metastore_
+  - ### _External RDS Hive Metastore_
     {:refdef: style="text-align: center;"}
     ![Image]({{site.baseurl}}/images/aws_das_1.16.jpg)
     {:refdef}
@@ -764,7 +762,7 @@ According to Amazon Web Services, this exam will test the following services and
     - RDS replication is not enabled by default, configure replication to avoid any data loss in the vent of failure
     - Hive does not support and also does not prevent concurrent writes to metastore tables
       - When sharing metastore information between two clusters, do not write to the same metastore table concurrently, unless writing to different metastore table partitions
-  - #### _Populating the Glue Catalogue_
+  - ### _Populating the Glue Catalogue_
     - Holds references to data used as sources and targets in your Glue (ETL) jobs
     - Catalog your data in the Glue Data Catalogue to use when creating your data lake or data warehouse
     - Holds information on the location, schema, and runtime metrics of your data
@@ -784,7 +782,7 @@ According to Amazon Web Services, this exam will test the following services and
         2. Crawler connects to the data store
         3. Crawler infers the schema
         4. Crawler writes metadata to the Data Catalogue
-  - #### _Glue Ecosystem_
+  - ### _Glue Ecosystem_
       - Categorizes, cleans, enriches, and moves your data reliably between various data stores
       - Several AWS services natively support querying data sources via the unified metadata repository of the Glue Data Catalogue
         - Athena
@@ -794,9 +792,9 @@ According to Amazon Web Services, this exam will test the following services and
         - RDS
         - Any application compatible with the Apache Hive metastore
 
-### Processing
-- #### Determine appropriate data processing solution requirements
-  - #### _Glue ETL on Apache Spark_
+## Processing
+- ### Determine appropriate data processing solution requirements
+  - ### _Glue ETL on Apache Spark_
     - Use Glue when you don't need or want to pay for an EMR cluster
       - Glue generates an Apache Spark (PySpark or Scala) script which you can edit
     - Glue runs in a fully managed Apache Spark environment
@@ -809,10 +807,10 @@ According to Amazon Web Services, this exam will test the following services and
         - Yarn
         - Mesos
         - Standalone Scheduler
-  - #### _EMR Cluster ETL Processing_
+  - ### _EMR Cluster ETL Processing_
     - More flexible and powerful than Spark
       - Can use Spark on EMR, but there are other options
-  - #### _EMR Integration_
+  - ### _EMR Integration_
     - Integrates with the following data stores
       - Use S3 as an object store for Hadoop
       - HDFS on the Core nodes instance storage
@@ -820,26 +818,26 @@ According to Amazon Web Services, this exam will test the following services and
       - Process data in RDS
       - Use `COPY` command to load data in parallel into Redshift from EMR
       - Integrates with S3 Glacier
-  - #### _Kinesis ETL Processing_
+  - ### _Kinesis ETL Processing_
     - Use Kinesis Analytics to gain real-time insights into your streaming data
       - Query data in your stream or build streaming applications using SQL or Flink
       - Use for filtering, aggregation, and anomaly detection
       - Preprocess your data with Lambda
-  - #### _Glue ETL Jobs - Structure_
+  - ### _Glue ETL Jobs - Structure_
     - A Glue job defines the business logic that performs the ETL work in AWS Glue
       - Glue runs your script to extract data from your sources, transform the data, and load it into your targets
       - Glue triggers can start jobs based on a schedule or event, or on demand
       - Monitor your job runs to get runtime metrics, completion status, duration, etc.
       - Based on your source schema and target location or schema, the Glue code generator automatically creates an Apache Spark API (PySpark) script
         - Edit the script to customize to your requirements
-  - #### _Glue ETL Jobs - Types_
+  - ### _Glue ETL Jobs - Types_
     - Glue outputs file formats such as JSON, CSV, ORC, Parquet, and Avro
     - Three types of Glue jobs
       - Spark ETL job
         - Executed in managed Spark environment, processes data in batches
         - Streaming ETL job: (like a Spark ETL job, but works with data streams) uses the Apache Spark Structured Streaming framework
         - Python shell job: Schedule and run tasks that don't require an Apache Spark environment
-  - #### _Glue ETL Jobs - Transforms_
+  - ### _Glue ETL Jobs - Transforms_
     - Glue has built-in transforms for processing data
     - Call from within your ETL script
     - In a DynamicFrame (an extension of an Apache Spark SQL DataFrame), your data passes from transform to transform
@@ -848,12 +846,12 @@ According to Amazon Web Services, this exam will test the following services and
       - Filter: selects records from a DynamicFrame and returns a filtered DynamicFrame
       - Map: applies a function to the records of a DynamicFrame and returns a transformed DynamicFrame
       - Relationalize: converts a DynamicFrame to a relational (rows and columns) form
-  - #### _Glue ETL Jobs - Triggers_
+  - ### _Glue ETL Jobs - Triggers_
     - A trigger can start specified jobs and crawlers
       - On demand, based on a schedule, or based on a combination of events
       - Add a trigger via the Glue console, the AWS CLI or the Glue API
       - Activate or deactivate a trigger via the Glue console, the CLI or the Glue API
-  - #### _Glue ETL Jobs - Monitoring_
+  - ### _Glue ETL Jobs - Monitoring_
     - Glue produces metrics for crawlers and jobs for monitoring
       - Statistics about the health of your environment
       - Statistics are written to the Glue Data Catalogue
@@ -862,7 +860,7 @@ According to Amazon Web Services, this exam will test the following services and
       - CloudWatch logs
       - CloudTrail logs
     - Profile your Glue jobs using metrics and visualize on the Glue and CloudWatch conoles to identify and fix issues
-  - #### _EMR Components_
+  - ### _EMR Components_
     - EMR is built on clusters of EC2 instances
       - The EC2 instances are called nodes, all of which have roles (or node type) in the cluster
       - EMR installs different software components on each node type, defining the node's role in the distributed architecture of EMR
@@ -870,7 +868,7 @@ According to Amazon Web Services, this exam will test the following services and
         - Master node: manages the cluster, running software components to coordinate the distribution of data and tasks across other nodes for processing
         - Core node: has software components that run tasks and store data in the HDFS on your cluster
         - Task node: node with software components that only runs tasks and does not store data in HDFS
-  - #### _EMR Cluster - Work_
+  - ### _EMR Cluster - Work_
     - Options for submitting work to your EMR cluster
       - Script the work to be done as functions that you specify in the steps you define when you create a cluster
         - This approach is used for clusters that process data then terminate
@@ -878,30 +876,30 @@ According to Amazon Web Services, this exam will test the following services and
         - This approach is used for clusters that process data continously or need to remain available
       - Create a cluster and connect to the master node and/or other nodes as required using SSH
         - This approach is used to perform tasks and submit queries, either scripted or interactively, via the interfaces of the installed applications
-  - #### _EMR Cluster - Processing Data_
+  - ### _EMR Cluster - Processing Data_
     - At launch time, you choose the frameworks and applications to install to achieve your data processing needs
     - You submit jobs or queries to installed applications or run steps to process data in your EMR cluster
       - Submitting jobs/steps to installed applications
         - Each step is a unit fo work that has instructions to process data by software installed on the cluster
-  - #### _EMR Cluster - Lifecycle_
+  - ### _EMR Cluster - Lifecycle_
     - Provisions EC2 instances of the cluster
     - Runs bootstrap actions
     - Installs applications such as Hive, Hadoop, Sqoop, Spark
     - Connect to the cluster instances; cluster sequentially runs any steps that specified at creation; submit additional steps
     - After steps complete the cluster waits or shuts down, depending on config
     - When all instances are terminated, the cluster moves to `COMPLETED` state
-  - #### _EMR Architecture - Storage_
+  - ### _EMR Architecture - Storage_
     - Architected in layers
       - Storage: file systems used by the clulster
         - HDFS: distributes the data it stores across instances in the cluster(ephemeral)
         - EMRFS: directly access data stored in S3 as if it were a file system like HDFS
         - Local file system: EC2 locally connected disk
-  - #### _EMR Architecture - Cluster Management_
+  - ### _EMR Architecture - Cluster Management_
     - YARN
       - Centrally manages cluster resources
       - Agent on each node that keeps the cluster healthy and communicates with EMR
       - EMR defaults to scheduling YARN jobs so that jobs won't fail when task nodes running on spot instances are terminated
-  - #### _EMR Architecture - Cluster Management_
+  - ### _EMR Architecture - Cluster Management_
     - Framework layer that is used to process and analyze data
       - Different frameworks available
         - Hadoop MapReduce
@@ -911,8 +909,8 @@ According to Amazon Web Services, this exam will test the following services and
         - Spark
           - Cluster framework and programming model for processing big data workloads
 
-- #### Design a solution for transforming and preparing data for analysis
-  - #### _Optimizing EMR_
+- ### Design a solution for transforming and preparing data for analysis
+  - ### _Optimizing EMR_
     - **Instance type**
       - Ways to add EC2 instances to your cluster
         - Instance Groups
@@ -975,7 +973,7 @@ According to Amazon Web Services, this exam will test the following services and
         - Running multiple steps in parallel requires more memory and CPU utlization from the master node than running one step at a time
         - Use YARN scheduling features such as FairScheduler or CapacityScheduler to run multiple steps in parallel
         - If you run out of resources because the cluster is running too many concurent steps, manually cancel any running steps to free up resources
-  - #### _Batch versus Streaming ETL Services_
+  - ### _Batch versus Streaming ETL Services_
     - Based on your use case, you need to select the best tool or service
     - Batch or Streaming ETL
       - **Batch processing model**
@@ -1003,8 +1001,8 @@ According to Amazon Web Services, this exam will test the following services and
           - EMR Streaming ETL
             - Use Spark Streaming to build your stream processing ETL application
             - Cluster of servers
-- #### Automate and operationalize data processing solutions
-  - #### _Orchestration of Workflows_
+- ### Automate and operationalize data processing solutions
+  - ### _Orchestration of Workflows_
     - Coordinating your ETL jobs across Glue, EMR, and Redshift
       - With orchestration, you can automate each step in your workflow
         - Retry on errors
@@ -1015,7 +1013,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Using CloudWatch metrics to manage your EMR cluster
       - View and monitor your EMR cluster
       - Leverage EMR API calls in CloudTrail
-  - #### _Respond to State Changes on EMR Cluster_
+  - ### _Respond to State Changes on EMR Cluster_
     - Trigger create, terminate, scale cluster, run Spark, Hive or Pig workloads based on Cluster state changes
     - EMR CloudWatch events support notify you of state changes in your cluster
     - Respond to state changes programmatically
@@ -1025,7 +1023,7 @@ According to Amazon Web Services, this exam will test the following services and
         - Step State Change
         - Auto Scaling State Change
         - Create filters and rules to match events and route them to SNS topics, Lambda functions, SQS queues, Kinesis Streams
-  - #### _Use CloudWatch Metrics to Manage EMR Cluster_
+  - ### _Use CloudWatch Metrics to Manage EMR Cluster_
     - EMR metrics updated every 5 minutes, collected and pushed to CloudWatch
       - Non-configurable metric timing
       - Metrics archived for two weeks then discarded
@@ -1038,22 +1036,22 @@ According to Amazon Web Services, this exam will test the following services and
             <tr><td>Detect when a node runs out of storage</td><td>`HDFSUtilization` metric gives the percentage of disk space currently used. If it rises above an acceptable level for your application, such as 80% of capacity used, you take action to resize your cluster and add more core nodes</td></tr>
           </table>
       </div>
-  - #### _View and Monitor EMR Cluster_
+  - ### _View and Monitor EMR Cluster_
     - EMR has several tools for retrieving information about your cluster
       - Console, CLI, API
       - Hadoop web interfaces and logs on Master node
       - Use monitoring services like CloudWatch and Ganglia to track the performance of your cluster
       - Application history available through persistent application UIs for Spark history Server, persistent YARN timeline server, and Tez user interfaces
  
-  - #### _Leverage EMR API Calls in CloudTrail_
+  - ### _Leverage EMR API Calls in CloudTrail_
     - CloudTrail holds a record of actions taken by users, roles or an AWS service in EMR
       - Caputres all API calls for EMR as events
       - Enable continous delivery of CloudTrail events to an S3 bucket
       - Determine the EMR request, the IP address from which the request, when it was made, and additional details
-  - #### _Orchestrate Spark and EMR workloads using Step Functions_
+  - ### _Orchestrate Spark and EMR workloads using Step Functions_
     - Directly connect Step Functions to EMR
       - Create data processing and analysis workflows with minimal code and optimize cluster utilization
-  - #### _Workflows in Glue_
+  - ### _Workflows in Glue_
     - Use workflows to create and visualize complex ETL tasks involving multiple crawlers, jobs and triggers
     - Manages the execution and monitoring of all components
     - Glue console provides a visual representation of a workflow as a graph
@@ -1062,7 +1060,7 @@ According to Amazon Web Services, this exam will test the following services and
     - Views
       - Static: shows the design of the workflow
       - Dynamic: run time view, shows the latest run information for each of the jobs and crawlers
-  - #### _Orchestration of Glue and EMR Workflows_
+  - ### _Orchestration of Glue and EMR Workflows_
     - Several ways to operationalize Glue and EMR workflows
       - Glue workflows
         - A workflow is a grouping of set of jobs, crawlers, and triggers in GLue
@@ -1079,15 +1077,615 @@ According to Amazon Web Services, this exam will test the following services and
       - Step Functions directly with EMR
         - Use Step Functions to control all steps in your EMR cluster operation
         - Also integrate other AWS services into your workflow
-### Analysis and Visualization
-- #### Determine the operational characteristics of the analysis and visualization solution
-- #### Select the appropriate data analysis solution for a given scenario
-- #### Select the appropriate data visualization solution for a given scenario
-### Security
-- #### Select appropriate authentication and authorization mechanisms
-- #### Apply data protection and encryption techniques
-- #### Apply data governance and compliance controls
-- #### How AWS Resources interact with each other
+
+## Analysis and Visualization
+- ### Determine the operational characteristics of the analysis and visualization solution
+  - ### _Purpose-Built Analytics Services_
+    - Choose the correct approach and tool for your analytics problem
+    - Know the AWS purpose-built analytics services
+      - Athena
+      - Elastic Search
+      - EMR
+      - Kinesis - Data Streams, Firehose, Analytics, Video Streams
+      - Redshift
+      - MSK
+      - Also know where to use
+        - S3
+        - EC2
+        - Glue
+        - Lambda
+  - ### _Appropriate Analytics Service_
+    <div class="table-container">
+      <table>
+        <tr><th>Category</th><th>Use Case</th><th>Analytics Service</th></tr>
+        <tr><td rowspan="6" style="font-weight: bold">Analytics</td><td>Interactive analytics</td><td>Athena</td></tr>
+        <tr><td>Big data processing</td><td>EMR</td></tr>
+        <tr><td>Data Warehousing</td><td>Redshift</td></tr>
+        <tr><td>Real-time analytics</td><td>Kinesis</td></tr>
+        <tr><td>Operational analytics</td><td>Elasticsearch</td></tr>
+        <tr><td>Dashboards and visualizations</td><td>QuickSight</td></tr>
+        <tr><td style="font-weight: bold">Data Movement</td><td>Real-Time data movement</td><td> 
+        Managed Streaming for Kafka (MSK),
+        Kinesis Data Streams,
+        Kinesis Data Firehose,
+        Kinesis Data Analytics,
+        Kinesis Video Streams,
+        Glue</td></tr>
+        <tr><td rowspan="4" style="font-weight: bold">Data Lake</td><td>Object storage</td><td>S3, Lake Formation</td></tr>
+        <tr><td>Backup and archive</td><td>S3 Glacier, AWS Backup</td></tr>
+        <tr><td>Data catalog</td><td>Glue, Lake Formation</td></tr>
+        <tr><td>Third-part data</td><td>AWS Data Exchange</td></tr>
+        <tr><td rowspan="2" style="font-weight: bold">Predictive Analytics/ML</td><td>Frameworks and interfaces</td><td>AWS Deep Learning AMis</td></tr>
+        <tr><td>Platform services</td><td>SageMaker</td></tr>
+      </table>
+    </div>
+    
+  - ### _Use Cases - Data Warehousing_
+    - Without unnecessary data movement use SQL to query structured and unstructered data in your data warehouse and data lake
+    - Redshift
+      - Query petabytes of structered, semi-structered, and unstructed data
+        - Data Warehouse
+        - Operational Database
+        - S3 Data Lake using Redshift Spectrum
+      - Save query results to S3 data lake using common formats such as Parquet
+        - Analyze using other analytics services such as EMR, Athena, and SageMaker
+  - ### _Use Cases - Big Data Processing_
+    - Process large amounts of data in your data lake
+    - EMR
+      - Data Engineering
+      - Data Science
+      - Data Analytics
+    - Spin up/spin down clusters for short running jobs, such as ingestion clusters, and pay by the second
+    - Automatically scale long-running clusters, such as query clusters, that are highly available
+  - ### _Use Cases - Real Time Analytics with MSK_
+    - Data collection, processing, analysis on streaming data loaded directly into data lake, data stores, analytics services
+    - Uses Apache Kafka to process streaming data
+      - To and from Data Lake and databases
+      - Power machine learning and analytics applications
+    - MSK provisions and runs Apache Kafka cluster
+    - Monitors and replaces unhealthy nodes
+    - Encrypts data at rest
+  - ### _Use Cases - Real Time Analytics with Kinesis_
+    - Ingest real-time data such as video, audio, application logs, website clickstreams, and IoT data
+    - Kinesis
+      - Ingest data in real-time for machine learning and analytics
+        - Process and analyze data as it streams to your data lake
+        - Process and respond in real-time on your data stream
+  - ### _Use Cases - Operational Analytics_
+    - Search, filter, aggregate, and visualize your data in near real-time
+    - Elasticsearch
+      - Application monitoring, log analytics, and clickstream analytics
+        - Managed Kibana
+        - Alerting and SQL querying
+- ### Usage patterns, performance and cost
+  - ### _Glue_
+    - **Usage:**
+      - Crawl your data and generate code to execute, invlude data transformations and loading
+      - Integrate with services like Athena, EMR, and Redshift
+      - Generates customizable, resuable, and portable ETL code using Python
+    - **Cost:**
+      - Hourly rate, billed by the minute, for crawler and ETL jobs
+      - Glue Data Catalogue: pay a monthly fee for storing and accessing your metadata
+    - **Performance:**
+      - Scale-out Apache Spark environment to load data to target data store
+      - Specify the number of Data Processing Units (DPUs)
+    - **Durability and Availability:**
+      - Glue leverages the durability of the data stores to which you connect
+      - Provides job status and pushes notifications to CloudWatch events
+      - Use SNS notifications from CloudWatch events to notify of job failures or success
+    - **Scalability and Elasticity:**
+      - Runs on top of Apache Spark for transformation job scale-out execution
+    - **Interfaces:**
+      - Crawlers scan many data store types
+      - Bulk import Hive metastore into Glue Data Catalog
+    - **Anti-Patterns:**
+      - Streaming data, unless Spark Streaming
+      - Heterogeneous ETL job types, use EMR
+  - ### _Lambda_
+    - Run code without provisioning or managing servers
+    - **Usage:**
+      - Execute code in response to triggers such as changes in data, changes in system state, or actions by users
+      - Real-time file processing and stream
+      - Process AWS Events
+      - Replace CRON
+      - Perform ETL jobs
+    - **Cost:**
+      - Charged by the number of requests to functions and code execution time
+      - $0.20 per 1,000,000 requests
+    - **Performance:**
+      - Process events within milliseconds
+      - Latency higher for cold start
+      - Retains a function instance and resuses it to serve subsequent requests, versus creating new copy
+    - **Durability and Availability:**
+      - No maintenance windows or scheduled downtime
+      - On failure, Lambda synchronously responds with an exception
+      - Asynchronous functions are retried at least 3 times
+    - **Scalability and Elasticity:**
+      - Scales automatically with no limits with dynamic capacity allocation
+    - **Interfaces:**
+      - Trigger Lambda with AWS service events
+      - Respond to CloudTrail audit log entries as events
+    - **Anti-Patterns:**
+      - Long running applications: 900 sec runtime
+      - Dynamic websites
+      - Stateful applications
+  - ### _EMR_
+    - **Usage:**
+      - Reduces large processing problems and data sets into smaller jobs and distributes them across many compute nodes in a Hadoop cluster
+      - Log procesing and analytics
+      - Large ETL data movement
+      - Ad targeting, click stream analytics
+      - Predictive analytics
+    - **Cost:**
+      - Pay for the hours the cluster is up
+      - EC2 pricing options (On-Demand, Reserved, and Spot)
+      - EMR price is in addition to EC2 price
+    - **Performance**
+      - Driven by type/number of EC2 instances
+      - Ephemeral or long-running
+    - **Durability and Availability:**
+      - Starts up with a new node if core node fails
+      - Won't replace nodes if all nodes in the cluster fail
+      - Monitor for node failure through CloudWatch
+    - **Scalability and Elasticity:**
+      - Resize your running cluster: add core nodes, add/remove task nodes
+    - **Interfaces:**
+      - Tools on top of Hadoop: Hive, Pig, Spark, HBase, Presto
+      - Kinesis Connector: directly read and query data from Kinesis Data Streams
+    - **Anti-Patterns:**
+      - Small data sets
+      - ACID transactions; RDS is a better choice
+  - ### _Kinesis_
+    - **Usage:**
+      - Move data from producers and continously process it to transform before moving to another data store; drive real-time metrics and analytics
+      - Real-time data analytics
+      - Log intake and processing
+      - Real-time metrics and reporting
+      - Video/Audio processing
+    - **Cost**
+      - Pay for the resources consumed
+      - Data Streams hourly price per/shard
+      - Charge for each 1 million `PUT` transactions
+    - **Performance**
+      - Data Streams: throughput capacity by number of shards
+      - Provision as many shards as needed
+    - **Durability and Availability:**
+      - Synchronously replicates data across three AZs
+      - Highly available and durable due to config of multiple AZs in one Region
+      - Use cursor in DynamoDB to restart failed apps
+      - Resume at exact position in the stream where failure occured
+    - **Scalability and Elasticity:**
+      - Use API calls to automate scaling, increase or decrease stream capacity at any time
+    - **Interfaces:**
+      - Two interfaces: input (KPL, agent, PUT API), output (KCL)
+      - Kinesis Storm Spout: read form a Kinesis stream into Apache Storm
+    - **Anti-Patterns:**
+      - Small scale consistent throughput
+      - Long-term data storage and analytics, Redshift, S3, or DynamoDB are better choices
+  - ### _DynamoDB_
+    - **Usage:**
+      - Apps needing low latency NoSQL database able to scale storage and throughput or down without code changes or downtime
+      - Mobile apps and gaming
+      - Sensor networks
+      - Digital ad serving
+      - E-Commerce shopping carts
+    - **Cost:**
+      - Three components:
+        - Provisioned throughput capacity(per hour)
+        - Indexed data storage (per GB per month)
+        - Data Transfer in or out (per GB per month)
+    - **Performance**
+      - SSDs and limiting indexing on attributes provides high throughput and low latency
+      - Define provisioned throughput capacity required for your tables
+    - **Durability and Availability:**
+      - Protection against individual machine or facility failures
+      - DynamoDB Streams allows replicatoin across regions
+      - Streams enables table data activity replicated across geographic regions
+    - **Scalability and Elasticity:**
+      - No limit to data storage, automatic storage allocatoin, automatic data partition
+    - **Interfaces:**
+      - REST API allows management and data interface
+      - DynamoDB select operation creates SQL-like queries
+    - **Anti-Patterns:**
+      - Port applications from relational databases
+      - Joins or complex transactions
+      - Large data with low I/O rate
+      - Blob data > 400kb, S3 is a better choice
+  - ### _Redshift_
+    - **Usage:**
+      - Designed for OLAP using business intelligence tools
+      - Analyze sales data for multiple products
+      - Analyze ad impressions and clicks
+      - Aggregate gaming data
+      - Analyze social trends
+    - **Cost:**
+      - Charges based on the size and number of cluster nodes
+      - Backup storage > provisioned storage size and backups stored after cluster termination billed at standard S3 rate
+    - **Performance:**
+      - Columnar storage, data compression, and zone maps to reduce query I/O
+      - Parallelizes and distributes SQL operations to take advantage of all available resources
+    - **Durability and Availability:**
+      - Automatically detects and replaces a failed node in your data warehouse cluster
+      - Failed node cluster is read-only until replacement node is provisioned and added to the DB
+      - Cluster remains available on drive failure; Redshift mirrors your data across the cluster
+    - **Scalability and Elasticity:**
+      - With API change the number, or type, of nodes while cluster remains live
+    - **Interfaces:**
+      - JDBC and ODBC drivers for use with SQL clients
+      - S3, DynamoDB, Kinesis, BI tools such as QuickSight
+    - **Anti-Patterns:**
+      - Small data sets
+      - Online transaction processing
+      - Unstructered data
+      - Blob data, S3 is a better choice
+    - **Analytics and Visualization:**
+      - Two options:
+        - Query via AWS management console using the query editor, or via a SQL client tool
+          - Supports SQL client tools via JDBC and ODBC
+          - Using the Redshift API you can access Redshift data with web services-based applications, including AWS Lambda, AWS AppSync, SageMaker notebooks, and AWS Cloud9
+      - Redshift Spectrum
+        - Query data directly from files on S3
+        - Need a Redshift cluster and a SQL client connected to your cluster to execute SQL commands
+        - Visualize data via QuickSight
+        - Cluster and data in S3 must be in the same region
+  - ### _Athena_
+    - **Usage:**
+      - Interactive ad hoc querying for web logs
+      - Query staging data before loading into Redshift
+      - Sending AWS service logs to S3 for Analysis with Athena
+      - Integrate with Jupyter, Zepplin
+    - **Cost:**
+      - $5 per TB of query data scanned
+      - Save on per-query costs and get better performance by compressing, partitioning, and converting data into columnar formats
+    - **Performance**
+      - Compressing, partitioning, and converting your data into columnar formats
+      - Convert data to columnar formats, allowing Athena to read only the columns it needs to process queries
+    - **Durability and Availability:**
+      - Executes queries using compute resources across multiple facilities
+      - Automatically reoutes queries if a particular facility is unreachable
+      - S3 is the underlying data store, gaining S3's 11 9s durability
+    - **Scalability and Elasticity:**
+      - Serverless, scales automatically as needed
+    - **Interfaces:**
+      - Athena CLI, API via SDK, and JDBC
+      - QuickSight visualizations
+    - **Anti-Patterns:**
+      - Enterprise Reporting and Business Intelligence Workloads; Redshift better choice
+      - ETL Workloads; EMR and Glue is a better choice
+      - Not a replacement for RDBMS
+    - **Analytics and Visualization:**
+      - Athena queries data sources that are registered with the AWS Glue Data Catalogue
+      - Running queries in Athena via the Data Catalgue uses the Data Catalogue schema to derive insight from the underlying dataset
+  - ### _Elasticsearch_
+    - **Usage:**
+      - Analyze activity logs, social media sentiments, data stream updates from other AWS services
+      - Usage monitoring for mobile applications
+    - **Cost:**
+      - Elasticsearch instance hours
+      - EBS storage (if you choose this option), and standard data transfer fees
+    - **Performance:**
+      - Instance type, workload, index, number of shards used, read replicas, storage configuations
+      - Fast SSD instance storage for storing indexes or multiple EBS volumes
+    - **Durability and Availability:**
+      - Distributes domain instances across two different AZs
+      - Automated and manual snapshots for durability
+    - **Scalability and Elasticity:**
+      - Use API and CloudWatch metrics to automatically scale up/down
+    - **Interfaces:**
+      - S3, Kinesis, DynamoDB Streams, Kibana
+      - Lambda function as an event handler
+    - **Anti-Patterns:**
+      - OLTP; RDS better choice
+      - Ad hoc data querying, Athena is a better choice
+  - ### _QuickSight_
+    - **Usage:**
+      - ad-hoc data exploration/visualization
+      - Dashboards and KPIs
+      - Analyze and visualize data coming from logs and stored in S3
+      - Analyze and visualize data in SaaS applications like Salesforce
+    - **Cost:**
+      - Standard: $9/user/month
+      - Enterprise: $18/user/month
+      - SPICE capacity for Standard
+    - **Performance:**
+      - SPICE uses a combination of columnar storage, in-memory technologies
+      - Machine code generation to run interactive queries on large datasets at low latency
+    - **Durability and Availability:**
+      - Automatically replicates data for high availability
+      - Scales to hundreds of thousands of users
+      - Simultaneous analytics across AWS data sources
+    - **Scalability and Elasticity:**
+      - Fully managed service, scale to terabytes of data
+    - **Interfaces:**
+      - RDS, Aurora, Redshift, Athena, S3
+      - SaaS, applications such as Salesforce
+    - **Anti-Patterns:**
+      - Highly formatted canned Reports, better for ad hoc query, analysis, and visualization of data
+      - ETL; Glue is a better choice
+    - **Capabilities:**
+      - Need to know the capabilities and operational characteristics
+        - **Data Source**
+          {:refdef: style="text-align: center;"}
+          ![Image]({{site.baseurl}}/images/aws_das_1.17.jpg)
+          {:refdef}
+        - **SPICE**
+          - Super fast, parallel, in memory calculation engine
+          - Engineered to rapidly perform advanced calculations and serve data
+          - In the Enterprise edition, data in SPICE is encrypted at rest
+          - Can release unused SPICE capacity(in-memory data)
+        - **Analysis**
+          - Use analysis to create and interact with visuals and stories, a container for a set of related visuals and stories
+          - Use multiple data sets in an analysis, but any given visual can only use one data set
+        - **Visuals**
+          - Graphical representation of a data set using a diagram, chart, graph or table
+           {:refdef: style="text-align: center;"}
+           ![Image]({{site.baseurl}}/images/aws_das_1.18.jpg)
+           {:refdef}
+        - **ML Insights**
+          - ML Insights use machine learning to uncover hidden insights and trends in your data, identify key drivers, and forecast business metrics
+            {:refdef: style="text-align: center;"}
+            ![Image]({{site.baseurl}}/images/aws_das_1.19.jpg)
+            {:refdef}
+        - **Sheets**
+          - Set of visuals that are viewed together in a single page(like excel)
+        - **Dashboards**
+          - Read-only snapshot of an analysis that you can share with other users for reporting
+          - Preserves the configuration of the analysis at the time of publishing
+          - When a user views the dashboard, it reflects the current data in the data sets used by the analysis
+  - ### _Analysis for Visualization_
+    - **Data Lake**
+      - Lake Formation provides multi-service, fine-grained access control to data
+      - Macie helps detect sensitive data that may have been stored in the wrong place
+      - Inspector identifies configuration errors that could lead to data breaches
+- ### Select the appropriate data analysis solution for a given scenario
+  - ### _Types of Analysis_
+    - **Descriptive Analysis (Data Mining)**
+      - Determine _what_ generated the data
+      - Lowest value
+    - **Diagnostic Analysis**
+      - Determine _why_ data was generated
+    - **Predictive Analysis**
+      - Determine _future outcomes_
+    - **Prescriptive Analysis**
+      - Determine _action to take_
+  - ### _Analysis Solutions_
+    - **Batch Analytics**
+      - Large volumes of raw data
+      - Analytics process on a schedule, reports
+      - EMR
+    - **Interactive Analytics**
+      - Complex queries on complex data at high speed
+      - See query results immediately
+      - Athena, Elasticsearch, Redshift
+    - **Streaming Analytics**
+      - Analysis of data that has short shelf-life
+      - Incrementally ingest data and update metrics
+      - Kinesis
+  - ### _Analytics Solutions Patterns_
+    - **EMR**
+      - Uses the map-reduce technique to reduce large processing problems into small jobs distributed across many nodes in a Hadoop cluster
+        - On demand big data analytics
+        - Event-driven ETL
+        - Machine Learning predictive analytics
+        - Clickstream analysis
+        - Load data warehouse
+      - Don't use for transactional processing or with small data sets
+    - **Kinesis**
+      - Streams data to analytics processing solutions
+        - Video analytics applications
+        - Real-time analytics applications
+        - Analyze IoT device data
+        - Blog posts and article analytics
+    - **Redshift**
+      - OLAP using BI tools
+        - Near real-time analysis of millions of rows of manufacturing data generated by continious manufacturing equipment
+        - Analyze events from mobile app to gain insight inot how users use it
+        - Make live data generated by range of next-gen security solutions available to large numbers of organizations for analysis
+      - Don't use OLTP or with small data sets
+- ### Select the appropriate data visualization solution for a given scenario
+  - ### _Refresh Schedule - Real time Scenarios_
+    - Typically using Elasticsearch and Kibana
+      - `refresh_interval` in Elasticsearch domain updates the domain indicies; determines query freshness
+      - Default is every second
+      - Formula: K * (number of data nodes), where k is the number of shards per node
+      - Balance refresh rate cost with decision making needs
+  - ### _Refresh Schedule - Interactive Scenarios_
+    - Typically ad-hoc exploration using QuickSight
+    - Refresh Spice data
+      - Refresh a data set on a schedule, or you can refresh your data by refreshing the page in an analysis or dashboard
+      - Use the `CreateIngestion` API operation to refresh data
+    - Data set based on a direct query and not stored in SPICE, refresh data by opening the data set
+  - ### _Refresh Schedule - EMR notebooks_
+    - Use EMR notebooks to query and visualize data
+    - Data refreshed every time the notebook is run
+  - ### _QuickSight Visual Data - Filters_
+    - QuickSight filter options for data interaction
+      - Filtering: used to focus on or exclude a visual element representing a particular value
+        - Associated with a single dataset in an analysis
+        - Scope to one, several, or all visuals in a dataset's analysis
+        - Applies to only a single field, calculated or regular
+        - Make sure multiple filters applied to the same field aren't mutually exclusive
+  - ### _QuickSight Visual Data - Sorting_
+    - QuickSight sorting options for data interaction
+      - Sorting: Most visual types offer the ability to change data sort order
+      - SPICE limitations for sort
+        - Up to two million unique values
+        - Up to 16 columns
+  - ### _QuickSight Visual Data - Drill Down_
+    - QuickSight drill down options for data interactoin
+      - Drill Down: All visaul types except pivot tables allow creation of a hierarchy of fields for a visual element
+  - ### _Kibana - Visualization Tool_
+    - Open source data visualization dn exploration tool used for log and time-series analytics, application monitoring, and operational intelligence use cases
+    - Histograms, line graphs, pie charts, heat maps, and built in geospatial support
+    - Tight integration with Elasticsearch
+    - Charts and reports to interactively navigate through large amounts of log data
+    - Pre-built aggregations and filters
+    - Dashboards and reports to sharer
+  - ### _Kibana - Configuration_
+    - To visualize and explore data in Kibana, you must first create index patterns
+    - Index patterns point Kibana to the Elasticsearch indexes containing the data to explore
+    - Explore data with Kibana's data discovery functions
+    - Kibana visualizations are based on Amazon Elasticsearch queries
+  - ### _Visualization Use Case_
+      <div class="table-container">
+          <table>
+            <tr><th>Use Case</th><th>Visualization Solution</th></tr>
+            <tr><td>Equity trading managers need to drill into
+            values in a visualization and perform ad-
+            hoc queries on data that spans five days
+            but is updated by the minute</td>
+            <td>Browser access to an interactive report
+            based on an Elasticsearch Kibana view</td></tr>
+            <tr><td>A company's website shares previous
+            years' sales volume by region, reports
+            monthly revenue to the company, and
+            highlights top performing regions</td>
+            <td>Embed a QuickSight dashboard into the
+            company's public web page that can be
+            accessed via mobile platforms as well as
+            browser</td></tr>
+            <tr><td>Operations manager needs an end of week
+            summary of operations research reports by region
+            </td>
+            <td>Send static report via email link to a
+            location on an S3 bucket</td></tr>
+            <tr><td>Data scientists need to visualize the results
+            of machine learning models that use
+            product data to predict potential supply
+            chain issues based on the previous 6
+            months of data</td>
+            <td>Use EMR Notebooks on EMR</td></tr>
+          </table>
+      </div> 
+## Security
+- ### Select appropriate authentication and authorization mechanisms
+  - ### _IAM Authentication_
+    - To set permissions for an identity in IAM, choose an AWS managed policy, a customer managed policy, or an inline policy
+      - **AWS managed policy**
+        - Standalone policy that is created and administered by AWS
+        - Provide permissions for many common use cases
+          - Full
+          - Power-user
+          - Partial Access
+        - Use Case
+          - Best used when you are dealing with a service that has typical use cases that can be covered by AWS manged policy because it takes care of maintenance of the policy
+      - **Customer Managed Policy**
+        - Standalone policies that you administer in your AWS account
+        - Use Case
+          - When you have something that you would like to manage using AWS managed policy but you have your own customization that you would like to make
+      - **Inline Policy**
+        - Strict one-to-one relationship of policy to identity
+          - Policy embedded in an IAM identity (a user, group, or role)
+        - Use Case
+          - Very targeted policy on a specific user or group or a role that you can assign to a service such as Athena or S3
+    <div class="table-container">
+        <table>
+          <tr><th style="font-weight: bold">Services</th><th>Action</th><th>Resource level Permissions</th><th>Resource Based Policies</th><th>Auth Based on Tags</th><th>Temp Creds</th><th>Service-Linked Roles</th></tr>
+          <tr><td style="font-weight: bold">Athena</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td></tr>
+          <tr><td style="font-weight: bold">Elasticsearch</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td></tr>
+          <tr><td style="font-weight: bold">EMR</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td style="font-weight: bold">Glue</td><td>✅</td><td>✅</td><td>✅</td><td>🔶</td><td>✅</td><td>❌</td></tr>
+          <tr><td style="font-weight: bold">Kinesis Analytics</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td></tr>
+          <tr><td style="font-weight: bold">Kinesis Firehose</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td></tr>
+          <tr><td style="font-weight: bold">Kinesis Streams</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td></tr>
+          <tr><td style="font-weight: bold">Quicksight</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td></tr>
+        </table>
+    </div>
+      - ✅ = Yes
+      - ❌ = No
+      - 🔶 = Partial
+    - ### _IAM Authorization_
+      - Use IAM identity and resource-based permission to authorize access to analytics resources
+      - Policy is an object in AWS you associate with an identity or resource to define the identity or resource permissions
+      - To use a permissions policy to restrict access to a resource you choose a policy type
+        - Identity based policy
+          - Attached to an IAM user, group, or role
+          - Specify what an identity can do (its permissions)
+          - Example: attach a policy to a user that allows that user to perform the EC2 `RunInstances` action
+        - Resource based policy
+          - Attached to a resource
+          - Specify which users have access to the resource and what actions they can perform on it
+          - Example: attach resource-based policies to S3 buckets, SQS queues, and Key Management Service encryption keys
+          
+        {:refdef: style="text-align: center;"}
+        ![Image]({{site.baseurl}}/images/aws_das_1.20.jpg)
+        {:refdef}
+  - ### _Network Security_
+    - Need to secure the physical boundary of your analytics services using network isolation
+    - Use VPC to achieve network isolation
+    - Example: EMR cluster where the master, core, and task nodes are in a private subnet using NAT to perform outbound only internet access
+    - Also, use security groups to control inbound and outbound access from your individual EC2 instances
+    - With EMR use both EMR-managed security groups and additional security groups to control network access to your instance
+      {:refdef: style="text-align: center;"}
+      ![Image]({{site.baseurl}}/images/aws_das_1.21.jpg)
+      {:refdef}
+  - ### _EMR - Managed Security Groups_
+    - Every EMR cluster has managed security groups associated with it, either default or custom
+    - EMR automatically adds rules to managed security groups used by the cluster to communicate between cluster instances and AWS services
+    - Rules that EMR creates in amanged security groups allow the cluster to communicate among internal components
+    - To allow users and applications to access a cluster from outside the cluster, edit rules in managed security groups
+      - Editing rules in managed security groups may have unintended consequences; may inadvertently block the traffic requried for clusters to function properly
+    - Specify security groups only on cluster create, can't add to a cluster or cluster instances while a cluster is running
+    - Can edit, add and remove rules from existing security groups, the rules take effect as soon as you save them
+  - ### _EMR - Additional Security Groups_
+    - Additional security groups are optional
+    - Specify in addition to manage security groups to tailor access to cluster instances
+    - Contain only rules that you define, EMR does not modify them
+    - To allow users and applications to access a cluster from outside the cluster, create additional security groups with additional rules
+  - ### _EMR - VPC Options - S3 Endpoints & NAT Gateway_
+    - S3 Endpoints
+      - All instances in a cluster connect to S3 through either a VPC endpoint or internet gateway
+      - Create a private endpoint for S3 in your subnet to give your EMR cluster direct access to data in Amazon S3
+    - NAT Gateway
+      - Other AWS services which do not currently support VPC endpoints use only an internet gateway
+- ### Apply data protection and encryption techniques
+  - ### _Encryption and Tokenization_
+    - Protect data against data exfiltration (unauthorized copying and/or transferring data) and unauthorized access
+    - Different ways to protect data
+      - Use a hardware security module (HSM) to manage the top-level encryption keys
+        - Use HSM if you require your keys to be stored in a dedicated, third-party validated hardware security modules under your exclusive control
+        - If you need to comply with FIPS 140-2
+        - If you need high-performance in-VPC cryptographic acceleration
+        - If you need a multi-tenant, managed service that allows you to use and manage encryption keys
+      - Encryption at rest & transit
+        - Prevent unauthorized users from reading data on a cluster and associated data storage systems
+      - Alternative to encryption to secure highly sensitive subsets of data for compliance purposes
+      - Secrets management
+        - Use secrets in application code to connect to databases, API, and other resources
+        - Provides rotation, audit, and access control
+      - Systems Manager Parameter Store
+        - Centralized store to manage configuration data
+        - Plain-text data such as database strings or secrets such as passwords
+        - Does not rotate parameter stores automatically
+- ### Apply data governance and compliance controls
+  - ### _Compliance and Governance_
+    - Identify required compliance frameworks (HIPAA, PIC, etc.)
+    - Understand contractual and agreement obligations
+    - Monitor policies, standards, and security controls to respond to events and changes in risk
+    - Services to create compliant analytics solution
+      - **AWS Artifact**
+        - Provides on-demand access to AWS compliance and security related information
+        - self-service document retrival portal
+        - Manage AWS agreements
+        - Provide security controls documentation
+        - Download AWS security and compliance documents
+      - **CloudTrail and CloudWatch** 
+        - Enable governance, compliance, operational auditing, and risk auditing of AWS account
+        - CloudTrail tracks actions in your AWS account by recording API activity
+        - CloudWatch monitors how resources perform, collecting application metrics, and log information
+        - Simplify security analysis, resource change tracking, and troubleshooting by combining event history via CloudWatch
+        - Use CloudTrail to audit and review API calls and detect security anomalies
+        - Use CloudWatch to create alert rules that trigger SNS notifications to a security or risk event
+      - **AWS Config** 
+        - Ensure AWS resources conform to your organization's security guidelines and best practices
+        - AWS resource inventory, configuration history, and configuration change notifications that enable security and governance
+        - Logs in CloudWatch
+        - Discover existing AWS resources
+        - Export complete inventory of account AWS resources with all configuration details
+        - Determine how a resource was configured at any point in time
+        - Config Rules: represent desired configuration for a resource and is evaluated against configuration changes on the relevant resources, as recorded by AWS Config
+        - Assess overall compliance and risk status from a configuration perspective, view compliance trends over time and pinpoint which configuration change caused by a resource to drift out of compliance with a rule
+- ### How AWS Resources interact with each other
 
 Once you pass, you'll earn the beautiful badge below! 
 
