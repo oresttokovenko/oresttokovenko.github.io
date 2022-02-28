@@ -39,12 +39,10 @@ Next, I select the data I need to pull in regarding the specific client using a 
 {% highlight python %}
 query = "SELECT id AS investor_id, account_type, LOWER(IF(account_type='investor', CONCAT(first_name, ' ', last_name), company_name)) AS account_holder_name FROM investors WHERE company_id = 153 AND active=1 AND deleted_at IS NULL"
 
-live_investors_list = pd.read_sql_query(query, engine)
+live_investors_list_df = pd.read_sql_query(query, engine)
 
-len(live_investors_list)
-> 10208
-
-live_investors_list_df = pd.DataFrame(live_investors_list)
+live_investors_list_df.shape()
+> (10208, 3)
 
 {% endhighlight %}
 
