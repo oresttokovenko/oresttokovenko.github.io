@@ -8,11 +8,11 @@ tags:   [Cloud Computing, AWS, Study Guide]
 ---
 
 This study guide covers AWS Certification for Data Analytics Specialty. This exam replaces the former AWS Big Data Certification, but otherwise covers the same topics. The exam consists of 65 questions, and you have 180 minutes to write it. The study guide below covers everything you need to know for it. To study for this exam I did the following:
- - Watched the official AWS Digital Training course
- - Read the -AWS Data Analytics Specialty Exam Guide- accessible [here](https://d1.awsstatic.com/training-and-certification/docs-data-analytics-specialty/AWS-Certified-Data-Analytics-Specialty_Exam-Guide.pdf)
- - Read the -AWS Certified Data Analytics Study Guide- by Sybex
- - Watched the -AWS Certified Data Analytics Specialty 2022 - Hands On!- Udemy course by Stéphane Maarek
- - Watched the -AWS Certified Data Analytics - Specialty- Whizlabs Course
+ - Watched the official *AWS Digital Training* course
+ - Read the *AWS Data Analytics Specialty Exam Guide* accessible [here](https://d1.awsstatic.com/training-and-certification/docs-data-analytics-specialty/AWS-Certified-Data-Analytics-Specialty_Exam-Guide.pdf)
+ - Read the *AWS Certified Data Analytics Study Guide* by Sybex
+ - Watched the *AWS Certified Data Analytics Specialty 2022 - Hands On!* Udemy course by Stéphane Maarek
+ - Watched the *AWS Certified Data Analytics - Specialty* Whizlabs Course
  - Read the following FAQ papers linked below:
    - [Redshift FAQ](https://aws.amazon.com/redshift/faqs/)
    - [EMR FAQ](https://aws.amazon.com/emr/faqs/)
@@ -22,7 +22,7 @@ This study guide covers AWS Certification for Data Analytics Specialty. This exa
    - [Kinesis Data Streams FAQ](https://aws.amazon.com/kinesis/data-streams/faqs/)
    - [Kinesis Data Firehose FAQ](https://aws.amazon.com/kinesis/data-firehose/faqs/)
    - [Kinesis Data Analytics FAQ](https://aws.amazon.com/kinesis/data-analytics/faqs/)
-   - [Elasticsearch FAQ](https://aws.amazon.com/kinesis/data-analytics/faqs/)
+   - [Opensearch FAQ](https://aws.amazon.com/kinesis/data-analytics/faqs/)
    - [Managed Kafka FAQ](https://aws.amazon.com/msk/faqs/)
    - [Quicksight FAQ](https://aws.amazon.com/quicksight/resources/faqs/)
    - [Data Exchange FAQ](https://aws.amazon.com/data-exchange/faqs/)
@@ -36,7 +36,7 @@ According to Amazon Web Services, this exam will test the following services and
  - **Analytics**:
    - Amazon Athena 
    - Amazon CloudSearch 
-   - Amazon Elasticsearch Service (Amazon ES)
+   - Amazon Opensearch Service (Amazon ES)
    - Amazon EMR 
    - AWS Glue 
    - Amazon Kinesis (excluding Kinesis Video Streams)
@@ -114,13 +114,18 @@ According to Amazon Web Services, this exam will test the following services and
         
   - ### _Availability and Durablity of your Ingestion Components_
     - Kinesis Data Streams replicates your data synchronously across three AZs in one region
+    - Streams are divided in ordered Shards/Partitions
+      - One stream is made of many shards
+      - The number of shards can evolve over time (reshard/merge)
+      - Records are ordered per shard
+    - Multiple applications can consume the same stream, ability to reprocess/replay data
     - Don't use Kinesis Data Streams for protracted data persistence
-      - Your data is retained for 24 hours, which can be extended to 7 days
+      - Your data is retained for 24 hours, which can be extended to 365 days
     - Kinesis Data Firehose streams your data directly to a data destination, no retention
        {:refdef: style="text-align: center;"}
        ![Image]({{site.baseurl}}/images/aws_das_1.1.jpg)
        {: refdef}
-      - Destinations: S3, Redshift, Elasticsearch, Splunk and Kinesis Data Analytics
+      - Destinations: S3, Redshift, Opensearch, Splunk and Kinesis Data Analytics
       - Can transform your data, using a Lambda function, prior to delivering the data
       
   - ### _Fault Tolerance of your Ingestion Components_
@@ -134,7 +139,7 @@ According to Amazon Web Services, this exam will test the following services and
       {:refdef: style="text-align: center;"}
       ![Image]({{site.baseurl}}/images/aws_das_1.2.jpg)
       {: refdef}
-      - Use the Kinesis API instead of KPL when you need the fastest procesing time
+      - Use the Kinesis API instead of KPL when you need the fastest processing time
         - KPL uses RecordMaxBufferedTime to delay processing to accommodate aggregation
       - **Kinesis Agent**
         - Kinesis Agent installs on your EC2 instance
@@ -147,13 +152,60 @@ According to Amazon Web Services, this exam will test the following services and
       - Data persistence
     - **Kinesis Data Streams vs. Kinesis Data Firehose**
       - Data persistence is the key difference
+      - Kinesis Data Streams
+        - Going to write custom code (producer/consumer)
+        - Real time(~200 MS latency for classic, ~70 MS latency for enhanced fan-out)
+        - Must manage scaling (shard splitting/merging)
+        - Data Storage up to 365 days
+        - Use with Lambda to insert data into Opensearch
+      - Kinesis Data Firehose
+        - Fully managed
+        - Serverless data transformation with Lambda
+        - Near real time (lowest buffer time is 1 minute)
+        - Automated Scaling
+        - No Data storage
     - **Kinesis Producer Library vs. Kinesis API vs. Kinesis Agent**
       - Fault tolerance and appropriate tools for your data collection problem
+    - **Kinesis Data Streams vs SQS**
+      - Kinesis Data Streams
+        - Data can be consumed many times
+        - Data is deleted after the retention period
+        - Ordering of records is preserved (at the shard level) - even during replays
+        - Build multiple applications reading from the same stream independently
+        - Checkpointing to track progress of consumption
+        - Shards(capacity) must be provided ahead of time
+      - SQS
+        - Queue, decouple applications
+        - One application per queue
+        - Records are deleted after consumptions
+        - Messages are processed interdependently for standard queue
+        - Ordering for FIFO queues
+        - Capability to 'delay' messages
+        - Dynamic scaling of load
+    - **Kinesis Data Streams vs MSK**
+      - Kinesis Data Streams
+        - 1 MB message size limit
+        - Data Streams with Shards
+        - Shard Splitting and Merging
+        - TLS in-flight encryption 
+        - KMS at-rest encryption
+        - Security
+          - IAM policies for AuthN/AuthZ
+      - MSK
+        - 1 MB default, configure for higher
+        - Kafka Topics with Partitions
+        - Can only add partitions to a topic
+        - plaintext or TLS in-flight encryption
+        - KMS at-rest encryption
+        - Security
+          - MutualTLS(AuthN) + Kafka ACLs(AuthZ)
+          - SASL/SCRAM(AuthN) + Kafka ACLs(AuthZ)
+          - IAM Access Control (AuthN + AuthZ)
       
   - ### _Data Collection through Real-Time Streaming Data_
     - Kinesis Data Firehose is fully managed
-    - Destinations: S3, Redshift, Elasticsearch, Splunk, Kinesis Data Analytics
-    - Can optionally transform data, using Lambda, before deliveirng it to its destination
+    - Destinations: S3, Redshift, Opensearch, Splunk, Kinesis Data Analytics
+    - Can optionally transform data, using Lambda, before delivering it to its destination
       {:refdef: style="text-align: center;"}
       ![Image]({{site.baseurl}}/images/aws_das_1.3.jpg)
       {: refdef}
@@ -161,8 +213,8 @@ According to Amazon Web Services, this exam will test the following services and
       - Delivers directly to S3 first
       - Firehose then runs a Redshift COPY command
       - Can optionally transform your data, using Lambda, before delivering it to its destination
-    - **Firehose to Elasticsearch Cluster**
-      - Firehose delivers directly to Elasticsearch cluster
+    - **Firehose to Opensearch Cluster**
+      - Firehose delivers directly to Opensearch cluster
       - Can optionally backup to S3 concurrently
     - **Firehose to Splunk**
       - Firehose delivers directly to Splunk instance
@@ -183,26 +235,179 @@ According to Amazon Web Services, this exam will test the following services and
     - **Kinesis Data Streams**
       - Use cases needing custom processing and different stream processing frameworks where sub-second processing latency is needed
     - **Kinesis Data Firehose**
-      - Use cases needing managed service streaming to S3, Redshift, Elasticsearch, or Splunk where data latency of 60 seconds or higher is acceptable
+      - Use cases needing managed service streaming to S3, Redshift, Opensearch, or Splunk where data latency of 60 seconds or higher is acceptable
     - **AWS Database Migration Service**
       - Use cases needing one-time migration and/or continuous replication of database records and structures to AWS services
     - **AWS Glue**
       - Use cases needing ETL batch-oriented jobs where scheduling of ETL jobs is required
       
   - ### _Kinesis Data Streams_
-    - Each shard supports
+    - **Each shard supports**
       - 1,000 RPS for writes with max of 1 MB/sec
       - 5 TPS for reads at a max of 2MB/sec using GetRecords API Call
       - Stream total capacity equals the sum of the capacity of the shards
       - No limit to the number of shards you can provision
-        {:refdef: style="text-align: center;"}
-        ![Image]({{site.baseurl}}/images/aws_das_1.4.jpg)
-        {:refdef}
+    - **Data Blob**
+      - data being sent, serialized as bytes
+    - **Record Key** 
+      - Sent alongside a record, helps to group records in shards. Same key = same shard
+      - Use highly distributed key to avoid the "hot partition"
+    - **Sequence number**
+      - Unique identifier for each record put in shards. Added by Kinesis after ingestion
+    - **Producer**
+      - *Kinesis Producer SDK - PutRecords(s)*
+        - APIs that are used are `PutRecord` and `PutRecords`
+        - `PutRecords` uses batching and increases throughput => less HTTP requests
+        - `ProvisionedThroughputExceeded` if we go over the limit
+          - Happens when sending more data(exceeding MB/sec or TPS for any shard)
+          - Make sure you don't have a hot shard(such as your partition key is bad and too much data goes into that partition)
+          - Solution
+            - Retries with backoff (2,4,8 seconds)
+            - Increase shards(scaling)
+            - Ensure your partition key is a good one
+        - Use case: low throughput, high latency, simple API, AWS Lambda
+        - Anti-Pattern: applications that cannot tolerate `RecordMaxBufferedTime` delay, therefore use the SDK directly
+        - We can influence the batching efficiency by introducing some delay with `RecordMaxBufferedTime` (default 100ms)
+        - Managed AWS sources for KDS that use the SDK behind the scenes
+          - CloudWatch Logs
+          - AWS IoT
+          - Kinesis Data Analytics
+      - *Kinesis Producer Library (KPL)*
+        - Easy to use and highly configurable C++/Java library
+        - Used for building high performance, long-running producers
+        - automated and configurable `retry` mechanism
+        - Synchronous or Asynchronous API (better performance for async)
+        - Batching: increases throughput and decreases cost
+          - Collect
+            - Records and writes to multiple shards in the same PutRecords API call
+          - Aggregate
+            - Increased latency
+            - Capability to store multiple records in one record (go over 1000 records/sec limit)
+            - Increase payload size and improve throughput (maximize 1MB/sec limit)
+        - Compression must be implemented by user
+      - *Kinesis Agent*
+        - Monitor Log files and sends them to KDS
+        - Install only in Linux based environments
+        - Features
+          - Write to multiple directories and write to multiple streams
+          - Routing feature based on directory/log file
+          - Pre-process data before sending to streams
+          - Handles file rotation, checking, and retry upon failures
+          - Emits metrics to CloudWatch for monitoring
+    - **Consumer**
+        - *Kinesis Consumer SDK - GetRecords*
+          - Classic Kinesis: Records are polled by consumers from a shard
+          - Each shard has 2MB total aggregate throughput
+          - `GetRecords` returns up to 10MB of data (then throttle for 5 seconds) or up to 1000 records
+          - Maximum of 5 `GetRecords` API calls per shard per second = 200ms latency
+          - If 5 consumer applications consume from the same shard, means every consumer can poll once a second and receive less than 400 KB/sec
+        - *Kinesis Client Library (KCL)*
+          - Read records from Kinesis produced with the KPL (de-aggregation)
+          - Share multiple shards with multiple consumers in one 'Group', shard discovery
+          - Checkingpoint feature to resume progress
+          - Leverages DynamoDB for coordination and checkpointing (one row per shard)
+            - Make sure you provision enough WCU/RCU
+            - Or use On-Demand for DynamoDB
+            - Otherwise DynamoDB may slow down KCL
+          - Record processors will process the data
+          - `ExpiredIteratorException` > increase WCU
+        - *Kinesis Connector Library*
+          - Older java library (2016), leverages the KCL library
+          - Must be running on an EC2 instance
+          - Deprecated: Kinesis Firehose/Lambda replaces this
+        - *Lambda*
+          - Lambda can source records from Kinesis Data Streams
+          - Has a library to de-aggregate records from the KPL
+          - Lambda can be used to run lightweight ETL
+          - Can be used to trigger notifications/send emails in real time
+          - Configurable batch size
+    - **Kinesis Enhanced Fan Out**
+      - Each consumer get 2 MB/sec of provisioned throughput per shard
+      - That means that if we have 20 consumers, overall we'll get 40 megabytes per second, per shard.
+      - Before we had a 2 MB/sec limit per shard, but now, we get 2 MB/sec per limit per shard per consumer
+      - Pushes data to consumers over HTTP/2
+      - Reduced latency (~70 MS)
+      - Costs a bit more
+      - *Enhanced Fan-Out vs. Standard Consumers Use Cases*
+        - Standard
+          - Low number of consuming applications (1,2,3...)
+          - Can tolerate ~200 MS latency
+          - Minimize Cost
+        - Enhanced Fan Out Consumers
+          - Multiple Consumer applications for the same Stream
+          - Low Latency requirements ~70 MS
+          - Higher costs
+          - Default limit of 5 consumers using enhanced fan-out per data stream
+    - **Scaling**
+      - *Adding Shards*
+        - Also called 'Shard Splitting'
+        - Can be used to increase the Stream capacity (1 MB/sec per shard)
+        - Can be used to divide a 'hot shard'
+        - The old shard is closed and will be deleted once the data is expired
+      - *Merging Shards*
+        - Decrease the Stream capacity and save costs
+        - Can be used to group two shards with low traffic
+        - Old shards are closed and deleted based on data expiration
+      - *Out of order records after resharding*
+        - After a reshard, you can read from child shards
+        - However, data you haven't read yet could still be in the parent
+        - If you start reading the child before completing reading the parent, you could read data for a particular hash key out of order
+        - After a reshard, read entirely from the parent until you don't have new records
+        - The Kinesis Client Library has this logic already built-in, even after resharding operations
+      - *Auto Scaling*
+        - Auto Scaling is not a native feature of Kinesis
+        - Can be implemented with Lambda
+      - *Handling Duplicate Records*
+        - Producer side
+          - Producer retries can create duplicates due to network timeouts
+          - Although the two records have identical data, they also have unique sequence numbers
+          - Fix: Embed unique record ID in the data to de-duplicate on the consumer side
+        - Consumer side
+          - Consumer retries can make your application read the same data twice
+          - Consumer retries happen when record processors restart:
+            - A worker terminates unexpectedly
+            - Worker instances are added or removed
+            - Shards are merged or split
+            - The Application is deployed
+          - Fix: Make your consumer application idemptotent
+          - If the final destination can handle duplicate, it's recommended to do it there
+    - **Limits**
+      - Producer
+        - 1 MB/sec or 1000 messages/sec at write PER SHARD
+        - `ProvisionedThroughputException` otherwise
+      - Consumer Classic
+        - 2 MB/sec at read PER SHARD across all consumers
+        - 5 API calls per second PER SHARD across all consumers
+      - Consumer Enhanced Fan-Out
+        - 2 MB/sec at read PER SHARD, PER ENHANCED CONSUMER
+        - No API calls needed (push model)
+      - Scaling
+        - Resharding cannot be done in parallel; so that means you can't reshard a thousand streams at a time or a thousand shards at a time
+        - Takes a few seconds: For 1000 shards, it takes 30,000 seconds to double the shards to 2000
+
+      {:refdef: style="text-align: center;"}
+      ![Image]({{site.baseurl}}/images/aws_das_1.4.jpg)
+      {:refdef}
     
   - ### _Kinesis Data Firehose_
-    - Firehose automatically delivers to specified destination
+    - Firehose automatically delivers to specified destination, near real time service (60 second latency for non-full batches)
+    - Can deliver to any HTTP Endpoint
+    - Fully managed service, has automatic scaling
+    - Support data conversion from JSON to Parquet/ORC
+    - Data transformation through AWS Lambda
+    - Supports compression when target is S3 (GZIP, ZIP, and SNAPPY)
+    - Only GZIP is supported by Redshift
+    - Pay for the amount of data going through Firehose
+    - Spark/KCL do not read from Data Firehose
+    - You can deposit the source data directly into S3
     - Buffers incoming streaming data to specified size or for a specified period of time before delivering to destinations
-      - Buffer size is in MBS AND buffer interval is in seconds
+      - Firehose accumulates reocrds in a buffer
+      - The buffer is flushed based on time and size rules
+      - Buffer Size (Ex. 32 MB): If that buffer size is reached, it's flushed
+      - Buffer Time (Ex. 2 Minutes): If that time is reached, it's flushed
+      - Firehose can automatically increase the buffer size to increase throughput
+      - High Throughput > Buffer size will be hit
+      - Low Throughput > Buffer time will be hit
     - Automatically scales to match data throughput
       - No manual intervention or developer overhead required
       {:refdef: style="text-align: center;"}
@@ -214,14 +419,15 @@ According to Amazon Web Services, this exam will test the following services and
     - Supports several data engines as a source and target for data replication
     - Uses tasks to capture ongoing changes after initial migration to a supported target data store
       - Ongoing replication or Change Data Capture
-    - Uses databse engine's APIs to read changes from transaction log then replicate to target database
+    - Uses database engine's APIs to read changes from transaction log then replicate to target database
     - EC2 replication instance, scale to meet utilization requirements
+    - Schema Conversion Tool allows you to convert your database's schema from one engine to another
       {:refdef: style="text-align: center;"}
       ![Image]({{site.baseurl}}/images/aws_das_1.6.jpg)
       {:refdef}
 
   - ### _AWS Glue_
-    - Key Point: Batch oriented
+    - Key Point: Batch oriented (although now it supports Streaming)
       - Micro-batches but no streaming data
     - Does not support NoSQL databases as data source
     - Crawl data source to populate data catalog
@@ -230,9 +436,85 @@ According to Amazon Web Services, this exam will test the following services and
     - Glue catalog tables contain metadata not data from the data source
     - Uses a scale-out Apache Spark environment when loading data to destination
       - Allocate data processing units (DPUs) to ETL jobs
+    - Glue crawler scans data in S3, creates schema and populates the Glue Data Catalogue
+      - Glue crawler will extract partitions based on how your S3 data in organized
+    - Glue can integrate with most SQL databases, regardless of whether they are AWS services.
+    - Running Glue Jobs
+      - Job bookmarks
+        - Persists state from the job run
+        - Prevents reprocessing of old data
+        - Allows you to process new data only when re-running on a schedule
+      - CloudWatch Events
+        - Fire off a Lambda function or SNS notification when ETL succeeds or fails
+        - Invoke EC2 run, send event to Kinesis, activate a Step Function
+    - Streaming
+      - Glue ETL supports serverless streaming ETL
+        - Consumes from Kinesis of Kafka
+        - Clean and transform in-flight
+        - Store results into S3 or other data stores
+        - Runs on Spark Structured Streaming
+    - Glue DataBrew
+      - Visual data preparation tool
+      - UI for pre-processing large data sets
+      - Input from S3, data warehouse, or database
+      - Output to S3
+      - You can create 'recipes' of transformations that can be saved as jobs
     {:refdef: style="text-align: center;"}
     ![Image]({{site.baseurl}}/images/aws_das_1.7.jpg)
     {:refdef}
+
+  - ### _AWS SQS_
+    - Summary
+      - SQS will send a message to the SQS Queue and a consumer, or consumers, will pull messages from that Queue. 
+      - fully managed and it will scale automatically. 
+      - Even if you have 1 message per second to 10,000 messages per second there are no limit to how many messages per seconds you can send to SQS 
+      - The default retention period of a message is 4 days but, you can have a maximum of 14 days 
+      - There's no limit to how many messages can be in the queue
+      - There has extremely low latency
+      - There is horizontal scaling in terms of the number of consumers who can scale as many consumers as you want
+      - Limit of 256 KB per message
+    - Producing Messages
+      - Define Body
+      - Add message attributes
+      - Provide Delay Delivery
+    - Consuming Messages
+      - Poll SQS for messages (up to 10 at a time)
+      - Delete the message using the message ID and receipt handle
+      - Cannot be handled by different consumers like Kinesis
+    - FIFO Queue
+      - Lower throughput (up to 3,000 messages per second with batching, 300 messages per second without)
+      - Messages are processed in order by the consumer
+      - Messages are sent exactly once
+      - Trade off: less throughput but exact ordering
+    - Use Cases
+      - Decouple Applications
+      - Buffer writes to a database
+      - Handle large loads of messages coming in
+      - SQS can be integrated with Auto Scaling through CloudWatch
+    - Limits
+      - Maximum 120,000 in flight messages processed by consumers
+      - Batch Request has a maximum of 10 messages - Max 256KB
+      
+  - ### _AWS MSK_
+    - Alternative to Kinesis
+    - Fully managed Apache Kafka on AWS
+      - Allows you to create, update, delete clusters
+      - MSK creates and manages Kafka broker nodes, Zookeeper nodes for your
+      - Deploy the MSK cluster in your VPC, multi-AZ (up to 3 for HA)
+      - Automatic recovery from common Apache Kafka failures
+      - Data is stored on EBS volumes
+    - You can build producers and consumers of data
+    - Can create custom configurations for your clusters
+      - Default message size of 1 MB
+      - Possibilities of sending large messages into Kafka after customer configuration
+    - Security
+      - Encryption
+        - Optional in-flight using TLS between the brokers
+        - Optional in-flight with TLS between the clients and brokers
+        - At rest encryption for your EBS volumes using KMS
+    - Monitoring
+      - CloudWatch Metrics
+        - Basic monitoring
 
   - ### _The Three Types of Data to Ingest_
     - **Batch Data**
@@ -244,7 +526,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Ingesting large amounts of small records continuously and in real-time
     - **Transactional Data**
       - Initially load and receive continuous updates from data stores used as operational business databases
-      - Similar to batch data but with a continous update flow
+      - Similar to batch data but with a continuous update flow
       - Ingested from databases storing transactional data
 
   - ### _Batch Data_
@@ -264,7 +546,7 @@ According to Amazon Web Services, this exam will test the following services and
     - Simpler analytics, rolling metrics, aggregations
 
   - ### _Transactional Data_
-    - Data stored at low latency and quikcly accessible
+    - Data stored at low latency and quickly accessible
     - Load data from a database on-prem or in AWS
     - Use Database Migration Service
     - Can load data from relational databases, data warehouses and NoSQL databases
@@ -279,7 +561,7 @@ According to Amazon Web Services, this exam will test the following services and
     <div class="table-container">
       <table>
         <tr><th>Kinesis Data Streams</th><th>Kinesis Data Firehose</th><th>Data Migration Service</th><th>Glue</th></tr>
-        <tr><td>Use when you need custom producers and consumers</td><td>Use cases where you want to deliver directly to S3, Redshift, Elasticsearch, or Splunk</td><td>Use cases when you need to migrate data from one database to another</td><td>Batch-oriented use cases where you want to perform an Extract Transform Load(ETL) process</td></tr>
+        <tr><td>Use when you need custom producers and consumers</td><td>Use cases where you want to deliver directly to S3, Redshift, Opensearch, or Splunk</td><td>Use cases when you need to migrate data from one database to another</td><td>Batch-oriented use cases where you want to perform an Extract Transform Load(ETL) process</td></tr>
         <tr><td>Use cases that require sub-second processing</td><td>Use cases where you can tolerate latency of 60 seconds or greater</td><td>Use cases where you want to migrate a database to a different database engine</td><td>Not for use with streaming use cases</td></tr>
         <tr><td>Use cases that require unlimited bandwidth</td><td>Use cases where you wish to transform your data or convert the data format</td><td></td><td></td></tr>
       </table>
@@ -310,7 +592,7 @@ According to Amazon Web Services, this exam will test the following services and
       <table>
         <tr><th>Kinesis Data Streams</th><th>Kinesis Data Firehose</th><th>Data Migration Service</th><th>Glue</th></tr>
         <tr><td>Pay per shard hour and PUT payload unit</td><td>Pay for the volume of data ingested</td><td>Pay for the EC2 compute resources you use when migrating</td><td>Pay an hourly rate at a billing per second for both crawlers and ETL jobs</td></tr>
-        <tr><td>Extended data retention and enhanced fanout incur additional cost</td><td>Pay for data conversions</td><td>Pay for log storage</td><td>Monthly fee for storing and accessign data in your Glue data catalogue</td></tr>
+        <tr><td>Extended data retention and enhanced fanout incur additional cost</td><td>Pay for data conversions</td><td>Pay for log storage</td><td>Monthly fee for storing and accessing data in your Glue data catalogue</td></tr>
         <tr><td></td><td></td><td>Data transfer fees</td><td></td></tr>
       </table>
     </div>
@@ -408,6 +690,97 @@ According to Amazon Web Services, this exam will test the following services and
       - Reliability and durability
         - Data replicated across three AZs
         - Global-tables for multi region replication
+      - Basics
+        - Maximum size of an item is 400 KB
+      - Primary Keys
+        - Option 1
+          - Partition Key only (HASH)
+          - Key must be unique for each item
+          - Example: user_id
+        - Option 2
+          - The combination must be unique
+          - Data is grouped by partition key
+          - Sort key == range key
+          - Example: user_id for the partition key, game_id for the sort key
+      - Anti-patterns
+        - Joins or complex transactions
+        - BLOB data
+        - Large data with low I/O rate
+      - Provisioned Throughput
+        - Table must have provisioned read and write capacity units
+        - Option to set up auto-scaling of throughput to meet demand
+        - Throughput can be exceeded temporarily using 'burst credit'
+        - If burst credit is empty, you'll get a `ProvisionedThroughputException`
+        - If we exceed our RCU or WCU, we get `ProvisionedThroughputExceededException`
+          - Reason: hot key, large items
+        - By default, DynamoDB uses Eventually Consistent Reads
+        - Write Capacity Units
+          - One WCU represents one write per second for an item up to 1 KB in size
+          - Example
+            - 10 objects per seconds of 2 KB each: 2 * 10 = 20 WCU
+            - 6 objects per second of 4.5 KB each: 6 * 5 = 30 WCU
+            - 120 objects per minute of 2 KB each: 120/60 * 2 = 4 WCU
+        - Read Capacity Units
+          - One read capacity unit represents one strongly consistent reads per second, or two eventually consistent reads per second, for an item up to 4 KB in size'
+          - If the items are larger than 4 KB, more RCU are consumed
+          - Example
+            - 10 strongly consistent reads per seconds of 4 KB each: 10 * 4 / 4 = 10 RCU
+            - 16 eventually consistent reads per second of 12 KB each: (16/2) * (12/4) = 24 RCU
+            - 10 strongly consistent reads per second of 6 KB each: 10 * 8 / 4 = 20 RCU (we have to round up 6 KB to 8 KB)
+      - Partitions
+        - You start with one partition
+        - Each partition has a max of 3000 RCU/1000 WCU, and 10GB
+        - To compute the number of partitions
+          - By Capacity: (total RCU / 3000) + (total WCU / 1000)
+          - By Size: total size / 10 GB
+          - Total Partitions: CEILING(MAX(Capacity, Size))
+      - Writing Data
+        - `PutItem` - write data to DynamoDB
+        - `UpdateItem` - Update data in DynamoDB
+        - `BatchWriteItem` - up to 25 `PutItem` and/or `Delete Item` in one call
+        - Conditional Writes
+          - Accept a write/update only if conditions are
+      - Reading Data
+        - `GetItem` - read based on primary key
+        - `BatchGetItem` - Up to 100 items, up to 16 MB of data
+      - Scan
+        - Scan the entire table and then filter out data (inefficient)
+      - Indexes
+        - LSI (Local Secondary Index)
+          - The LSI is an alternate range key or sort key for your table that is local to the hash key, so the partition key stays the same, but you have an alternate range key
+          - Up to five local secondary indexes per table
+          - The sort key consists of exactly one scalar attribute
+          - The attribute that you choose must be a scalar String, Number or Binary
+          - LSI must be defined at table creation
+          {:refdef: style="text-align: center;"}
+          ![Image]({{site.baseurl}}/images/aws_das_1.28.jpg)
+          {:refdef}
+        - GSI (Global Secondary Index)
+          - To speed up queries on non-key attributes, use a Global Secondary Index
+          - GSI = partition key + optional sort key
+          - The index is a new 'table' and we can project attributes on it
+      - DAX
+        - Seamless cache for DynamoDB, no application re-write
+        - Writes go through DAX to DynamoDB
+        - Micro second latency for cached reads and queries
+        - Solves the Hot Key problem (too many reads)
+        - 5 TTL for cache by default
+        - Up to 10 nodes for the cluster
+      - DynamoDB Streams
+        - Changes in DynamoDB(Create, Update, Delete) can end up in a DynamoDB Stream
+        - This stream can be read by AWS Lambda, and we can then do:
+          - React to changes in real time
+          - Create tables/views
+          - Insert into OpenSearch
+        - Stream has 24 hours of data retention
+        - Configure batch size up to 1000 rows or 6 MB of data
+      - TTL
+        - Automaticlaly delete an item after an expiry date/time
+        - Helps reduce storage and manage the table size, as well as helps adhere to regulatory norms
+      - Storing Large Objects
+        - Max size of an item is 400 KB
+        - For large objects, store them in S3 and reference them in DynamoDB
+
   - ### _Elasticache - fully managed Redis and Memecache_
       - Use cases
         - Caching, session stores, gaming, real-time analytics
@@ -430,7 +803,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Use cases
         - Data science queries, marketing analysis
       - Fast: columnar storage technology that parallelize queries
-        - Milisecond latency queries
+        - Millisecond latency queries
       - Reliability and durability
         - Data replicated within the Redshift cluster
         - Continuous backup to S3
@@ -442,6 +815,13 @@ According to Amazon Web Services, this exam will test the following services and
       - Reliability and Durability
         - Data replicated across three AZs in a region
         - Same-region or cross-region replication
+      - Storage
+        - Max size is 5TB
+      - Strongly consistent
+        - After a successful write of a new object, or an overwrite or delete of an existing object, any subsequent read request immediately receives the latest version of the object
+      - Event Notifications
+        - Events can happen in your S3 bucket, for example, a new object is created, removed, restored, or replicated
+        - You want to be able to react to all these events. You can create rules which you can use to filter by object names
   - ### _Data Freshness_
     - Considering your data freshness when selecting your storage system components
       - Place hot data in cache (Elasticache or DAX) or NoSQL (DynamoDB)
@@ -476,12 +856,12 @@ According to Amazon Web Services, this exam will test the following services and
           - DynamoDB automatically provisions capacity based on your workload, up or down
         - Provisioned capacity
           - Specify read capacity units (RCUs) and write capacity units (WCUs) per second for your application
-          - One RCU equals one strongly consistent read or two eventaully consistent reads per second for items up to 4KB
+          - One RCU equals one strongly consistent read or two eventually consistent reads per second for items up to 4KB
           - One WCU equals one write per second for items up to 1KB
           - Can use auto scaling to automatically calibrate your table's capacity
     - DynamoDB Global Tables
       - Specify multiple regions in which your table(replica) is available
-      - DynamoDB propagates all changes accross all regions
+      - DynamoDB propagates all changes across all regions
       - Any change to an item in any replica is propagated to all other replicas
       - New items propagated within seconds
       - User last-writer-wins reconciliation
@@ -539,6 +919,24 @@ According to Amazon Web Services, this exam will test the following services and
             - You can automate data movement and transformation into and out of Redshift using the scheduling capabilities
           - DMS
             - Move data back and forth between Redshift and other relational databases
+  - ### _Snow family_
+    - Snowcone
+      - Small portable computing, anywhere, rugged and secure
+      - Device used for edge computing, storage, and data transfer
+      - 8 TB of usable storage
+      - Can be used offline
+    - Snowball Edge
+      - Move TB or PB of data in or out of AWS
+      - Snowball Edge Storage Optimized
+        - 80 TB of HDD Capacity
+      - Snowball Edge Compute Optimized
+        - 42 TB of HDD Capacity
+      - Use Cases: Data cloud migrations, DC Decommission, Disaster Recovery
+    - Snowmobile
+      - Transfer of exabytes of data
+      - High Security
+      - Better than snowball if you transfer more than 10 PB of data
+    
 - ### Determine data access and retrieval patterns
   - ### _Data Access and Retrieval Patterns_
     - Characteristics of your data
@@ -592,7 +990,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Website session info, streaming gaming data
     - Archive data
       - Retained for years, typically regulatory
-      - S3 Glacier
+      - S3 Glacier (can combine with Vault Lock which allows you to easily deploy and enforce compliance controls for individual S3 Glacier vaults with a vault lock policy)
   - ### _Data Access Retrieval and Latency_
     - Retrieval speed
       - Near-real time
@@ -614,7 +1012,7 @@ According to Amazon Web Services, this exam will test the following services and
       <table>
         <tr><th>Data Lake</th><th></th><th>Data Warehouse</th></tr>
         <tr><td>Any kind of data from IoT devices, social media, sensors, mobile app, relational, text</td><td>Data</td><td>Relational data with corresponding tables defined in the warehouse</td></tr>
-        <tr><td>Schema-on-read: Schema is constructred by analyst or system when retrieved</td><td>Schema</td><td>Schema-on-write: defined based on knowledge of the data to load</td></tr>
+        <tr><td>Schema-on-read: Schema is constructed by analyst or system when retrieved</td><td>Schema</td><td>Schema-on-write: defined based on knowledge of the data to load</td></tr>
         <tr><td>Raw data from many disparate sources</td><td>Data Format</td><td>Data is carefully managed and controlled, predefined schema</td></tr>
         <tr><td>Uses low-cost object storage</td><td>Storage</td><td>Costly with large data volumes</td>=</tr>
         <tr><td>Change configuration as needed at any time</td><td>Agility</td><td>Configuration (schema/table structure) is fixed</td></tr>
@@ -641,9 +1039,12 @@ According to Amazon Web Services, this exam will test the following services and
         ![Image]({{site.baseurl}}/images/aws_das_1.12.jpg)
         {:refdef}
         - Use cases:
-          - **Key**: Large joins across a particular column
-          - **Even**: Small table that doesn't participate in joins and doesn't change often
-          - **All**: Small table that is updated infrequently and is not updated extensively
+          - **Key**: Rows are distributed according to the values in one column. The leader node will place matching values on the same node slice and matching values from the common columns or physically stored together. Used for large joins across a particular column
+          - **Even**: Distributes the rows across the slices in a round robin fashion. Steps through each individual slice and keep assigning new data to each slice in a circular manner. Used for small tables that don't participate in joins and don't change often
+          - **All**: A copy of the entire table is distributed to every node that ensures that every row is co-located for every join that the table participates in the all distribution multiplies the storage required by the number of nodes in the cluster. Use for small tables that are updated infrequently and are not updated extensively
+          - **Auto**: Automatically assigned
+    - Compute node data distribution optimization
+  
 - ### Select appropriate data layout, schema, structure, and format
   - ### _DynamoDB Partition Keys and Burst/Adaptive Capacity_
     - Optimal data distribution using DynamoDB partition keys
@@ -859,7 +1260,7 @@ According to Amazon Web Services, this exam will test the following services and
       - CloudWatch events
       - CloudWatch logs
       - CloudTrail logs
-    - Profile your Glue jobs using metrics and visualize on the Glue and CloudWatch conoles to identify and fix issues
+    - Profile your Glue jobs using metrics and visualize on the Glue and CloudWatch consoles to identify and fix issues
   - ### _EMR Components_
     - EMR is built on clusters of EC2 instances
       - The EC2 instances are called nodes, all of which have roles (or node type) in the cluster
@@ -873,7 +1274,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Script the work to be done as functions that you specify in the steps you define when you create a cluster
         - This approach is used for clusters that process data then terminate
       - Build a long-running cluster and submit steps (containing one or more jobs) to it via the console, the EMR API, or the AWS CLI
-        - This approach is used for clusters that process data continously or need to remain available
+        - This approach is used for clusters that process data continuously or need to remain available
       - Create a cluster and connect to the master node and/or other nodes as required using SSH
         - This approach is used to perform tasks and submit queries, either scripted or interactively, via the interfaces of the installed applications
   - ### _EMR Cluster - Processing Data_
@@ -890,7 +1291,7 @@ According to Amazon Web Services, this exam will test the following services and
     - When all instances are terminated, the cluster moves to `COMPLETED` state
   - ### _EMR Architecture - Storage_
     - Architected in layers
-      - Storage: file systems used by the clulster
+      - Storage: file systems used by the cluster
         - HDFS: distributes the data it stores across instances in the cluster(ephemeral)
         - EMRFS: directly access data stored in S3 as if it were a file system like HDFS
         - Local file system: EC2 locally connected disk
@@ -908,6 +1309,18 @@ According to Amazon Web Services, this exam will test the following services and
             - Reduce function combines the key-value pairs and processes the data
         - Spark
           - Cluster framework and programming model for processing big data workloads
+  - ### _Lake Formation_
+    - Loading data and monitoring data flows
+    - Setting up partitions
+    - Encryption and managing keys
+    - Defining transformation jobs and monitoring them
+    - Built on top of Glue
+  - ### _Data Pipeline_
+    - Data pipeline lets you schedule tasks for processing your big data
+    - Destinations include S3, RDS, DynamoDB, Redshift and EMR
+    - Manage task dependencies
+    - Precondition checks
+    - Data sources may be on-premises
 
 - ### Design a solution for transforming and preparing data for analysis
   - ### _Optimizing EMR_
@@ -915,7 +1328,7 @@ According to Amazon Web Services, this exam will test the following services and
       - Ways to add EC2 instances to your cluster
         - Instance Groups
           - Manually add instances of the same type to existing core and task instance groups
-          - Manually add a task instance group, can use a differen instance type
+          - Manually add a task instance group, can use a different instance type
           - Automatic scaling for an instance group based on the value of a CloudWatch metric specified by you
         - Instance Fleets
           - Add a single task instance fleet
@@ -970,9 +1383,16 @@ According to Amazon Web Services, this exam will test the following services and
       - Allows for parallel processing and greater speed
       - Considerations
         - Using EMR automatic scaling to scale up/down based on the YARN resources to prevent resource contention
-        - Running multiple steps in parallel requires more memory and CPU utlization from the master node than running one step at a time
+        - Running multiple steps in parallel requires more memory and CPU utilization from the master node than running one step at a time
         - Use YARN scheduling features such as FairScheduler or CapacityScheduler to run multiple steps in parallel
-        - If you run out of resources because the cluster is running too many concurent steps, manually cancel any running steps to free up resources
+        - If you run out of resources because the cluster is running too many concurrent steps, manually cancel any running steps to free up resources
+    - **EMR - AWS integration**
+      - AWS VPC to configure the virutal network in which you launch your instances
+      - S3 to store input and output data
+      - CloudWatch to monitor cluster performance and configure alarms
+      - IAM to configure permissions
+      - CloudTrail to audit requests made to the service
+      - Data Pipeline to schedule and start your clusters
   - ### _Batch versus Streaming ETL Services_
     - Based on your use case, you need to select the best tool or service
     - Batch or Streaming ETL
@@ -1045,12 +1465,13 @@ According to Amazon Web Services, this exam will test the following services and
  
   - ### _Leverage EMR API Calls in CloudTrail_
     - CloudTrail holds a record of actions taken by users, roles or an AWS service in EMR
-      - Caputres all API calls for EMR as events
-      - Enable continous delivery of CloudTrail events to an S3 bucket
+      - Captures all API calls for EMR as events
+      - Enable continuous delivery of CloudTrail events to an S3 bucket
       - Determine the EMR request, the IP address from which the request, when it was made, and additional details
   - ### _Orchestrate Spark and EMR workloads using Step Functions_
     - Directly connect Step Functions to EMR
       - Create data processing and analysis workflows with minimal code and optimize cluster utilization
+      - Easy visualizations
   - ### _Workflows in Glue_
     - Use workflows to create and visualize complex ETL tasks involving multiple crawlers, jobs and triggers
     - Manages the execution and monitoring of all components
@@ -1102,7 +1523,7 @@ According to Amazon Web Services, this exam will test the following services and
         <tr><td>Big data processing</td><td>EMR</td></tr>
         <tr><td>Data Warehousing</td><td>Redshift</td></tr>
         <tr><td>Real-time analytics</td><td>Kinesis</td></tr>
-        <tr><td>Operational analytics</td><td>Elasticsearch</td></tr>
+        <tr><td>Operational analytics</td><td>Opensearch</td></tr>
         <tr><td>Dashboards and visualizations</td><td>QuickSight</td></tr>
         <tr><td style="font-weight: bold">Data Movement</td><td>Real-Time data movement</td><td> 
         Managed Streaming for Kafka (MSK),
@@ -1121,9 +1542,9 @@ According to Amazon Web Services, this exam will test the following services and
     </div>
     
   - ### _Use Cases - Data Warehousing_
-    - Without unnecessary data movement use SQL to query structured and unstructered data in your data warehouse and data lake
+    - Without unnecessary data movement use SQL to query structured and unstructured data in your data warehouse and data lake
     - Redshift
-      - Query petabytes of structered, semi-structered, and unstructed data
+      - Query petabytes of structured, semi-structured, and unstructured data
         - Data Warehouse
         - Operational Database
         - S3 Data Lake using Redshift Spectrum
@@ -1153,16 +1574,16 @@ According to Amazon Web Services, this exam will test the following services and
         - Process and respond in real-time on your data stream
   - ### _Use Cases - Operational Analytics_
     - Search, filter, aggregate, and visualize your data in near real-time
-    - Elasticsearch
+    - Opensearch
       - Application monitoring, log analytics, and clickstream analytics
         - Managed Kibana
         - Alerting and SQL querying
 - ### Usage patterns, performance and cost
   - ### _Glue_
     - **Usage:**
-      - Crawl your data and generate code to execute, invlude data transformations and loading
+      - Crawl your data and generate code to execute, includes data transformations and loading
       - Integrate with services like Athena, EMR, and Redshift
-      - Generates customizable, resuable, and portable ETL code using Python
+      - Generates customizable, reusable, and portable ETL code using Python
     - **Cost:**
       - Hourly rate, billed by the minute, for crawler and ETL jobs
       - Glue Data Catalogue: pay a monthly fee for storing and accessing your metadata
@@ -1189,13 +1610,14 @@ According to Amazon Web Services, this exam will test the following services and
       - Process AWS Events
       - Replace CRON
       - Perform ETL jobs
+      - Note: S3 has the ability to trigger a Lambda function whenever a new object appears in a bucket
     - **Cost:**
       - Charged by the number of requests to functions and code execution time
       - $0.20 per 1,000,000 requests
     - **Performance:**
       - Process events within milliseconds
       - Latency higher for cold start
-      - Retains a function instance and resuses it to serve subsequent requests, versus creating new copy
+      - Retains a function instance and reuses it to serve subsequent requests, versus creating new copy
     - **Durability and Availability:**
       - No maintenance windows or scheduled downtime
       - On failure, Lambda synchronously responds with an exception
@@ -1206,13 +1628,24 @@ According to Amazon Web Services, this exam will test the following services and
       - Trigger Lambda with AWS service events
       - Respond to CloudTrail audit log entries as events
     - **Anti-Patterns:**
-      - Long running applications: 900 sec runtime
+      - Long-running applications: 900 sec runtime
       - Dynamic websites
       - Stateful applications
+    - **Lambda + Kinesis**
+      - Your Lambda code receives an event with a batch of stream records
+        - You specify a batch size when setting up the trigger (up to 10,000 records)
+        - Too large a batch size can cause timeouts
+        - Batches may also be split beyond Lambda's payload limit (6 MB)
+        - Lambda polls your Kinesis streams for new activity
+      - Lambda will retry the batch until it succeeds or the data expires
+        - This can stall the shard if you don't handle errors properly
+        - Use more shards to ensure processing isn't totally held up by errors
+      - Lambda processes shard data synchronously
+
   - ### _EMR_
     - **Usage:**
       - Reduces large processing problems and data sets into smaller jobs and distributes them across many compute nodes in a Hadoop cluster
-      - Log procesing and analytics
+      - Log processing and analytics
       - Large ETL data movement
       - Ad targeting, click stream analytics
       - Predictive analytics
@@ -1237,11 +1670,18 @@ According to Amazon Web Services, this exam will test the following services and
       - ACID transactions; RDS is a better choice
   - ### _Kinesis_
     - **Usage:**
-      - Move data from producers and continously process it to transform before moving to another data store; drive real-time metrics and analytics
+      - Move data from producers and continuously process it to transform before moving to another data store; drive real-time metrics and analytics
       - Real-time data analytics
       - Log intake and processing
       - Real-time metrics and reporting
+      - Kinesis Analytics can only monitor streams from Kinesis, but both data streams and Firehose are supported
+      - Kinesis Analytics must have a stream as its input, and a stream or Lambda function as its output
+      - If a record arrives late to your application during stream processing, it is written to the error stream
+      - Kinesis Data Analytics provisions capacity in the form of Kinesis Processing Units (KPU). A single KPU provides you with the memory (4 GB) and corresponding computing and networking. The default limit for KPUs for your application is eight.
       - Video/Audio processing
+         {:refdef: style="text-align: center;"}
+         ![Image]({{site.baseurl}}/images/aws_das_1.22.jpg)
+         {: refdef}
     - **Cost**
       - Pay for the resources consumed
       - Data Streams hourly price per/shard
@@ -1250,15 +1690,19 @@ According to Amazon Web Services, this exam will test the following services and
       - Data Streams: throughput capacity by number of shards
       - Provision as many shards as needed
     - **Durability and Availability:**
+      - Near real-time
       - Synchronously replicates data across three AZs
       - Highly available and durable due to config of multiple AZs in one Region
       - Use cursor in DynamoDB to restart failed apps
-      - Resume at exact position in the stream where failure occured
+      - Resume at exact position in the stream where failure occurred
     - **Scalability and Elasticity:**
       - Use API calls to automate scaling, increase or decrease stream capacity at any time
     - **Interfaces:**
       - Two interfaces: input (KPL, agent, PUT API), output (KCL)
       - Kinesis Storm Spout: read form a Kinesis stream into Apache Storm
+    - **RANDOM_CUT_FOREST:**
+      - SQL function used by anomaly detection on numeric columns in a stream
+      - They're especially proud of this because they published a paper on it
     - **Anti-Patterns:**
       - Small scale consistent throughput
       - Long-term data storage and analytics, Redshift, S3, or DynamoDB are better choices
@@ -1279,10 +1723,10 @@ According to Amazon Web Services, this exam will test the following services and
       - Define provisioned throughput capacity required for your tables
     - **Durability and Availability:**
       - Protection against individual machine or facility failures
-      - DynamoDB Streams allows replicatoin across regions
+      - DynamoDB Streams allows replication across regions
       - Streams enables table data activity replicated across geographic regions
     - **Scalability and Elasticity:**
-      - No limit to data storage, automatic storage allocatoin, automatic data partition
+      - No limit to data storage, automatic storage allocation, automatic data partition
     - **Interfaces:**
       - REST API allows management and data interface
       - DynamoDB select operation creates SQL-like queries
@@ -1308,6 +1752,9 @@ According to Amazon Web Services, this exam will test the following services and
       - Automatically detects and replaces a failed node in your data warehouse cluster
       - Failed node cluster is read-only until replacement node is provisioned and added to the DB
       - Cluster remains available on drive failure; Redshift mirrors your data across the cluster
+      - Backup to S3
+      - Automatic snapshots
+      - Limited to 1 AZ
     - **Scalability and Elasticity:**
       - With API change the number, or type, of nodes while cluster remains live
     - **Interfaces:**
@@ -1316,7 +1763,7 @@ According to Amazon Web Services, this exam will test the following services and
     - **Anti-Patterns:**
       - Small data sets
       - Online transaction processing
-      - Unstructered data
+      - Unstructured data
       - Blob data, S3 is a better choice
     - **Analytics and Visualization:**
       - Two options:
@@ -1328,21 +1775,64 @@ According to Amazon Web Services, this exam will test the following services and
         - Need a Redshift cluster and a SQL client connected to your cluster to execute SQL commands
         - Visualize data via QuickSight
         - Cluster and data in S3 must be in the same region
+    - **Integration with other services:**
+      - You can load data from DynamoDB, EMR, EC2, Data Pipeline, DMS to Redshift using `COPY`
+    - **Redshift Workload Management(WLM):**
+      - It's a way to help users prioritize workload by ensuring that short, fast running queries are not stuck behind long running slow queries. 
+      - The way it works is by creating query queues at runtime according to service classes and configuration parameters for various types of cues are defined by those service classes.
+    - **Concurrency Scaling:**
+      - Automatically adds cluster capacity to handle increase in concurrent `READ` queries
+      - WLM queues manage which queries are sent to the concurrency scaling cluster
+      - Short Query Acceleration
+        - Prioritize short-running queries over longer-running ones
+        - Short queries run in a dedicated space, won't wait in queue behind long queries
+        - Can be used in place of WLM queues for short queries
+    - **`VACUUM` command:**
+      - `VACUUM FULL`: It will resort all  rows and reclaimed space from deleted rows.
+      - `VACUUM DELETE ONLY`: which is the same as a full vacuum, except that it skips the sorting part. Just reclaims deleted row space and not actually resort it.
+      - `VACUUM SORT ONLY`: Resorts the table, but does not reclaim the space.
+      - `VACUUM REINDEX`: Used for re-initializing interleaved indexes
+    - **Resizing Redshift Clusters:**
+      - Elastic resize
+        - Quickly add or remove nodes of same type
+        - Cluster is down for a few minutes
+        - Tries to keep connection open across the downtime
+        - Limited to doubling or halving for some node types
+      - Classic resize
+        - Change node type and/or number of nodes
+        - Cluster is read-only for hours to days
+      - Snapshot, restore, resize
+        - Used to keep cluster available during a classic resize
+        - Copy cluster, resize new cluster
+    - **Redshift Security concerns:**
+      - Using a Hardware Security Module
+        - Must be a client and server certificate to configure a trusted connection between Redshift and the HSM
+        - If migrating an unencrypted cluster to an HSM-encrypted cluster, you must create the new encrypted cluster and then move data to it
+      - Defining access privileges for user or group
+        - Use the `GRANT` or `REVOKE` commands in SQL
+        - 
   - ### _Athena_
     - **Usage:**
       - Interactive ad hoc querying for web logs
-      - Query staging data before loading into Redshift
+      - Presto under the hood
+      - Serverless
+      - Query staging data before loading into Redshift (stays in S3)
       - Sending AWS service logs to S3 for Analysis with Athena
       - Integrate with Jupyter, Zepplin
+      - Integrate with QuickSight
+      - Can organize users/teams/apps/workloads into Workgroups
+        - Integrates with IAM, CloudWatch, SNS
+        - Each workgroup can have its own data history, data limits, etc.
     - **Cost:**
       - $5 per TB of query data scanned
       - Save on per-query costs and get better performance by compressing, partitioning, and converting data into columnar formats
+      - Save LOTS of money by using columnar formats like ORC, Parquet 
     - **Performance**
       - Compressing, partitioning, and converting your data into columnar formats
-      - Convert data to columnar formats, allowing Athena to read only the columns it needs to process queries
+      - Convert data to columnar formats like Parquet and ORC, allowing Athena to read only the columns it needs to process queries
     - **Durability and Availability:**
       - Executes queries using compute resources across multiple facilities
-      - Automatically reoutes queries if a particular facility is unreachable
+      - Automatically routes queries if a particular facility is unreachable
       - S3 is the underlying data store, gaining S3's 11 9s durability
     - **Scalability and Elasticity:**
       - Serverless, scales automatically as needed
@@ -1353,18 +1843,38 @@ According to Amazon Web Services, this exam will test the following services and
       - Enterprise Reporting and Business Intelligence Workloads; Redshift better choice
       - ETL Workloads; EMR and Glue is a better choice
       - Not a replacement for RDBMS
+      - Querying across regions (unless you query a Glue Data Catalogue)
     - **Analytics and Visualization:**
       - Athena queries data sources that are registered with the AWS Glue Data Catalogue
-      - Running queries in Athena via the Data Catalgue uses the Data Catalogue schema to derive insight from the underlying dataset
-  - ### _Elasticsearch_
+      - Running queries in Athena via the Data Catalogue uses the Data Catalogue schema to derive insight from the underlying dataset
+
+  - ### _Aurora_
+    - MySQL and PostgreSQL - compatible
+    - faster than both
+    - up to 15 read replicas
+    - Continuous back up to S3
+
+  - ### _Opensearch_
     - **Usage:**
+      - Fully managed
       - Analyze activity logs, social media sentiments, data stream updates from other AWS services
       - Usage monitoring for mobile applications
+    - **Integration:**
+      - S3 buckets
+      - Kinesis Data streams
+      - DynamoDB streams
+      - CloudWatch/CloudTrail
+      - Zone Awareness
+      - Kinesis, DynamoDB, Logstash / Beats, and OpenSearch's native API's offer means to import data into Amazon OS
+    - **Options:**
+      - Dedicated master node
+        - Now, the master nodes are only used for the management of Opensearch domain that you're creating, and it does not hold or process any data. You don't need too many of them unless your cluster is really massive.
+      - Domains: An Amazon Opensearch service domain is a collection of all the resources needed to run the Opensearch cluster. it contains all the configuration for the cluster as a whole. A cluster in Amazon Opensearch parlance is a domain.
     - **Cost:**
-      - Elasticsearch instance hours
+      - Opensearch instance hours
       - EBS storage (if you choose this option), and standard data transfer fees
     - **Performance:**
-      - Instance type, workload, index, number of shards used, read replicas, storage configuations
+      - Instance type, workload, index, number of shards used, read replicas, storage configurations
       - Fast SSD instance storage for storing indexes or multiple EBS volumes
     - **Durability and Availability:**
       - Distributes domain instances across two different AZs
@@ -1377,6 +1887,8 @@ According to Amazon Web Services, this exam will test the following services and
     - **Anti-Patterns:**
       - OLTP; RDS better choice
       - Ad hoc data querying, Athena is a better choice
+      - Opensearch is primarily for search and analytics.
+
   - ### _QuickSight_
     - **Usage:**
       - ad-hoc data exploration/visualization
@@ -1396,9 +1908,10 @@ According to Amazon Web Services, this exam will test the following services and
       - Simultaneous analytics across AWS data sources
     - **Scalability and Elasticity:**
       - Fully managed service, scale to terabytes of data
-    - **Interfaces:**
+    - **Interfaces/Data Sources:**
       - RDS, Aurora, Redshift, Athena, S3
       - SaaS, applications such as Salesforce
+      - Files (S3 or on-premises) such as Excel, CSV
     - **Anti-Patterns:**
       - Highly formatted canned Reports, better for ad hoc query, analysis, and visualization of data
       - ETL; Glue is a better choice
@@ -1409,10 +1922,11 @@ According to Amazon Web Services, this exam will test the following services and
           ![Image]({{site.baseurl}}/images/aws_das_1.17.jpg)
           {:refdef}
         - **SPICE**
-          - Super fast, parallel, in memory calculation engine
+          - Superfast, parallel, in memory calculation engine
           - Engineered to rapidly perform advanced calculations and serve data
           - In the Enterprise edition, data in SPICE is encrypted at rest
           - Can release unused SPICE capacity(in-memory data)
+          - Each user gets 10GB of SPICE
         - **Analysis**
           - Use analysis to create and interact with visuals and stories, a container for a set of related visuals and stories
           - Use multiple data sets in an analysis, but any given visual can only use one data set
@@ -1423,6 +1937,7 @@ According to Amazon Web Services, this exam will test the following services and
            {:refdef}
         - **ML Insights**
           - ML Insights use machine learning to uncover hidden insights and trends in your data, identify key drivers, and forecast business metrics
+          - Quicksight Q allows NLP powered business questions
             {:refdef: style="text-align: center;"}
             ![Image]({{site.baseurl}}/images/aws_das_1.19.jpg)
             {:refdef}
@@ -1456,7 +1971,7 @@ According to Amazon Web Services, this exam will test the following services and
     - **Interactive Analytics**
       - Complex queries on complex data at high speed
       - See query results immediately
-      - Athena, Elasticsearch, Redshift
+      - Athena, Opensearch, Redshift
     - **Streaming Analytics**
       - Analysis of data that has short shelf-life
       - Incrementally ingest data and update metrics
@@ -1478,17 +1993,17 @@ According to Amazon Web Services, this exam will test the following services and
         - Blog posts and article analytics
     - **Redshift**
       - OLAP using BI tools
-        - Near real-time analysis of millions of rows of manufacturing data generated by continious manufacturing equipment
-        - Analyze events from mobile app to gain insight inot how users use it
+        - Near real-time analysis of millions of rows of manufacturing data generated by continuous manufacturing equipment
+        - Analyze events from mobile app to gain insight into how users use it
         - Make live data generated by range of next-gen security solutions available to large numbers of organizations for analysis
       - Don't use OLTP or with small data sets
 - ### Select the appropriate data visualization solution for a given scenario
   - ### _Refresh Schedule - Real time Scenarios_
-    - Typically using Elasticsearch and Kibana
-      - `refresh_interval` in Elasticsearch domain updates the domain indicies; determines query freshness
+    - Typically using Opensearch and Kibana
+      - `refresh_interval` in Opensearch domain updates the domain indices; determines query freshness
       - Default is every second
       - Formula: K * (number of data nodes), where k is the number of shards per node
-      - Balance refresh rate cost with decision making needs
+      - Balance refresh rate cost with decision-making needs
   - ### _Refresh Schedule - Interactive Scenarios_
     - Typically ad-hoc exploration using QuickSight
     - Refresh Spice data
@@ -1512,20 +2027,22 @@ According to Amazon Web Services, this exam will test the following services and
         - Up to two million unique values
         - Up to 16 columns
   - ### _QuickSight Visual Data - Drill Down_
-    - QuickSight drill down options for data interactoin
-      - Drill Down: All visaul types except pivot tables allow creation of a hierarchy of fields for a visual element
+    - QuickSight drill down options for data interaction
+      - Drill Down: All visual types except pivot tables allow creation of a hierarchy of fields for a visual element
   - ### _Kibana - Visualization Tool_
     - Open source data visualization dn exploration tool used for log and time-series analytics, application monitoring, and operational intelligence use cases
     - Histograms, line graphs, pie charts, heat maps, and built in geospatial support
-    - Tight integration with Elasticsearch
+    - Tight integration with Opensearch
     - Charts and reports to interactively navigate through large amounts of log data
     - Pre-built aggregations and filters
     - Dashboards and reports to sharer
   - ### _Kibana - Configuration_
     - To visualize and explore data in Kibana, you must first create index patterns
-    - Index patterns point Kibana to the Elasticsearch indexes containing the data to explore
+    - Index patterns point Kibana to the Opensearch indexes containing the data to explore
     - Explore data with Kibana's data discovery functions
-    - Kibana visualizations are based on Amazon Elasticsearch queries
+    - Kibana visualizations are based on Amazon Opensearch queries
+  - ### _Kibana - Security_
+    - Cognito allows end-uers to log in to Kibana through enterprise identity providers such as Microsoft Active Directory using SAML
   - ### _Visualization Use Case_
       <div class="table-container">
           <table>
@@ -1535,7 +2052,7 @@ According to Amazon Web Services, this exam will test the following services and
             hoc queries on data that spans five days
             but is updated by the minute</td>
             <td>Browser access to an interactive report
-            based on an Elasticsearch Kibana view</td></tr>
+            based on an Opensearch Kibana view</td></tr>
             <tr><td>A company's website shares previous
             years' sales volume by region, reports
             monthly revenue to the company, and
@@ -1582,7 +2099,7 @@ According to Amazon Web Services, this exam will test the following services and
         <table>
           <tr><th style="font-weight: bold">Services</th><th>Action</th><th>Resource level Permissions</th><th>Resource Based Policies</th><th>Auth Based on Tags</th><th>Temp Creds</th><th>Service-Linked Roles</th></tr>
           <tr><td style="font-weight: bold">Athena</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td></tr>
-          <tr><td style="font-weight: bold">Elasticsearch</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td></tr>
+          <tr><td style="font-weight: bold">Opensearch</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td></tr>
           <tr><td style="font-weight: bold">EMR</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td></tr>
           <tr><td style="font-weight: bold">Glue</td><td>✅</td><td>✅</td><td>✅</td><td>🔶</td><td>✅</td><td>❌</td></tr>
           <tr><td style="font-weight: bold">Kinesis Analytics</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td></tr>
@@ -1606,38 +2123,178 @@ According to Amazon Web Services, this exam will test the following services and
           - Attached to a resource
           - Specify which users have access to the resource and what actions they can perform on it
           - Example: attach resource-based policies to S3 buckets, SQS queues, and Key Management Service encryption keys
-          
+
+      - Control access/authorization using IAM policies
+      - Encryption in flight using HTTPS endpoints
+      - Encryption at rest using KMS
+      - Client side encryption must be manually implemented
+      - VPC Endpoints available for Kinesis to access within VPC        
         {:refdef: style="text-align: center;"}
         ![Image]({{site.baseurl}}/images/aws_das_1.20.jpg)
         {:refdef}
+    
   - ### _Network Security_
-    - Need to secure the physical boundary of your analytics services using network isolation
-    - Use VPC to achieve network isolation
-    - Example: EMR cluster where the master, core, and task nodes are in a private subnet using NAT to perform outbound only internet access
-    - Also, use security groups to control inbound and outbound access from your individual EC2 instances
-    - With EMR use both EMR-managed security groups and additional security groups to control network access to your instance
-      {:refdef: style="text-align: center;"}
-      ![Image]({{site.baseurl}}/images/aws_das_1.21.jpg)
-      {:refdef}
+  - Need to secure the physical boundary of your analytics services using network isolation
+  - Use VPC to achieve network isolation
+  - Example: EMR cluster where the master, core, and task nodes are in a private subnet using NAT to perform outbound only internet access
+  - Also, use security groups to control inbound and outbound access from your individual EC2 instances
+  - With EMR use both EMR-managed security groups and additional security groups to control network access to your instance
+    {:refdef: style="text-align: center;"}
+    ![Image]({{site.baseurl}}/images/aws_das_1.21.jpg)
+    {:refdef}
+  
   - ### _EMR - Managed Security Groups_
     - Every EMR cluster has managed security groups associated with it, either default or custom
     - EMR automatically adds rules to managed security groups used by the cluster to communicate between cluster instances and AWS services
-    - Rules that EMR creates in amanged security groups allow the cluster to communicate among internal components
+    - Rules that EMR creates in managed security groups allow the cluster to communicate among internal components
     - To allow users and applications to access a cluster from outside the cluster, edit rules in managed security groups
-      - Editing rules in managed security groups may have unintended consequences; may inadvertently block the traffic requried for clusters to function properly
+      - Editing rules in managed security groups may have unintended consequences; may inadvertently block the traffic required for clusters to function properly
     - Specify security groups only on cluster create, can't add to a cluster or cluster instances while a cluster is running
     - Can edit, add and remove rules from existing security groups, the rules take effect as soon as you save them
+    - There are two options
+      - Master node
+      - Cluster node (core node or task node)
+    
   - ### _EMR - Additional Security Groups_
     - Additional security groups are optional
     - Specify in addition to manage security groups to tailor access to cluster instances
     - Contain only rules that you define, EMR does not modify them
     - To allow users and applications to access a cluster from outside the cluster, create additional security groups with additional rules
+    
   - ### _EMR - VPC Options - S3 Endpoints & NAT Gateway_
     - S3 Endpoints
       - All instances in a cluster connect to S3 through either a VPC endpoint or internet gateway
       - Create a private endpoint for S3 in your subnet to give your EMR cluster direct access to data in Amazon S3
     - NAT Gateway
       - Other AWS services which do not currently support VPC endpoints use only an internet gateway
+
+  - ### _Direct Connect (DX)_
+    - Provides a dedicated private connection from a remote network to your VPC
+    - Dedicated connection must be setup between your DC and AWS Direct Connection locations
+    - You need to set up a Virtual Private Gateway on your VPC
+    - Access public resources (S3) and private (EC2) on same connection
+    - Use Cases:
+      - Increase bandwidth throughput - working with large data sets - lower costs
+      - More consistent network experience - application using real-time data feeds
+      - Hybrid environments (on prem + cloud)
+    - Supports both IPv4 and IPv6
+    - Connection Types:
+      - Dedicated Connections: 1 GB/sec, 10GB/sec
+        - Physical ethernet port dedicated to a customer
+      - Hosted Connections: 50 MB/sec, 500 MB/sec, 10GB/sec
+        - Capacity can be added or removed on demand
+      - Encryption
+        - Data in transit is not encrypted but is private
+        - Direct Connect + VPN provides an IPsec-encrypted private connection
+      - Resiliency
+        - High resiliency for critical workloads - consists of a second separate backup connection
+        - Maximum resiliency for critical workloads - each direct location has to two independent locations (total 4)
+      {:refdef: style="text-align: center;"}
+      ![Image]({{site.baseurl}}/images/aws_das_1.27.jpg)
+      {:refdef}
+
+  - ### _QuickSight Security_
+    - VPC connectivity
+      - Add QuickSight's IP address range to your database security groups
+    - Row level/Column level security
+      - Enterprise edition only
+    - Private VPC access
+    - Quicksight + Redshift
+      - By default, Quicksight can only access data stored in the same region as the one quicksight is running within
+      - If you have QuickSight in one region, and Redshift in another, that won't work
+      - Solution: Create a new security group with an inbound rule authorizing access from the IP range of QuickSight servers in that region
+
+  - ### _Kinesis Security_
+    - Kinesis Data Streams
+      - SSL endpoints using the HTTPS protocol to do encryption in flight
+      - AWS KMS provides server-side encryption (encryption at rest)
+      - For client side encryption, you must use your own encryptoin libraries
+      - Supported interface VPC Endpoints / Private Link
+      - KCL - must get read/write access to DynamoDB table (it uses it for checkpointing)
+    - Kinesis Data Firehose
+      - Attach IAM roles so it can deliver to S3 / OS / Redshift / Splunk
+      - Can encrypt the delivery stream with KMS (server-side encryption)
+      - Supported interface VPC Endpoints / Private Link
+    - Kinesis Data Analytics
+      - Attach IAM role so it can read from Kinesis Data Streams and reference sources and write to an output destination (ex. Kinesis Data Firehose)
+
+  - ### _SQS Security_
+    - IAM policy must allow usage of SQS
+    - SQS queue access policy
+
+  - ### _S3 Security_
+    - IAM policies
+    - S3 bucket policies
+    - Access Control Lists (ACLs)
+    - Encryption at flight using HTTPS
+    - Encryption at rest
+    - Versioning + MFA delete
+    - CORS for protecting websites
+    - VPC Endpoint is provided through a Gateway
+    - Glacier - vault lock policies to prevent deletes (WORM)
+
+  - ### _RDS/Aurora Security_
+    - VPC provides network isolation
+    - Security Groups control network access to DB instances
+    - KMS provides encryption at rest
+    - SSL provides encryption in-flight
+    - Must manage user permissions within the database itself
+
+  - ### _Lambda Security_
+    - IAM roles attach to each Lambda function
+    - Lambda will pull data from sources and will send data to targets. The IAM roles attached to your Lambda functions will help you decide what your lead the function can do in terms of sources and targets
+
+  - ### _Glue Security_
+    - Configure Glue to only access JDBC through SSL
+    - Data Catalogue
+      - Encrypted by KMS
+      - Resource policies to protect Data Catalog resources
+      - Connection password: encrypted by KMS
+      - Data written by Glue can be encrypted
+
+  - ### _QuickSight Security_
+    - Standard edition
+      - IAM users
+      - Email based accounts
+    - Enterprise edition
+      - Active Directory
+      - Federated Login
+      - Supports MFA
+      - Encryption at rest and in SPICE
+    - row level security
+
+  - ### _Security Token Service (STS)_
+    - Allows the granting of limited and temporary access to AWS resources
+    - Token valid for up to one hour (must be refreshed)
+    - Usage
+      - Cross account access
+      - Federation (active directory)
+        - Provides a non-AWS user with temporary AWS access by linking users Active Directory
+        - Uses SAML
+        - Allows SSO
+      - Federation with third party providers / Cognito
+        - Used mainly in web and mobile applications
+        - Makes use of Facebook/Google/Amazon etc. to federate them
+
+  - ### _Identity Federation_
+    - Federation lets users outside of AWS to assume a temporary role for accessing AWS resources
+    - These users assume identity provided access role
+    - Federation assumes a form of 3rd party authentication
+      - LDAP
+      - Microsoft Active Directory (SAML)
+      - Single Sign On
+      - Open ID
+      - Cognito
+    - SAML Federation for Enterprises
+      - To integrate Active Directory / ADFS with AWS
+      - Provides access to AWS Console or CLI (through temporary credentials)
+      - No need to create an IAM user for each of your employees
+    - Custom Identity Broker Application for Enterprises
+      - Use only if identity provider is not compatible with SAML 2.0
+      - The identity broker must determine the appropriate IAM policy
+    - Cognito
+      - Provides direct access to AWS resources from the client side
+
 - ### Apply data protection and encryption techniques
   - ### _Encryption and Tokenization_
     - Protect data against data exfiltration (unauthorized copying and/or transferring data) and unauthorized access
@@ -1657,6 +2314,72 @@ According to Amazon Web Services, this exam will test the following services and
         - Centralized store to manage configuration data
         - Plain-text data such as database strings or secrets such as passwords
         - Does not rotate parameter stores automatically
+  - ### _Types of Encryption_
+    - SSE-S3
+      - Keys are handled and managed by Amazon
+      - Object is encrypted server side
+      - AES-256 encryption type
+    - SSE-KMS
+      - Keys are handled and managed by KMS
+      - KMS advantage: user control + audit trail
+      - Object is encrypted server side
+    - SSE-C
+      - Server-side encryption using data keys fully managed by the customer outside of AWS
+      - Amazon S3 does not store the encryption key you provide
+      - HTTPS must be used
+    - Client Side Encryption
+      - You encrypt/decrypt the object yourself before uploading
+
+  - ### _Key Management Service (KMS)_
+    - Easy way to control access to your data, AWS manages keys and encryption
+    - Fully integrated with IAM
+    - The value in KMS is that the CMK used to encrypt data can never be retrived by the user
+    - types of CMK
+      - AWS managed service default CMK
+      - User keys created in KMS
+      - User keys imported
+    - Automatic Key Rotation
+      - For Customer managed CMK
+      - if enabled, key rotation happens every 1 year
+      - Previous key is kept active so you can decrypt old data
+      - New key has the same CMK ID (only the backing key is changed)
+    - Manual Key Rotation
+      - New key has a different CMK ID
+
+  - ### _CloudHSM_
+    - AWS provisions dedicated physical encryption hardware
+    - You manage your own encryption keys entirely
+    - HSM device is tamper resistant
+
+  - ### _EMR Encryption_
+    - At rest data encryption for EMRFS
+      - Encryption in S3
+        - SSE-S3, SSE-KMS, Client Side encryption
+      - Encryption in Local Disks
+    - At rest data encryption for local disks
+      - Open source HDFS encryption
+      - EC2 instance store encryption
+        - NVMe encryption or LUKS encryption (physically)
+      - EBS Volumes
+        - EBS encryption (KMS) - works with root volume
+        - LUKS encryption - does not work with root
+    - In transit encryption
+      - Node to node communication
+      - for EMRFS traffic between S3 and cluster nodes
+      - TLS encryption
+  
+      {:refdef: style="text-align: center;"}
+      ![Image]({{site.baseurl}}/images/aws_das_1.29.jpg)
+      {:refdef}
+
+  - ### _VPC Endpoints_
+    - Endpoints allow you to connect to AWS Services using a private network instead of the public 'www' network
+    - SQS is a public service you can access it from your local computer. It is accessible on the worldwide web but say you wanted to access it from within an EC2 instance on a private subnet. One way would be to give internet access to that EC2 instance but that would be a bit tricky because you need to create a public subnet, you need a new gateway all that stuff or you can just create a VPC endpoint also called private link which basically has a private connection directly into the SQS service and then to connect to the SQS service. Simple as that your EC2 instance will connect directly into the VPC end point
+    - Gateway Endpoint
+      - Provisions a target must be used in a route table - only S3 and DynamoDB
+    - Interface (VPC PrivateLink)
+      - Provisions an ENI (private IP address) as an entry point (must attach security group) - most AWS services
+
 - ### Apply data governance and compliance controls
   - ### _Compliance and Governance_
     - Identify required compliance frameworks (HIPAA, PIC, etc.)
@@ -1665,7 +2388,7 @@ According to Amazon Web Services, this exam will test the following services and
     - Services to create compliant analytics solution
       - **AWS Artifact**
         - Provides on-demand access to AWS compliance and security related information
-        - self-service document retrival portal
+        - self-service document retrieval portal
         - Manage AWS agreements
         - Provide security controls documentation
         - Download AWS security and compliance documents
@@ -1676,6 +2399,9 @@ According to Amazon Web Services, this exam will test the following services and
         - Simplify security analysis, resource change tracking, and troubleshooting by combining event history via CloudWatch
         - Use CloudTrail to audit and review API calls and detect security anomalies
         - Use CloudWatch to create alert rules that trigger SNS notifications to a security or risk event
+        - If a resource is deleted in AWS, look into CloudTrail first
+        - Only shows 90 days past of activity
+        - CloudTrail Trails allow you to get a detailed list of all the events you choose
       - **AWS Config** 
         - Ensure AWS resources conform to your organization's security guidelines and best practices
         - AWS resource inventory, configuration history, and configuration change notifications that enable security and governance
@@ -1685,7 +2411,62 @@ According to Amazon Web Services, this exam will test the following services and
         - Determine how a resource was configured at any point in time
         - Config Rules: represent desired configuration for a resource and is evaluated against configuration changes on the relevant resources, as recorded by AWS Config
         - Assess overall compliance and risk status from a configuration perspective, view compliance trends over time and pinpoint which configuration change caused by a resource to drift out of compliance with a rule
-- ### How AWS Resources interact with each other
+
+- ### AWS Service Integrations
+  - ### _Kinesis Streams - Producers_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.23.jpg)
+  {:refdef}
+  - ### _Kinesis Streams - Consumers_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.24.jpg)
+  {:refdef}
+  - ### _Kinesis Firehose - Sources_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.25.jpg)
+  {:refdef}
+  - ### _Kinesis Firehose - Destinations_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.26.jpg)
+  {:refdef}
+  - ### _Kinesis Data Analytics - Sources_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.30.jpg)
+  {:refdef}
+  - ### _Kinesis Data Analytics - Destinations_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.31.jpg)
+  {:refdef}
+  - ### _SQS - Destinations and Sources_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.32.jpg)
+  {:refdef}
+  - ### _DynamoDB - Destinations and Sources_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.33.jpg)
+  {:refdef}
+  - ### _OpenSearch - Sources_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.34.jpg)
+  {:refdef}
+  - ### _Athena - Destinations and Sources_
+  {:refdef: style="text-align: center;"}
+  ![Image]({{site.baseurl}}/images/aws_das_1.35.jpg)
+  {:refdef}
+
+- ### Notes
+  - The entire security in DynamoDB is managed through IAM, we don't need to create users within DynamoDB
+  - Amazon EMR supports multiple master nodes to enable high availability for EMR applications. Launch an EMR cluster with three master nodes and support high availability applications like YARN Resource Manager, HDFS Name Node, Spark, Hive, and Ganglia. EMR clusters with multiple master nodes are not tolerant of Availability Zone failures. In the case of an Availability Zone outage, you lose access to the EMR cluster.
+  - Archive objects that are queried by S3 Glacier Select must be formatted as uncompressed comma-separated values (CSV).
+  - Duplicate records in Kinesis can be the result of a network-related timeout or a change in the number of shards
+  - `ExpiredIteratorExceptions`: If the shard iterator expires immediately, before you can use it, this might indicate that the DynamoDB table used by Kinesis does not have enough capacity to store the lease data. This situation is more likely to happen if you have a large number of shards. To solve this problem, increase the write capacity units assigned to the shard table
+  - A large number of small files in S3 will slow down reads from Athena, but splitting a  large file will help loading to Redshift in performance. Having one large file will load in serialized manner which lowers performance
+  - Kinesis Data Streams records are available to be read immediately after they are written. There are some use cases that need to take advantage of this and require consuming data from the stream as soon as it is available. You can significantly reduce the propagation delay by overriding the KCL default settings to poll more frequently, as shown in the following examples
+  - `MSCK REPAIR TABLE`: compares the partitions in the table metadata and the partitions in S3. If new partitions are present in the S3 location that you specified when you created the table, it adds those partitions to the metadata and to the Athena table
+  - Amazon S3 buckets can support 3,500 `PUT`/`COPY`/`POST`/`DELETE` or 5,500 `GET`/`HEAD` requests per second per partitioned prefix. Every partition prefix gets additional support and that is why it is wise to add a prefix especially when there is a large set of data
+  - Amazon Machine Image (AMI): Provides the information required to launch an instance
+  - Access Control Lists (ACLs) provide important authorization controls Apache Kafka clusters data.
+
 
 Once you pass, you'll earn the beautiful badge below! 
 
