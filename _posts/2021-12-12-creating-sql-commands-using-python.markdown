@@ -58,10 +58,10 @@ f = open(f"{directory}/company_update_active_inactive.sql", "a")
 
 for row in master_df.index:
     if master_df["to_update_active"][row] == 1:
-    print(
-        f"UPDATE investors SET active = 0, WHERE id = {master_df['id'][row]} LIMIT 1;",
-        file=f,
-    )
+        print(
+            f"UPDATE investors SET active = 0, WHERE id = {master_df['id'][row]} LIMIT 1;",
+            file=f,
+        )
 {% endhighlight %}
 
 The output is a SQL file

@@ -285,6 +285,7 @@ According to Amazon Web Services, this exam will test the following services and
             - Capability to store multiple records in one record (go over 1000 records/sec limit)
             - Increase payload size and improve throughput (maximize 1MB/sec limit)
         - Compression must be implemented by user
+        - When Not to Use the KPL: The KPL can incur an additional processing delay of up to `RecordMaxBufferedTime` within the library (user-configurable). Larger values of `RecordMaxBufferedTime` results in higher packing efficiencies and better performance. Applications that cannot tolerate this additional delay may need to use the AWS SDK directly. For more information about using the AWS SDK with Kinesis Data Streams, see Developing Producers Using the Amazon Kinesis Data Streams API with the AWS SDK for Java
       - *Kinesis Agent*
         - Monitor Log files and sends them to KDS
         - Install only in Linux based environments
@@ -2464,8 +2465,115 @@ According to Amazon Web Services, this exam will test the following services and
   - Kinesis Data Streams records are available to be read immediately after they are written. There are some use cases that need to take advantage of this and require consuming data from the stream as soon as it is available. You can significantly reduce the propagation delay by overriding the KCL default settings to poll more frequently, as shown in the following examples
   - `MSCK REPAIR TABLE`: compares the partitions in the table metadata and the partitions in S3. If new partitions are present in the S3 location that you specified when you created the table, it adds those partitions to the metadata and to the Athena table
   - Amazon S3 buckets can support 3,500 `PUT`/`COPY`/`POST`/`DELETE` or 5,500 `GET`/`HEAD` requests per second per partitioned prefix. Every partition prefix gets additional support and that is why it is wise to add a prefix especially when there is a large set of data
-  - Amazon Machine Image (AMI): Provides the information required to launch an instance
-  - Access Control Lists (ACLs) provide important authorization controls Apache Kafka clusters data.
+  - **Amazon Machine Image (AMI)**: Provides the information required to launch an instance
+    - You can create a custom AMI with encrypted root device volumes
+  - **Access Control Lists (ACLs)** provide important authorization controls Apache Kafka clusters data.
+  - Use a heat map if you want to identify trends and outliers, because the use of color makes these easier to spot
+  - How does Lake Formation organize my data in a data lake? You can use one of the blueprints available in Lake Formation to ingest data into your data lake. Lake Formation creates Glue workflows that crawl source tables, extract the data, and load it to S3. In S3, Lake Formation organizes the data for you, setting up partitions and data formats for optimized performance and cost. For data already in Amazon S3, you can register those buckets with Lake Formation to manage them.
+  - **Athena Federated Query**: if you have data in sources other than Amazon S3, you can use Athena Federated Query to query the data in place or build pipelines that extract data from multiple data sources and store them in Amazon S3. With Athena Federated Query, you can run SQL queries across data stored in relational, non-relational, object, and custom data sources
+  - **Redshift Federated Query**: By using federated queries in Amazon Redshift, you can query and analyze data across operational databases, data warehouses, and data lakes. With the Federated Query feature, you can integrate queries from Amazon Redshift on live data in external databases with queries across your Amazon Redshift and Amazon S3 environments. Federated queries can work with external databases in Amazon RDS for PostgreSQL, Amazon Aurora PostgreSQL-Compatible Edition, Amazon RDS for MySQL, and Amazon Aurora MySQL-Compatible Edition. You can use federated queries to incorporate live data as part of your business intelligence (BI) and reporting applications. For example, to make data ingestion to Amazon Redshift easier you can use federated queries to do the following:
+    - Query operational databases directly
+    - Apply transformations quickly
+    - Load data into the target tables without the need for complex extract, transform, load (ETL) pipelines
+  - AVRO stores data in row format and does not compress the data. However, Parquet is a columnar store (without any additional compression algorithm like snappy applied), it natively compresses the data by 2X to 5X on average
+  - AWS Elastic Resize vs. Classic Resize:
+    - Amazon Redshift allows you to migrate to a certain number of nodes during a cluster resize. By default, Amazon Redshift aims to maintain the same number of slices in the target cluster
+    - Elastic resize – Use elastic resize to change the node type, number of nodes, or both. If you only change the number of nodes, then queries are temporarily paused and connections are held open if possible. During the resize operation, the cluster is read-only. Typically, elastic resize takes 10–15 minutes. AWS recommends using elastic resize when possible
+    - Classic resize – Use classic resize to change the node type, number of nodes, or both. Choose this option when you are resizing to a configuration that isn’t available through elastic resize. An example is to or from a single-node cluster. During the resize operation, the cluster is read-only. Typically, classic resize takes 2 hours–2 days or longer, depending on your data’s size
+    - Note:
+      - Elastic resize often require less time to complete than a classic resize. When you resize a cluster in Amazon Redshift using elastic resize (without changing the node type), Amazon Redshift automatically redistributes data to the new nodes. Unlike classic resize (which provisions a new cluster and transfers data to it), elastic resize doesn't create a new cluster. Elastic resize typically completes within a few minutes. You can expect a small increase in your query execution time while elastic resize completes data redistribution in the background.
+    - Amazon Redshift supports access control at a column-level for data in Redshift. Customers can use column-level grant and revoke statements to help them meet their security and compliance needs. Ex. `grant select(cust_name, cust_phone) on cust_profile to user1;`
+  - Athena *per-query control limit* vs. *per-workgroup limit* data usage control limit
+    - Athena allows you to set two types of cost controls: per-query limit and per-workgroup limit. For each workgroup, you can set only one per-query limit and multiple per-workgroup limits.
+    - The per-query control limit specifies the total amount of data scanned per query. If any query that runs in the workgroup exceeds the limit, it is canceled. You can create only one per-query control limit in a workgroup and it applies to each query that runs in it
+    - The workgroup-wide data usage control limit specifies the total amount of data scanned for all queries that run in this workgroup during the specified time period. You can create multiple limits per workgroup. The workgroup-wide query limit allows you to set multiple thresholds on hourly or daily aggregates on data scanned by queries running in the workgroup.
+    - Locking is a protection mechanism that controls how many sessions can access a table at the same time. Locking also determines which operations can be performed in those sessions. Most relational databases use row-level locks. However, Amazon Redshift uses table-level locks. You might experience locking conflicts if you perform frequent DDL statements on user tables or DML queries
+    - QuickSight can use Random Cut Forest
+    - AWS Glue ETL job `groupFiles` is supported for DynamicFrames created from the following data formats: csv, ion, grokLog, json, and xml. This option is not supported for avro, parquet, and orc
+    - **Instance Groups vs. Instance Fleets**
+      - Instance Groups 
+        - Manually add instances of the same type to existing core and task instance groups 
+        - Manually add a task instance group, which can use a different instance type 
+        - Set up automatic scaling in Amazon EMR for an instance group, adding and removing instances automatically based on the value of an Amazon CloudWatch metric that you specify. For more information, see Scaling cluster resources
+      - Instance Fleets 
+        - Add a single task instance fleet
+        - Change the target capacity for On-Demand and Spot Instances for existing core and task instance fleets. For more information, see Configure instance fleets
+    - `YARNMemoryAvailablePercentage`: the percentage of remaining memory available to YARN. This value is useful for scaling cluster resources based on YARN memory usage
+    - `CapacityRemainingGB`:  The amount of remaining HDFS disk capacity. Use case: Monitor cluster progress, Monitor cluster health
+    - AWS Glue crawler minimum schedule is 5 minutes
+    - Background vacuum operations on AWS Redshift might be blocked if materialized views aren't refreshed
+    - QuickSight connects only to data located in the same AWS Region where you're currently using QuickSight. You can't connect QuickSight to data in another AWS Region, even if your VPC is configured to work across AWS Regions. The solution is to create a new security group for with an inbound rule authorizing access from the appropriate IP address range for the Amazon QuickSight servers in ap-northeast-1
+    - **Database audit logging** : Amazon Redshift logs information about connections and user activities in your database. These logs help you to monitor the database for security and troubleshooting purposes, a process called database auditing. The logs are stored in Amazon S3 buckets. These provide convenient access with data-security features for users who are responsible for monitoring activities in the database. The connection log, user log, and user activity log are enabled together by using the AWS Management Console, the Amazon Redshift API Reference, or the AWS Command Line Interface (AWS CLI)
+    - In the Enterprise edition of Amazon QuickSight, you can restrict access to a dataset by configuring row-level security (RLS) on it. You can do this before or after you have shared the dataset. When you share a dataset with RLS with dataset owners, they can still see all the data. When you share it with readers, however, they can only see the data restricted by the permission dataset rules. By adding row-level security, you can further control their access
+    - The service role for cluster EC2 instances (also called the EC2 instance profile for Amazon EMR) is a special type of service role that is assigned to every EC2 instance in an Amazon EMR cluster when the instance launches. Application processes that run on top of the Hadoop ecosystem assume this role for permissions to interact with other AWS services
+    - QuickSight does not support S3 files with parquet format, Athena does
+    - An EMR cluster can reside only in one Availability Zone or subnet
+    - AWS Encryption SDK
+      - The AWS Encryption SDK is a client-side encryption library designed to make it easy for everyone to encrypt and decrypt data using industry standards and best practices. It enables you to focus on the core functionality of your application, rather than on how to best encrypt and decrypt your data
+    - When you see "key that can be rotated" it must be CMK, You cannot rotate key that you did not create
+    - AWS Glue allows you to consolidate multiple files per Spark task using the file grouping feature. Grouping files together reduces the memory footprint on the Spark driver as well as simplifying file split orchestration. Without grouping, a Spark application must process each file using a different Spark task. Spark applications processing more than roughly 650,000 files often cause the Spark driver to crash with an out of memory exception
+    - High JVM memory pressure on OpenSearch Service cluster
+      - Spikes in the numbers of requests to the cluster
+      - Aggregations, wildcards, and selecting wide time ranges in the queries
+      - Unbalanced shard allocations across nodes or too many shards in a cluster
+      - Field data or index mapping explosions
+      - Instance types that can't handle incoming loads
+    - AWS Glue can crawl data in different AWS Regions. When you define an Amazon S3 data store to crawl, you can choose whether to crawl a path in your account or another account
+    - To successfully connect Amazon QuickSight to the Amazon S3 buckets used by Athena, make sure that you authorized Amazon QuickSight to access the S3 account. It’s not enough that you, the user, are authorized. Amazon QuickSight must be authorized separately
+    - Which components must be included in each Redshif query monitoring rule?
+      - Each rule includes up to three conditions, or predicates, and one action
+    - Kinesis Data Firehose can only have one destination per stream (Kinesis Data Streams can have multiple)
+  - AWS Data Exchange makes it easy to find, subscribe to, and use third-party data in the cloud
+  - Redshift `COPY` command
+    - Amazon Redshift can automatically load in parallel from multiple compressed data files. However, if you use multiple concurrent COPY commands to load one table from multiple files, Amazon Redshift is forced to perform a serialized load
+    - You can use a manifest to ensure that your COPY command loads all of the required files, and only the required files, from Amazon S3. You can also use a manifest when you need to load multiple files from different buckets or files that don't share the same prefix
+  - Lambda maximum running time 15 minutes
+  - EMR - Block public access is only applicable during cluster creation by choosing the `Block public access` setting
+  - Kinesis Data Analytics uses Random Cut Forest ML
+  - AWS Glue can exclude certain S3 storage types using the `excludeStorageClasses` property
+  - Anything EMR comparing to serverless Glue / Athena is operational overhead. Also remember Glue can do PySpark and Scala, and Athena can do JDBC
+  - When it comes to high-performance and high write throughput to KDS, KPL should be choice
+  - You might want to create AWS Glue Data Catalog tables manually and then keep them updated with AWS Glue crawlers. Crawlers running on a schedule can add new partitions and update the tables with any schema changes. This also applies to tables migrated from an Apache Hive metastore
+  - Redshift  workload management query queue hopping only works for manual WLM config
+  - With the Redshift Concurrency Scaling feature, you can support virtually unlimited concurrent users and concurrent queries, with consistently fast query performance. When you turn on concurrency scaling, Amazon Redshift automatically adds additional cluster capacity to process an increase in both read and write queries
+  - EMRFS consistent view tracks consistency using a DynamoDB table to track objects in Amazon S3 that have been synced with or created by EMRFS
+  - Kinesis Data Firehose: Do not Need lambda to convert from JSON to Parquet, it is a built-in capability
+  - AWS DataSync is a secure, online service that automates and accelerates moving data between on premises and AWS storage services. DataSync can copy data between Network File System (NFS) shares, Server Message Block (SMB) shares, Hadoop Distributed File Systems (HDFS), self-managed object storage, AWS Snowcone, Amazon Simple Storage Service (Amazon S3) buckets, Amazon Elastic File System (Amazon EFS) file systems, Amazon FSx for Windows File Server file systems, and Amazon FSx for Lustre file systems
+  - Amazon DynamoDB Time to Live (TTL) allows you to define a per-item timestamp to determine when an item is no longer needed. Shortly after the date and time of the specified timestamp, DynamoDB deletes the item from your table without consuming any write throughput. TTL is provided at no extra cost as a means to reduce stored data volumes by retaining only the items that remain current for your workload’s needs
+  - Redshift supports two types of sort keys:
+    - **Compound Sort Key (Default)**: The compound sort key is a key composed of one or more columns. The order of the columns in the sort key is crucial as they define how the actual data gets stored on the disk. As a best practice, you should order the col- umns in the lowest to highest cardinality. These are effective when a majority of the queries on a table filter or join are on a specific subset of columns
+    - **Interleaved Sort Key**: Each column in the sort key is sorted with equal weighting. This is useful when multiple queries use different access paths and different columns for filters and joins. This should be used with caution and edge cases only
+  - CloudWatch Logs subscription
+    - You can use subscriptions to get access to a real-time feed of log events from CloudWatch Logs and have it delivered to other services such as an Amazon Kinesis stream, an Amazon Kinesis Data Firehose stream, or AWS Lambda for custom processing, analysis, or loading to other systems. When log events are sent to the receiving service, they are base64 encoded and compressed with the gzip format 
+    - To begin subscribing to log events, create the receiving resource, such as a Kinesis stream, where the events will be delivered. A subscription filter defines the filter pattern to use for filtering which log events get delivered to your AWS resource, as well as information about where to send matching log events to
+  - As a best practice, AWS strongly recommends that you create a service role for cluster EC2 instances and permissions policy so that it has the minimum permissions to other AWS services that your application requires
+  - S3DistCp
+    - Apache DistCp is an open-source tool you can use to copy large amounts of data. S3DistCp is similar to DistCp, but optimized to work with AWS, particularly Amazon S3. The command for S3DistCp in Amazon EMR version 4.0 and later is s3-dist-cp, which you add as a step in a cluster or at the command line. Using S3DistCp, you can efficiently copy large amounts of data from Amazon S3 into HDFS where it can be processed by subsequent steps in your Amazon EMR cluster. You can also use S3DistCp to copy data between Amazon S3 buckets or from HDFS to Amazon S3. S3DistCp is more scalable and efficient for parallel copying large numbers of objects across buckets and across AWS accounts.
+  - AWS Lambda can perform data enrichment like looking up data from a DynamoDB table, and then produce the enriched data onto another stream. Lambda is commonly used for preprocessing the analytics app to handle more complicated data formats.
+  - **Identity-based policies vs. resource-based policies**
+    - Identity-based policies are attached to an IAM user, group, or role. These policies let you specify what that identity can do (its permissions). For example, you can attach the policy to the IAM user named John, stating that he is allowed to perform the Amazon EC2 RunInstances action. The policy could further state that John is allowed to get items from an Amazon DynamoDB table named MyCompany. You can also allow John to manage his own IAM security credentials. Identity-based policies can be managed or inline
+    - Resource-based policies are attached to a resource. For example, you can attach resource-based policies to Amazon S3 buckets, Amazon SQS queues, VPC endpoints, and AWS Key Management Service encryption keys. For a list of services that support resource-based policies, see AWS services that work with IAM
+    - Identity-based policies and resource-based policies are both permissions policies and are evaluated together. For a request to which only permissions policies apply, AWS first checks all policies for a Deny. If one exists, then the request is denied. Then AWS checks for each Allow. If at least one policy statement allows the action in the request, the request is allowed. It doesn't matter whether the Allow is in the identity-based policy or the resource-based policy
+  - **External Metastore for Hive**
+    - By default, Hive records metastore information in a MySQL database on the master node's file system. The metastore contains a description of the table and the underlying data on which it is built, including the partition names, data types, and so on. When a cluster terminates, all cluster nodes shut down, including the master node. When this happens, local data is lost because node file systems use ephemeral storage. If you need the metastore to persist, you must create an external metastore that exists outside the cluster. 
+      - You have two options for an external metastore:
+        - AWS Glue Data Catalog (Amazon EMR version 5.8.0 or later only)
+          - Using Amazon EMR version 5.8.0 or later, you can configure Hive to use the AWS Glue Data Catalog as its metastore. This configuration is recommended when you require a persistent metastore or a metastore shared by different clusters, services, applications, or AWS accounts
+        - Amazon RDS or Amazon Aurora
+          - To use an external MySQL database or Amazon Aurora as your Hive metastore, you override the default configuration values for the metastore in Hive to specify the external database location, either on an Amazon RDS MySQL instance or an Amazon Aurora PostgreSQLinstance
+  - AWS Glue can crawl data in different AWS Regions. The output of the crawler is one or more metadata tables defined in the AWS Glue Data Catalog
+  - **Kinesis Data Analytics Query Types**
+    - Stagger Windows: A query that aggregates data using keyed time-based windows that open as data arrives. The keys allow for multiple overlapping windows. It is suited for analyzing groups of data that arrive at inconsistent times. This is the recommended way to aggregate data using time-based windows, because Stagger Windows reduce late or out-of-order data compared to Tumbling windows
+    - Tumbling Windows: A query that aggregates data using distinct time-based windows that open and close at regular intervals
+    - Sliding Windows: A query that aggregates data continuously, using a fixed time or rowcount interval.
+  - For Amazon QuickSight to access your AWS resources, you must create security groups for them that authorize connections from the IP address ranges used by Amazon QuickSight servers. You must have AWS credentials that permit you to access these AWS resources to modify their security groups. For Amazon QuickSight to connect to an Amazon Redshift instance, you must create a new security group for that instance. This security group contains an inbound rule authorizing access from the appropriate IP address range for the Amazon QuickSight servers in that AWS Region
+  - With Amazon EMR you can encrypt log files stored in Amazon S3 with an AWS KMS customer-managed key. Logging needs to be enabled when you launch the cluster.
+  - S3 Resource-Based Policies
+    - ACL: Each bucket and object have an associated ACL, which is basically a list of grants identifying the permission granted and to whom it is being granted. ACLs can be used to provide basic read/write permissions to other AWS accounts and use an AWS S3–specific XML schema
+    - Bucket Policy: Bucket policy is a JSON document that grants other AWS accounts or IAM users permissions to the buckets and objects contained in the bucket. Bucket policies supplement and in some cases replace the ACL policies. The following is an example of bucket policy
+  - A single Kinesis data stream is capable of collecting data from multiple different data sources
+
+
 
 
 Once you pass, you'll earn the beautiful badge below! 

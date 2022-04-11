@@ -1,13 +1,12 @@
 ---
 layout: post
-title:  Transforming Data in a Data Warehouse using dbt
+title:  Data Engineering Zoomcamp - Week 3 - BigQuery
 description:
 date:   2022-02-15
-image:  '/images/temp.jpg'
+image:  '/images/dezoomcamp_week3.jpg'
 tags:   [Airflow, Data Pipeline, GCP, Cloud Computing]
 ---
 
 # ️This Blog post is a WIP ⛔️
 
-**What is Apache Airflow**
-
+# Week 3 - Data Warehouse

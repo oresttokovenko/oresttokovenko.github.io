@@ -5,7 +5,7 @@ permalink: /about/
 image: '/images/about_me_banner.jpg'
 ---
 
-Hi! My name is Orest Tokovenko. I'm 25 years old and currently work as a Data Analyst for the Exempt Edge FinTech division at Olympia Financial Group Inc. I was raised in Burlington, Ontario and am currently based in Calgary, Alberta.
+Hi! My name is Orest Tokovenko. I'm 26 years old and currently work as a Data Engineer at [Fullscript](https://fullscript.com). I was raised in Burlington, Ontario and am currently based in Calgary, Alberta.
 
 My hobbies include languages, making good quality coffee, trivia, photography, mixology, and notaphily, but the list will likely increase as I love learning new things!
 
@@ -13,7 +13,7 @@ I strongly believe that the best way to learn and understand a new skill is by t
 
 ### Data Science, Analytics and Engineering
 
-I discovered Data Science in mid-2019 when I realized the business intelligence work I had been doing at UPS for two years as a Branch Manager was part of an exciting new field called Data Science. Eventually, I took a risk and left my job to pursue a Data Science diploma at BrainStation and soon after graduating, I found work in Calgary. I am currently working on completing a university certificate in Big Data Programming and Architecture(Data Engineering) at McMaster University. I also obtained a few certifications for Big Data technologies such as Apache Airflow, as well as Cloud Computing certifications like AWS and Azure. I love to keep up with the latest trends so in January 2022 I decided to enroll in the [DataClub.Talks data engineering zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp), which allowed me to see data engineering from a production level perspective and try new technologies, such as Terraform, Kafka, and BigQuery.
+I discovered Data Science in mid-2019 when I realized the business intelligence work I had been doing at UPS for two years as a Branch Manager was part of an exciting new field called Data Science. Eventually, I took a risk and left my job to pursue a Data Science diploma at BrainStation and soon after graduating, I found work in Calgary. I am currently working on completing a university certificate in Big Data Programming and Architecture(Data Engineering) at McMaster University. I also obtained a few certifications for Big Data technologies such as Apache Airflow, as well as Cloud Computing certifications like AWS and Azure.
 
 ### Languages
 
