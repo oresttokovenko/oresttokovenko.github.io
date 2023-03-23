@@ -149,23 +149,23 @@ Here's an example of how to use Boto3 to create and invoke a Lambda function:
 
 import boto3
 
-# Create a Lambda client
+# create a Lambda client
 lambda_client = boto3.client('lambda')
 
-# Define the function payload
+# define the function payload
 payload = {
 'key1': 'value1',
 'key2': 'value2',
 'key3': 'value3'
 }
 
-# Invoke the Lambda function
+# invoke the Lambda function
 response = lambda_client.invoke(
 FunctionName='my_function_name',
 Payload=json.dumps(payload)
 )
 
-# Print the response from the Lambda function
+# print the response from the Lambda function
 print(response['Payload'].read())
 
 {% endhighlight %}
