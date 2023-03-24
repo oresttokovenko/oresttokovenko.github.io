@@ -67,7 +67,7 @@ Id columns are columns that contain unique identifiers for each row in the datas
 {% endraw %}
 {% endhighlight %}
 
-By automatically organizing the YAML file based on these categories, I can easily see which columns are IDs, which are dates, and which are everything else. This makes it much easier for me to work with the data and to build pipelines that use this data. You can run the macro by using the query below, sure make sure you include it in your repo under the `~/macros` directory.
+By automatically organizing the YAML file based on these categories, I can easily see which columns are IDs, which are dates, and which are everything else. This makes it much easier for me to work with the data and to build pipelines that use this data. You can run the macro by using the bash command below, just make sure you include it in your repo under the `~/macros` directory.
 
 {% highlight bash %}
 
