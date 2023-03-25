@@ -3,7 +3,7 @@ layout: post
 title: End-to-end ETL with Apache Flink, Snowflake and Quicksight
 description:
 date:   2022-11-19
-image:  '/images/10.jpg'
+image:  '/images/end_to_end_etl_with_apache_flink_snowflake_and_quicksight.jpg'
 tags:   [Snowflake, Flink, Python]
 ---
 
