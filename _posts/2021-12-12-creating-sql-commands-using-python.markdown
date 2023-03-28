@@ -7,11 +7,11 @@ image:  '/images/08.jpg'
 tags:   [SQL, Database, Python]
 ---
 
-Deliverable:  If a client in the old database was labelled as ‘inactive’ please ensure that they are listed as an inactive client in the new database.
+In the world of data engineering, tasks that seem simple on the surface can often be deceptively complex. Take for example the task of updating a new database with data from an old one, specifically ensuring that clients labeled as "inactive" in the old database are correctly listed as such in the new one. While it might seem like a simple SQL query would suffice, sometimes the reality is not so straightforward. In this blog post, we'll explore a method for achieving this task using Python and Azure, and why it might be the simplest and most efficient approach in certain situations.
 
-You might look at this deliverable and think, I can write this in SQL, why use Python? Maybe append both tables from each database to a variable like `@old_database` and loop through them? The issue is, these databases are not in the same subnet in Azure, and a SQL query cannot connect to both of them simultaneously (at least not without extra work). I find this method simple and fast.
+You might look at this task and think, I can write this in SQL, why use Python? Maybe append both tables from each database to a variable like `@old_database` and loop through them? The issue is, these databases are not in the same subnet in Azure, and a SQL query cannot connect to both of them simultaneously (at least not without extra work). I find this method simple and fast.
 
-First, pull in the relevant tables from both databases using SQLAlchemy, `pd.merge()` them into a single dataframe on the common column, then create a function that generates a column that flags rows based on the deliverable request.
+First, pull in the relevant tables from both databases using SQLAlchemy, `pd.merge()` them into a single dataframe on the primary key column, then create a function that generates a column that flags rows based on the deliverable request.
 
 {% highlight python %}
 
@@ -50,7 +50,7 @@ master_df["to_update_active"] = master_df.apply(create_to_update_active, axis=1)
 
 {% endhighlight %}
 
-Now we can apply the function to create the column, allowing us to loop through the dataframe using an if clause, print a SQL statement for each row that is flagged by the `1`
+We can now apply the function to create the column, allowing us to loop through the dataframe using an if clause, print a SQL statement for each row that is flagged by the `1`
 
 {% highlight python %}
 
