@@ -3,7 +3,7 @@ layout: post
 title: End-to-end ETL with Airbyte, dbt, Dagster, Snowflake and Metabase
 description:
 date:   2022-11-19
-image:  '/images/end_to_end_etl_with_apache_flink_snowflake_and_quicksight.jpg'
+image:  '/images/etl_airbyte_dbt_dagster_snowflake.jpg'
 tags:   [Airbyte, dbt, Python, Snowflake, Dagster, Metabase]
 ---
 
@@ -13,7 +13,7 @@ tags:   [Airbyte, dbt, Python, Snowflake, Dagster, Metabase]
 
 ### Theme: 
 
-Retail sales data for an e-commerce store
+Retail sales data for an e-commerce store 
 
 ### Project Overview:
 
