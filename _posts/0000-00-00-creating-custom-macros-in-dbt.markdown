@@ -75,4 +75,4 @@ dbt run-operation generate_ordered_yaml --args '{"model_name":"<your_dbt_model>"
 
 {% endhighlight %}
 
-Overall, creating this macro has been a huge time-saver for me. It's allowed me to spend more time focusing on the data itself, rather than on the tedious task of manually reorganizing YAML files. If you're interested in creating your own custom dbt macros, check out this tutorial by Madison Mae at `https://madisonmae.substack.com/p/tutorial-write-a-custom-dbt-macro`. By leveraging the power of Jinja and dbt, you too can streamline your data engineering tasks and work more efficiently with large datasets
+Overall, creating this macro has been a huge time-saver for me. It's allowed me to spend more time focusing on the data itself, rather than on the tedious task of manually reorganizing YAML files. If you're interested in creating your own custom dbt macros, [check out this tutorial by Madison Mae](https://madisonmae.substack.com/p/tutorial-write-a-custom-dbt-macro). By leveraging the power of Jinja and dbt, you too can streamline your data engineering tasks and work more efficiently with large datasets
