@@ -15,13 +15,27 @@ But, as you might expect, creating Anki cards manually for every concept in the 
 
 First things first, I used ChatGPT to generate questions and answers based on the contents of my Java book. By sending a prompt to ChatGPT with the text I wanted to learn, it analyzed the material and generated a CSV file with relevant questions and answers.
 
+{% highlight csv %}
+
+"What does concurrency mean in programming with threads?", "Concurrency means performing multiple tasks simultaneously and synchronizing them."
+
+{% endhighlight %}
+
 ### Step 2: Write a Python Script to Generate Anki Decks
 
 Next, I created a Python script that took the CSV output from ChatGPT and converted it into Anki flashcards. To do this, I used a fantastic Python library called `genanki`. `genanki` helps create Anki decks programmatically, so all I had to do was write a script that mapped the questions and answers in the CSV to the format required.
 
+{% highlight zsh %}
+
+python csv_to_anki.py <input_csv> <output_anki>
+
+{% endhighlight %}
+
 ### Step 3: Import the Generated Deck into Anki
 
 Once I had the `.anki` file, I imported it into the Anki app, and voilà! I had a shiny new custom Java Anki deck at my fingertips. Now, I can efficiently review all the Java concepts I'm learning, and the process is repeatable for any new material I encounter.
+
+![Screenshot]({{site.baseurl}}/images/import_screenshot.jpg)
 
 The beauty of this approach is that it's not just limited to Java. With a little tweaking, you can apply this technique to virtually any subject matter you're studying. So, whether you're learning a new programming language or brushing up on your 18th-century French literature, Python and ChatGPT can help you create custom Anki decks tailored to your learning needs. 
 
