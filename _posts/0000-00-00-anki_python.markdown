@@ -17,7 +17,9 @@ First things first, I used ChatGPT to generate questions and answers based on th
 
 <!-- ![Gif]({{site.baseurl}}/images/gptpy_demo.gif) -->
 
-![Gif](/images/gptpy_demo.gif)
+<img src="{{ site.baseurl }}/images/gptpy_demo.gif">
+
+<!-- ![Gif](/images/gptpy_demo.gif) -->
 
 ### Step 2: Write a Python Script to Generate Anki Decks
 
@@ -25,7 +27,9 @@ Next, I created a Python script that took the CSV output from ChatGPT and conver
 
 <!-- ![Gif]({{site.baseurl}}/images/gptpy_demo_2.gif) -->
 
-![Gif](/images/gptpy_demo_2.gif)
+<img src="{{ site.baseurl }}/images/gptpy_demo_2.gif">
+
+<!-- ![Gif](/images/gptpy_demo_2.gif) -->
 
 {% highlight zsh %}
 
