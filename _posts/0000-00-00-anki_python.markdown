@@ -31,7 +31,7 @@ python csv_to_anki.py <input_csv> <output_anki>
 
 ### Step 3: Import the Generated Deck into Anki
 
-Once I had the `.anki` file, I imported it into the Anki app, and voilà! I had a shiny new custom Java Anki deck at my fingertips. Now, I can efficiently review all the Java concepts I'm learning, and the process is repeatable for any new material I encounter.
+Once I had the `.apkg` file, I imported it into the Anki app, and voilà! I had a shiny new custom Java Anki deck at my fingertips. Now, I can efficiently review all the Java concepts I'm learning, and the process is repeatable for any new material I encounter.
 
 ![Screenshot]({{site.baseurl}}/images/import_screenshot.jpg)
 
