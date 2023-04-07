@@ -17,8 +17,6 @@ First things first, I used ChatGPT to generate questions and answers based on th
 
 ![Gif]({{site.baseurl}}/images/gptpy_demo.gif)
 
-![Gif]({{site.baseurl}}/images/temp.gif)
-
 ### Step 2: Write a Python Script to Generate Anki Decks
 
 Next, I created a Python script that took the CSV output from ChatGPT and converted it into Anki flashcards. To do this, I used a fantastic Python library called `genanki`. `genanki` helps create Anki decks programmatically, so all I had to do was write a script that mapped the questions and answers in the CSV to the format required.
