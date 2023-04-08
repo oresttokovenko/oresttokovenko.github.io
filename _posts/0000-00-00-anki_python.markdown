@@ -37,7 +37,9 @@ Once I had the `.apkg` file, I imported it into the Anki app, and voilà! I had 
 
 The beauty of this approach is that it's not just limited to Java. With a little tweaking, you can apply this technique to virtually any subject matter you're studying. So, whether you're learning a new programming language or brushing up on your 18th-century French literature, Python and ChatGPT can help you create custom Anki decks tailored to your learning needs. 
 
-You can find the prompt, and script that I used in my [Github repo here](https://github.com/oresttokovenko/gpt-anki). To set up the environment, follow the instructions in the link. 
+You can find the prompt, and script that I used in my [Github repo here](https://github.com/oresttokovenko/gpt-anki){:target="_blank"}{:rel="noopener noreferrer"}. To set up the environment, follow the instructions in the link. 
+
+<!-- [Github repo here](https://github.com/oresttokovenko/gpt-anki) -->
 
 As I continue to learn Java and explore new technologies, I am grateful for tools like Python, ChatGPT, and Anki. Not only do they help me learn more efficiently, but they also make the process more enjoyable. I can't wait to see what other automation tricks I can come up with as I delve deeper into the world of Data Engineering!
 
