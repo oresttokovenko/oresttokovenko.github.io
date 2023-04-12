@@ -7,7 +7,7 @@ image:  '/images/anki_python.jpg'
 tags:   [Python]
 ---
 
-I am no stranger to the ever-evolving world of technology as a user of the Data tools/services ecosystem. Recently, I've been diving into the intricacies of Java for its high-performance capabilities, scalability, and seamless integration with popular technologies like Apache Flink and Kafka. To help me retain all the knowledge I've been acquiring, I rely on my trusty Anki app. With its spaced repetition magic and flashcard-style recall, Anki has been my go-to learning companion.
+I am no stranger to the ever-evolving world of technology as a user of the Data tools/services ecosystem. Recently, I've been diving into the intricacies of Java for its high-performance capabilities, scalability, and seamless integration with popular technologies like Apache Flink, Iceberg and Kafka (which all consist of a majority Java codebase). To help me retain all the knowledge I've been acquiring, I rely on my trusty Anki app. With its spaced repetition magic and flashcard-style recall, Anki has been my go-to learning companion.
 
 But, as you might expect, creating Anki cards manually for every concept in the "Learning Java, 5th Edition" by Marc Loy can be quite a chore. So, like any good engineer, I decided to automate this process using Python and ChatGPT. In this blog post, I will show you how I used these tools to create custom Anki decks that help me learn Java more efficiently.
 
