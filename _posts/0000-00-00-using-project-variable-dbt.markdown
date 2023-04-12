@@ -4,7 +4,7 @@ title: Leveraging dbt Project Variables and Jinja for a DRY Workflow
 description:
 date:   2023-04-12
 image:  '/images/project_variable.jpg'
-tags:   [LaTeX, Docker]
+tags:   [dbt, SQL, Jinja]
 ---
 
 ### ⛔ This Blog post is a WIP  ⛔
