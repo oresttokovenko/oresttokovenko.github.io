@@ -49,6 +49,8 @@ Finally, used them to iterate through the distribution centre location informati
 
 #### Example
 
+##### Before implementing DRY code
+
 {% highlight sql %}
 
 , monthly_sums as (
@@ -106,11 +108,13 @@ Finally, used them to iterate through the distribution centre location informati
 
 {% endhighlight %}
 
-After implement DRY code
+##### After implementing DRY code
 
 {% highlight jinja %}
 
 {% raw %}
+
+{% distribution_centres = var("distribution_centres") %}
 
 , monthly_sums as (
     select
