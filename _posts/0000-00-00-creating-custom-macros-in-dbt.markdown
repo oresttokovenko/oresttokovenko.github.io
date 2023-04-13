@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Creating Custom Macros in dbt
+title: Creating Custom Macros in dbt for Efficient YAML Generation and Organization
 description:
 date:   2023-03-19
 image:  '/images/dbt_macro.jpg'
@@ -9,14 +9,19 @@ tags:   [SQL, dbt, Jinja]
 
 As a data engineer, I spend a lot of time working with YAML files. These files contain information about the data that we're working with, including the column names, data types, and other metadata. But I've always found it frustrating to manually reorganize these files, especially when I'm dealing with large datasets.
 
-That's when I took inspiration from an existing dbt model called `generate_model_yaml` and decided to create a custom macro that would automatically generate my YAML for new dbt models, as well as organizing the columns into four categories: ID columns, date columns, Fivetran metadata columns, and everything else. The reason for organizing it in such a way is that it aligns with our company YAML naming standards. This new macro adds the much-needed functionality to the existing macro, which includes unnecessary boilerplate code, always adds description rows and does not organize the columns in any way.
+That's when I took inspiration from an existing dbt model called `generate_model_yaml` and decided to create a custom macro that would automatically generate my YAML for new dbt models, as well as organizing the columns. The reason for organizing it in such a way is that it aligns with our company YAML naming standards. This new macro adds the much-needed functionality to the existing macro, which includes unnecessary boilerplate code, always adds description rows and does not organize the columns in any way. In addition, I've added error handling and validation to the macro, which checks if the model_name provided as an argument exists in the dbt project. This will help prevent potential issues due to incorrect input.
 
-Id columns are columns that contain unique identifiers for each row in the dataset. These are typically used as primary keys when we're joining tables together. Date columns are columns that contain dates, Fivetran columns are columns for Fivetran ingestion metadata, and everything else includes all the other columns.
+Now let's dive into the custom macro implementation.
 
 {% highlight jinja %}
-
 {% raw %}
 {% macro generate_ordered_yaml(model_name) %}
+
+{%- set all_models = dbt_utils.get_relation_names(database='warehouse') -%}
+{%- if model_name not in all_models %}
+    {{ log("The provided model name '" ~ model_name ~ "' does not exist in the dbt project.", info=True) }}
+    {% do return() %}
+{%- endif %}
 
 {% set model_yaml=[] %}
 
@@ -67,12 +72,37 @@ Id columns are columns that contain unique identifiers for each row in the datas
 {% endraw %}
 {% endhighlight %}
 
-By automatically organizing the YAML file based on these categories, I can easily see which columns are IDs, which are dates, and which are everything else. This makes it much easier for me to work with the data and to build pipelines that use this data. You can run the macro by using the bash command below, just make sure you include it in your repo under the `~/macros` directory.
+This macro organizes columns into four categories based on their names:
+
+1. ID columns: Columns that end with `_id`
+2. Date columns: Columns that end with `_date` or `_at` 
+3. Fivetran metadata columns: Columns that start with an underscore `_*`
+4. Everything else: All other columns
+
+The macro then sorts the columns alphabetically within each category and concatenates them into a single ordered list. Finally, the macro generates a YAML file with the organized columns.
+
+To use the `generate_ordered_yaml` macro, include it in your dbt project under the `/macros` directory. Then, run the macro using the following command, replacing `<your_dbt_model>` with the name of the dbt model for which you want to generate the YAML file
 
 {% highlight bash %}
-
 dbt run-operation generate_ordered_yaml --args '{"model_name":"<your_dbt_model>"}'
+{% endhighlight %}
+
+Here's an example of the generated YAML file after running the macro:
+
+{% highlight yaml %}
+- name: your_dbt_model
+  description: ""
+  columns:
+    - name: order_id
+    - name: user_id
+    - name: item_name
+    - name: price
+    - name: order_date
+    - name: created_at
+    - name: _fivetran_deleted
+    - name: _fivetran_synced
 
 {% endhighlight %}
 
-Overall, creating this macro has been a huge time-saver for me. It's allowed me to spend more time focusing on the data itself, rather than on the tedious task of manually reorganizing YAML files. If you're interested in creating your own custom dbt macros, [check out this tutorial by Madison Mae](https://madisonmae.substack.com/p/tutorial-write-a-custom-dbt-macro). By leveraging the power of Jinja and dbt, you too can streamline your data engineering tasks and work more efficiently with large datasets
+Creating custom dbt macros like `generate_ordered_yaml` can significantly streamline your data engineering tasks and help you work more efficiently with large datasets. By leveraging the power of Jinja and dbt, you can easily generate and organize YAML files for your dbt models. For more information on creating custom dbt macros, including the fundamentals of Jinja, check out this tutorial by [Madison Mae](https://madisonmae.substack.com/p/tutorial-write-a-custom-dbt-macro){:target="_blank"}{:rel="noopener noreferrer"}
+
