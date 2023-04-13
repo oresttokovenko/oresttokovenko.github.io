@@ -1,6 +1,6 @@
 ---
 layout: post
-title: End-to-end ETL with Airbyte, dbt, Dagster, Snowflake and Metabase
+title: End-to-End ETL with Airbyte, dbt, Dagster, Snowflake and Metabase
 description:
 date:   2022-11-19
 image:  '/images/etl_airbyte_dbt_dagster_snowflake.jpg'

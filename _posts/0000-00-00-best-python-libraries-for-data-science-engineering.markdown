@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Top Python libraries for Data Science and Data Engineering
+title:  Top Python Libraries for Data Science and Data Engineering
 description:
 date:   2022-12-18
 image:  '/images/best_python_libraries.jpg'
