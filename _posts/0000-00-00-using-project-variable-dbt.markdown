@@ -15,9 +15,7 @@ Oh, the joy of hard-coded values! Said no one ever. If you're anything like me, 
 
 #### Process
 
-Let me set the scene: our company had recently acquired a competitor, and we were in the process of migrating their distribution centres to our warehouse management software. The catch? Our existing dbt code base had hard-coded values for distribution centre locations across multiple models. It was a mess.
-
-Now, I could've manually updated each model, but that's not what a data superhero does. Instead, I turned to dbt project variables and Jinja, my trusty sidekicks. Here's how I tackled the issue:
+Let me set the scene: our company had recently acquired a competitor, and we were in the process of migrating their distribution centres to our warehouse management software. The catch? Our existing dbt code base had hard-coded values for distribution centre locations across multiple models. It was a mess. Here's how I tackled the issue:
 
 First, I defined the variables in the dbt_project.yml file. This allowed me to store the distribution centre location information in a single, centralized place. That way, if there's a new value, I could simply update the list or dictionary in the dbt_project.yml file, and the changes would be reflected in all the models.
 
@@ -31,7 +29,7 @@ vars:
 {% endhighlight %}
 
 
-Next, I called these variables into each model using the var() function and instantiated Jinja objects. This helped me replace the hard-coded values with dynamic references that would update automatically whenever the variables were changed.
+Next, I called these variables into each model using the `var()` function and instantiated Jinja objects. This helped me replace the hard-coded values with dynamic references that would update automatically whenever the variables were changed.
 
 {% highlight jinja %}
 
