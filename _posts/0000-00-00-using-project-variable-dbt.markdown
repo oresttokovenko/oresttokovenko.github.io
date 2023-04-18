@@ -7,10 +7,6 @@ image:  '/images/project_variable.jpg'
 tags:   [dbt, SQL, Jinja]
 ---
 
-### ⛔ This Blog post is a WIP  ⛔
-
----
-
 Oh, the joy of hard-coded values! Said no one ever. If you're anything like me, you've probably had your fair share of dealing with hard-coded values in your dbt code base, especially when you're working on a large-scale data project. As a Data Engineer, I've faced this issue countless times, and let me tell you, it's not fun. But worry not, my fellow data enthusiasts, because today, I'll be sharing my recent experience dealing with such a predicament and how I successfully used dbt project variables and Jinja to keep my code DRY (Don't Repeat Yourself).
 
 #### Process
