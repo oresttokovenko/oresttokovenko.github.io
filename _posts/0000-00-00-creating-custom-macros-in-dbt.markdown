@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Creating Custom Macros in dbt for Efficient YAML Generation and Organization
+title: Creating Custom Macros in dbt for Efficient YAML Generation
 description:
 date:   2023-03-19
 image:  '/images/dbt_macro.jpg'
