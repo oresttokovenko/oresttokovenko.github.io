@@ -11,13 +11,15 @@ tags:   [Airbyte, dbt, Python, Snowflake, Dagster, Metabase]
 
 ---
 
+You can follow along on my [Github repo here](https://github.com/oresttokovenko/RetailFlow)
+
 ### Theme: 
 
 Retail sales data for an e-commerce store 
 
 ### Project Overview:
 
-RetailAnalytics360 is an end-to-end data engineering project that aims to generate fake retail sales data for an e-commerce store, ingest it into Snowflake using Airbyte, orchestrate and perform the data transformations using Dagster and dbt, and visualize the data using Metabase. This project will be deployed on AWS infrastructure using Terraform. 
+RetailFlow is an end-to-end data engineering project that aims to generate fake retail sales data for an e-commerce store, ingest it into Snowflake using Airbyte, orchestrate and perform the data transformations using Dagster and dbt, and visualize the data using Metabase. This project will be deployed on AWS infrastructure using Terraform. 
 
 ### Data: 
 
