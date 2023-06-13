@@ -7,75 +7,22 @@ image:  '/images/etl_airbyte_dbt_dagster_snowflake.jpg'
 tags:   [Airbyte, dbt, Python, Snowflake, Dagster, Metabase]
 ---
 
-### ⛔ This Blog post is a WIP  ⛔
+### ⛔ This Blog post is a WIP, but in the meanwhile you can follow along on my [Github repo here](https://github.com/oresttokovenko/RetailFlow) ⛔
 
 ---
 
-You can follow along on my [Github repo here](https://github.com/oresttokovenko/RetailFlow)
+Greetings, fellow data aficionados. If you've stumbled upon this blog, chances are you're knee-deep in a similar trench to mine - untangling the serpentine complexities of data engineering. Today, I'll be sharing my journey through building my project that I named RetailFlow- a thrilling escapade through the enchanting labyrinth of data extraction, loading, transformation, and visualization.
 
-### Theme: 
+I always wanted to build an end-to-end ELT pipeline for an e-commerce platform from scratch, just to see what it's like! I was up against a seemingly impenetrable wall of data, and my trusted weapons were my favorite cloud playground, AWS, and a suite of state-of-the-art tools: Airbyte, dbt, Dagster, Snowflake, and Metabase. A daunting task indeed, but one that left me positively giddy with anticipation.
 
-Retail sales data for an e-commerce store 
+The first leg of our journey, the data generation, was performed by a Python script. If you ask me, Python is to a data engineer what spinach is to Popeye, and my spinach-fuelled script was running tirelessly within an AWS Lambda function, feeding our PostgreSQL database on AWS EC2 with the lifeblood of our project: data.
 
-### Project Overview:
+Next, we took a ride on the Airbyte, moving data from PostgreSQL to our data warehouse, Snowflake. Initerstly I discovered that Airbyte runs on Docker so it itself cannot be containerized! Therefore, with Airbyte running on its own EC2 instance, it was like having a personal chauffer dedicated to delivering data to our Snowflake's frosty domain.
 
-RetailFlow is a comprehensive ELT (Extract, Load, Transform) project designed to simulate the flow of retail sales data for an e-commerce platform. The infrastructure is provisioned and managed on AWS, with each service optimized for its specific role in the pipeline.
+Then came the transformation phase, the crucible where raw data is hammered and shaped into insightful information. I chose dbt and Dagster for this task - two power tools that can make any data engineer feel like Thor with a hammer. Here again, AWS EC2 played the faithful steed, hosting both tools.
 
-The data simulation is handled by a Python script executing within an AWS Lambda function. The generated data is then pushed to a PostgreSQL database instance deployed on AWS EC2.
+Finally, we had Metabase, the artist in our process, turning raw data sculptures into beautiful canvases of analytics, providing our stakeholders with insights as crisp as an autumn morning. As you might have guessed, Metabase, too, had its exclusive EC2 instance, churning out data masterpieces.
 
-Data is ingested using Airbyte into the data warehousing solution, Snowflake. Airbyte operates on its own EC2 instance, ensuring dedicated resources for the critical task of data synchronization.
+All this would be a house of cards if not for the magic of orchestration. Here, Terraform was my sorcerer's wand, creating and managing our infrastructure, while Docker served as our trusty timekeeper, ensuring consistency across development and production. AWS ECS, on the other hand, was like an experienced symphony conductor, gracefully managing our Docker containers across multiple EC2 instances.
 
-For the transformation phase, we utilize a combination of Dagster and dbt, two cutting-edge tools in the data engineering ecosystem. These tools are deployed on an EC2 instance, allowing for a flexible and powerful transformation process.
-
-The final piece of the pipeline is data visualization, which is handled by Metabase. Running on a dedicated EC2 instance, Metabase provides intuitive and insightful data analytics, allowing stakeholders to extract meaningful conclusions from the data.
-
-The entire system is orchestrated using Terraform, an Infrastructure as Code (IaC) tool that simplifies and standardizes infrastructure deployment. On the application level, we utilize Docker for containerization, ensuring consistency across all stages of development and production. Finally, the orchestration of our Docker containers across multiple EC2 instances is managed by AWS ECS (Elastic Container Service), providing a robust, scalable, and efficient solution to our multi-container deployment needs.
-
-
-### Data: 
-
-The fake data will consist of the following attributes:
-
-```
-order_id
-cust_name
-product
-product_category
-quantity
-price
-purchased_at
-product_id
-customer_id
-order_date_at
-discount
-shipping_cost
-city
-province
-country
-```
-<br><br/>
-### Transformations:
-
-These are the transformations that will be made in dbt
-
-* Calculate the total revenue (Quantity Sold * Price)
-* Calculate the total discount (Quantity Sold * Discount)
-* Calculate the net revenue (Total Revenue - Total Discount)
-* Aggregate net revenue by city, state, and country
-
-### To be added
-
-- Metabase does not support configuring data source connections through environment variables or the Dockerfile directly. This is largely due to security reasons, as connection details for databases often include sensitive information like passwords and API keys.
-
-- Encountered this [issue](https://discourse.getdbt.com/t/invalid-value-for-profiles-dir-path-dbt-does-not-exist-error-gets-thrown-despite-this-path-existing/8228)
-
-
-- How does connecting EC2 instances work?
-
-If you want to transfer data between two EC2 instances, there are several approaches you could consider. However, since your scenario involves Dockerized applications - specifically, a Postgres DB and Airbyte - the "data transfer" is actually more about enabling network communication between the two applications rather than physically moving data between instances.
-
-Ensure both EC2 instances are in the same VPC and Security Group: This allows network traffic between the instances. You should set up your Security Group rules to allow incoming connections on the necessary ports for your applications. For Postgres, this is usually port 5432. For Airbyte, refer to their documentation for necessary ports.
-Ensure Postgres is set up to allow connections from other instances: By default, Postgres only accepts connections from the same machine it's running on. You'll need to modify the pg_hba.conf file to accept connections from other IP addresses.
-Ensure your Dockerized Postgres is exposing the correct port: When you run your Postgres Docker container, you need to use the -p flag to map the container's port to the host's port, like so: docker run -p 5432:5432 .... This way, other instances can connect to Postgres on its standard port.
-Connect Airbyte to Postgres: Now, you should be able to set up a connection in Airbyte using the private IP address of your Postgres EC2 instance and the standard Postgres port (5432). You'll also need to provide the username, password, and database name.
-Remember to ensure your data is secure during transit. In a production environment, consider encrypting network traffic between instances with tools such as SSL/TLS.
+Reflecting on this project, it becomes evident how intricate and multifaceted an end-to-end ELT pipeline truly is. Yet, the successful completion of RetailFlow is a testament to the power of effective orchestration and strategic tool selection, even in the face of substantial complexity.
