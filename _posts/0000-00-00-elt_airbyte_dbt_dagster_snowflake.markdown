@@ -3,11 +3,11 @@ layout: post
 title: End-to-End ELT with Airbyte, dbt, Dagster, Snowflake and Metabase
 description:
 date:   2023-06-10
-image:  '/images/etl_airbyte_dbt_dagster_snowflake.jpg'
+image:  '/images/elt_airbyte_dbt_dagster_snowflake.jpg'
 tags:   [Airbyte, dbt, Python, Snowflake, Dagster, Metabase]
 ---
 
-### ⛔ This Blog post is a WIP, but in the meanwhile you can follow along on my [Github repo here](https://github.com/oresttokovenko/RetailFlow) ⛔
+### ⛔ This Blog post is a WIP, but you can follow along on the [Github repo here](https://github.com/oresttokovenko/RetailFlow) ⛔
 
 ---
 
