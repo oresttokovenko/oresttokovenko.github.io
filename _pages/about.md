@@ -5,7 +5,7 @@ permalink: /about/
 image: '/images/about_me_banner.jpg'
 ---
 
-Hi! My name is Orest Tokovenko. I'm a 26 years old Data Engineer. I was raised in Burlington, Ontario and am currently based in Calgary, Alberta.
+Hi 👋 My name is Orest Tokovenko, and I'm a 27 year old Data Engineer. I was raised in Burlington, Ontario and am currently based in Calgary, Alberta.
 
 My journey into data engineering began during my studies at BrainStation where I specialized in Data Science. I was always fascinated by the power of data and its potential to make a real-world impact. During my time at BrainStation, I had the opportunity to work on a number of data-driven projects, including building a neural network to generate realistic text and working with GPT-3 (beta at the time) as my capstone project.
 
