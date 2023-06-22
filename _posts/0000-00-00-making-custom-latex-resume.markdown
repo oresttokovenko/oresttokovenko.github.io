@@ -13,7 +13,10 @@ In this blog post, I will hopefully inspire you to create your own standout LaTe
 
 ![Image]({{site.baseurl}}/images/latex_example_2.jpg) 
 
-You can follow along with relevant [directory](https://github.com/oresttokovenko/resume_templates/tree/main/career_developer_template) in my Github respository
+For your convenience, you have two options to follow along:
+1. You can clone or download the required materials from the career_developer_template [directory](https://github.com/oresttokovenko/resume_templates/tree/main/career_developer_template) in my Github repository.
+2. Alternatively, if you prefer using Overleaf, this template was published in the Overleaf gallery 🥳. You can make a direct copy from [here](https://www.overleaf.com/latex/templates/resume-template-by-orest/zmrmcnwmxdxn). This was made available as of May 2023. 
+
 
 Once you open the above link, you will see two files. Let's begin with the `.cls` file - this file holds all the function code, allowing us to benefit from the DRY (Don't Repeat Yourself) principle. There is a bit of preamble that sets up the formatting of the document, but after that you will come to the 'Custom Commands' section. By executing these functions in the `.tex` file, we can maintain a clean and organized codebase while also keeping our resume content concise and focused. In LaTeX, commands are preceded by a backslash `\`. While it might seem unusual at first, you will quickly become accustomed to this syntax as you work with LaTeX. Here is an example of a LaTeX command that simply bolds some text (I prefer to use Pascal Case for LaTeX commands):
 
