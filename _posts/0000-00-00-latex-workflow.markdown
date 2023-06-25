@@ -20,9 +20,9 @@ I also encountered an interesting trend – some companies delete their job post
 
 Now, we've arrived at the pinnacle of our automated workflow: the creation of your resume. In this guide, I've used the 'Software Engineer' [resume template](https://github.com/oresttokovenko/resume_templates/tree/main/career_developer_template) that I personally created and had published to the Overleaf gallery. Feel free to adopt this template or choose one that better suits your career trajectory and preferences.
 
-I you have a base template that you prefer, you can add it to the automation process by simply adding it to the `_helpers` directory and make a quick modification to the `create_resume_files.sh` script to copy it when you generate the resume files.
+If you have a base template that you prefer, you can add it to the automation process by simply adding it to the `_helpers` directory and make a quick modification to the `create_resume_files.sh` script to copy it when you generate the resume files.
 
-Once you're satisfied with the content and layout of your resume, the `make compile` command is there to transcribe your LaTeX code into a polished pdf document. One of the great benefits of this automated system is the ability to iterate quickly: with every execution of `make compile`, your latest changes are integrated and immediately visible.
+Once you're satisfied with the content and layout of your resume, the `make compile` command is there to transcribe your LaTeX code into a polished pdf document. One of the great benefits of this automated system is the ability to iterate quickly: with every execution of `make compile`, your latest changes are integrated and immediately visible in the pdf viewer tab in your IDE.
 
 ![Gif]({{site.baseurl}}/images/latex_workflow_pt3.gif)
 
@@ -31,7 +31,5 @@ Lastly, run `make final-pdf` to rename and move the output file to a higher dire
 ![Gif]({{site.baseurl}}/images/latex_workflow_pt4.gif)
 
 One of the challenges I encountered was the inability to use the `cd` command inside a bash script. Once the relevant files were created, I wanted the shell to switch to that directory so they could access the second Makefile and compile the resume. It turns out, when you `cd` within a script, the change only exists for the duration of the script. Once the script ends, you're back in the original working directory - rendering the command ineffective! As a workaround, I simply copied the change directory command to the user's clipboard and prompted them to paste it into the command line. There were other, more complex solutions, but I didn't feel that they were worth getting into for this project. I also learned that bash doesn't have Booleans, and I'm not sure what to make of that.
-
-The real victory here was not just about creating an organized system; it was about how automation can turn a tiresome process into a breezy task. Now, I have an effective tool that doesn't just help me tailor resumes, but keeps them neatly organized.
 
 In the end, this project is not just about looking for a new job or creating a resume. It's about optimization. It's about using our skills to automate the repetitive and focus on what truly matters - creating value. After all, why should you waste time reinventing the wheel when you can use that time to invent a rocket? So, here's to more efficiency, more job applications, and of course, more LaTeX!
