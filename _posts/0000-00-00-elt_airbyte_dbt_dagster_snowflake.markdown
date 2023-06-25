@@ -21,17 +21,17 @@ I always wanted to build an end-to-end ELT pipeline for an e-commerce platform f
 
 ## Following the data through the pipeline
 
-The first leg of our journey, the data generation, was performed by a Python script. If you ask me, Python is to a data engineer what spinach is to Popeye, and my spinach-fuelled script was running tirelessly within an AWS Lambda function, feeding our PostgreSQL database on AWS EC2 using SQLAlchemy to push the generated data. Once provisioned, we can view the Python script using the shell command below:
+The first leg of our journey, the data generation, was performed by a Python script. If you ask me, Python is to a data engineer what spinach is to Popeye, and my spinach-fuelled script was running tirelessly within an AWS Lambda function, feeding our PostgreSQL database on AWS EC2 using SQLAlchemy to push the generated data. Once provisioned, we can view the Python script using the make command below:
 
 ```bash
-aws lambda get-function --function-name  generate_fake_data.py
+make print-lambda
 ```
 <br>
 
 Also, let's check to make sure the data made it into the PostgresDB. First we can ssh into the ec2 instance. 
 
 ```bash
-ssh -i terraform/tf_key.pem ec2-user@<your-ec2-public-ip> # the ec2 public ip will be printed in the console during terraform provisioning
+ssh-ec2-postgres # the ec2 public ip will be added to the .env file during terraform provisioning, so that's what the make command will grab
 ```
 <br>
 
