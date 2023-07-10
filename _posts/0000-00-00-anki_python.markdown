@@ -4,7 +4,7 @@ title: Generating Custom Anki Decks with GPT-4 and LangChain
 description:
 date:   2023-04-01
 image:  '/images/anki_python.jpg'
-tags:   [Python]
+tags:   [Python, LangChain, GPT-4]
 ---
 
 I am no stranger to the ever-evolving world of technology as a user of the Data tools/services ecosystem. Recently, I've been diving into the intricacies of Java for its high-performance capabilities, scalability, and seamless integration with popular technologies like Apache Flink, Iceberg and Kafka (which all consist of a majority Java codebase). To help me retain all the knowledge I've been acquiring, I rely on my trusty Anki app. With its spaced repetition magic and flashcard-style recall, Anki has been my go-to learning companion.
@@ -13,7 +13,7 @@ But, as you might expect, creating Anki cards manually for every concept in the 
 
 ### Leveraging GPT-4 and LangChain for Flashcard Creation
 
-To begin, I utilized OpenAI's GPT-4 to generate Q&A pairs from my Java book's content. The process involved submitting a prompt to GPT-4 containing the text I aimed to understand, as well as my prompt. For this task, I utilized a few handy libraries and tools. The LangChain library, which hosts PydanticOutputParser and Pydantic BaseModel, helped facilitate data validation. This ensured that the output from GPT-4 conformed to my specified JSON array schema and was parsed into structured data.
+To begin, I utilized OpenAI's GPT-4 to generate Q&A pairs from my Java book's content. The process involved submitting an input text (a snippet from the textbook) to GPT-4 containing the text I aimed to understand, as well as my prompt. For this task, I utilized a few handy libraries and tools. The LangChain library, which hosts PydanticOutputParser and Pydantic BaseModel, helped facilitate data validation. This ensured that the output from GPT-4 conformed to my specified JSON array schema and was parsed into structured data.
 
 ```python
 class FlashCard(BaseModel):
