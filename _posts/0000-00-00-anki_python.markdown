@@ -13,7 +13,7 @@ But, as you might expect, creating Anki cards manually for every concept in the 
 
 ### Leveraging GPT-4 and LangChain for Flashcard Creation
 
-To begin, I utilized OpenAI's GPT-4 to generate Q&A pairs from my Java book's content. The process involved submitting a prompt to GPT-4 containing the text I aimed to understand, as well as my prompt. For this task, I utilized a few handy libraries and tools. The LangChain library, which hosts PydanticOutputParser and Pydantic BaseModel, helped facilitate data validation. This ensured that the output from GPT-4 conformed to my specified schema and was parsed into structured data.
+To begin, I utilized OpenAI's GPT-4 to generate Q&A pairs from my Java book's content. The process involved submitting a prompt to GPT-4 containing the text I aimed to understand, as well as my prompt. For this task, I utilized a few handy libraries and tools. The LangChain library, which hosts PydanticOutputParser and Pydantic BaseModel, helped facilitate data validation. This ensured that the output from GPT-4 conformed to my specified JSON array schema and was parsed into structured data.
 
 ```python
 class FlashCard(BaseModel):
@@ -26,21 +26,24 @@ class FlashCardArray(BaseModel):
 
 <br>
 
- I defined the Pydantic classes above and once the data was parsed, I converted the FlashCardArray object into a Python list. I then transformed this list into a Pandas dataframe, which was subsequently appended to the CSV file. With these steps, I successfully created structured data from a GPT-4 output.
+ I defined the Pydantic classes above and once the data was parsed, I converted the FlashCardArray object into a Python list. I then transformed this list into a Pandas dataframe, which was subsequently appended to the CSV file. With these steps, I successfully created structured data from a GPT-4 output. If you want to append more text than GPT-4 can support in one API call, simply update the `input.txt` file with another piece of text and the program will append it to the existing csv. Once you're done creating flashcards, you can proceed to the next step. 
 
-![Gif]({{site.baseurl}}/images/anki_gpt_pt1.gif) 
+![Gif]({{site.baseurl}}/images/anki_gpt_pt1.gif)
+*Converting the input text into structured data. Each API call and function run takes about 20 seconds*
 
 ### Generating the Anki Deck
 
-Next, I created a Python script that took the CSV output from GPT-4 and converted it into Anki flashcards. To do this, I used a fantastic Python library called `genanki`. `genanki` helps create Anki decks programmatically, so all I had to do was write a script that mapped the questions and answers in the CSV to the format required.
+Next, I created a Python script that took the CSV output from GPT-4 and converted it into Anki flashcards. To do this, I used a fantastic Python library called `genanki`. `genanki` helps create Anki decks programmatically, so all I had to do was write a script that mapped the questions and answers in the CSV to the format required. To make things simple, the `DECK_NAME` variable defined in the `.env` file will be the name for everyting - the csv and the deck. If you want to create more decks, simply update this variable and your old files will be preserved.
 
 ![Gif]({{site.baseurl}}/images/anki_gpt_pt2.gif)
+*Generating an Anki Deck - `.apkg` file from the flashcard csv*
 
 ### Importing the Generated Deck into Anki
 
 Once I had the `.apkg` file, I imported it into the Anki app, and voilà! I had a shiny new custom Anki deck at my fingertips. Now, I can efficiently review all the concepts I'm learning, and the process is repeatable for any new material I encounter.
 
 ![Gif]({{site.baseurl}}/images/anki_gpt_pt3.gif)
+*Importing the deck into Anki and testing the first flashcard*
 
 The beauty of this approach is that it's not just limited to Java. With a little tweaking, you can apply this technique to virtually any subject matter you're studying. So, whether you're learning a new programming language or brushing up on your 18th-century French literature, LangChain and GPT-4 can help you create custom Anki decks tailored to your learning needs. 
 
