@@ -22,8 +22,8 @@ menu__settings:
 #-------------------------------
 # Hero Settings
 hero:
-  hero__title: Hello, my name is Orest. <br /> I’m a Data Engineer based in Calgary 👋
-  hero__description: I'm passionate about all things Data and Analytics Engineering. I invite you to navigate my portfolio to know a bit more about me and my work
+  hero__title: Hello, my name is Orest 👋 <br /> I craft solutions through data and software engineering
+  hero__description: I'm passionate about the world of data and software, where innovation meets application. Browse my blog to discover what drives me.
 
 
 #-------------------------------
